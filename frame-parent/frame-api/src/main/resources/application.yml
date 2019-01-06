@@ -5,8 +5,8 @@ server:
     max-threads: 1000
     min-spare-threads: 30
   port: 8081
-  servlet:
-    context-path: /frame-api
+#  servlet:
+#    context-path: /frame-api
 
 # mysql
 spring:
