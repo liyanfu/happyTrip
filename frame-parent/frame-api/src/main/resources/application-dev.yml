@@ -1,11 +1,11 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver  #com.mysql.cj.jdbc.Driver  #com.mysql.jdbc.Driver
+    driverClassName: com.mysql.jdbc.Driver  #com.mysql.cj.jdbc.Driver  #com.mysql.jdbc.Driver
     druid:
-      url: jdbc:mysql://120.78.138.125:3306/happytrip?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+      url: jdbc:mysql://120.78.138.125:3306/happytrip?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: root
-      password: root
+      password: root123
       initial-size: 10
       max-active: 100
       min-idle: 10
