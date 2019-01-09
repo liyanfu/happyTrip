@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>后台首页</title>
+    <meta name="renderer" content="webkit">	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+	<meta name="apple-mobile-web-app-capable" content="yes">	
+	<meta name="format-detection" content="telephone=no">	
+	<link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/common/layui/css/layui.css" media="all">
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/css/base.css" media="all">
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/common/css/animate.css" media="all">
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/css/main.css">
+</head>
+<body class="larry-bg-gray">
+<div class="layui-fluid">
+	<div class="larry-container animated fadeIn">
+		<div class="layui-row layui-col-space15" id="Minfo">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md12 layui-col-lg12">
+				<div class="head-info larry-font-theme layui-bg-green">
+					<div>您好，后台管理系统，现在时间是：${sysTime}</div>
+					<i class="larry-icon larry-guanbi1" id="closeInfo"></i>
+				</div>
+			</div>
+		</div>
+
+		<!-- 面板 -->
+		<div class="layui-row layui-col-space15">
+			<!-- 系统概览 -->
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title">系统概览</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body">
+						<table class="layui-table larry-table-info">
+							<colgroup>
+								<col width="150">
+								<col>
+							</colgroup>
+							<tbody>
+							<tr>
+								<td><span class="tit">系统名称:</span></td>
+								<td><span class="info">后台管理</span></td>
+							</tr>
+							<tr>
+								<td><span class="tit">版本信息:</span></td>
+								<td><span class="info iframe">v1.0.0</span></td>
+							</tr>
+							<tr>
+								<td><span class="tit">操作系统:</span></td>
+								<td>${osName}</td>
+							</tr>
+							<tr>
+								<td><span class="tit">系统版本:</span></td>
+								<td>${osVersion}</td>
+							</tr>
+							<tr>
+								<td><span class="tit">系统架构:</span></td>
+								<td>${osArch}</td>
+							</tr>
+							<tr>
+								<td><span class="tit">CPU核数:</span></td>
+								<td>${processors}</td>
+							</tr>
+							<tr>
+								<td><span class="tit">系统内存:</span></td>
+								<td>${totalPhysical}MB</td>
+							</tr>
+							<tr>
+								<td><span class="tit">剩余内存:</span></td>
+								<td>${freePhysical}MB</td>
+							</tr>
+							<tr>
+								<td><span class="tit">内存使用:</span></td>
+								<td>${memoryRate}%</td>
+							</tr>
+							<tr>
+								<td><span class="tit">系统语言:</span></td>
+								<td>${userLanguage}</td>
+							</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</section>
+			</div>
+			<!-- JVM概览 -->
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title">JVM概览</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body">
+						<table class="layui-table larry-table-info">
+							<colgroup>
+								<col width="150">
+								<col>
+							</colgroup>
+							<tbody>
+							<tr>
+								<td><span class="tit">JVM信息:</span></td>
+								<td><span class="info">${jvmName}</span></td>
+							</tr>
+							<tr>
+								<td><span class="tit">JVM版本:</span></td>
+								<td><span class="info iframe">${javaVersion}</span></td>
+							</tr>
+							<tr>
+								<td><span class="tit">JAVA_HOME:</span></td>
+								<td>${javaHome}</td>
+							</tr>
+							<tr>
+								<td><span class="tit">工作目录:</span></td>
+								<td>${userDir}</td>
+							</tr>
+							<tr>
+								<td><span class="tit">JVM占用内存:</span></td>
+								<td>${javaTotalMemory}MB</td>
+							</tr>
+							<tr>
+								<td><span class="tit">JVM空闲内存:</span></td>
+								<td>${javaFreeMemory}MB</td>
+							</tr>
+							<tr>
+								<td><span class="tit">JVM最大内存:</span></td>
+								<td>${javaMaxMemory}MB</td>
+							</tr>
+							<tr>
+								<td><span class="tit">当前用户:</span></td>
+								<td>${userName}</td>
+							</tr>
+							<tr>
+								<td><span class="tit">CPU负载:</span></td>
+								<td>${systemCpuLoad}%</td>
+							</tr>
+							<tr>
+								<td><span class="tit">系统时区:</span></td>
+								<td>${userTimezone}</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+<!-- 加载js文件-->
+<script type="text/javascript" src="${request.contextPath}/statics/common/layui/layui.js"></script>
+<script type="text/javascript">
+layui.cache.page = 'main';
+layui.config({
+    base:'${request.contextPath}/statics/common/'
+}).extend({
+    larry:'js/base'
+}).use('larry');
+</script>
+</body>
+</html>

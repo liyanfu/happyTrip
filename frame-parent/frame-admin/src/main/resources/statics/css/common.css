@@ -1,0 +1,15 @@
+.ren-body{padding:10px;}
+[v-cloak] {
+    display: none;
+}
+.grid-btn{
+    margin-bottom:12px;
+}
+.grid-btn .btn{
+    margin-right:10px;
+}
+.pointer{cursor: pointer;}
+.not-underline a:focus,.not-underline a:hover{
+    text-decoration: none;
+}
+.ren-form{margin-top: 13px;}

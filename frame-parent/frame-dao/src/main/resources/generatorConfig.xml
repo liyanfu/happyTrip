@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!-- 引入配置文件 -->
+	<!-- <properties resource="system.properties" /> -->
+	<!-- 指定数据连接驱动jar地址 -->
+	<classPathEntry location="C:\tools\Maven\repo\mysql\mysql-connector-java\5.1.46\mysql-connector-java-5.1.46.jar" /> 
+	<!-- 一个数据库一个context -->
+	<context id="infoGuardian" defaultModelType="flat">
+
+		<plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<!-- 自定义插件 -->
+		<plugin type="org.mybatis.generator.plugins.InsertBatchPlugin">
+         	<!-- 是否插入之后返回主键key -->
+         	<property name="useGeneratedKeys" value="false"/>
+         </plugin>
+         <plugin type="org.mybatis.generator.plugins.AddFieldPlugin"/>
+         <plugin type="org.mybatis.generator.plugins.SelectOneByExamplePlugin"/>
+         <plugin type="org.mybatis.generator.plugins.SelectByExampleShowFieldPlugin"/>
+         <plugin type="org.mybatis.generator.plugins.UpdateIncrementsPlugin"/>
+         <plugin type="org.mybatis.generator.plugins.AddCriterionIgnoreNullPlugin" />
+         <plugin type="org.mybatis.generator.plugins.UpsertPlugin"/>
+		<!-- 自定义插件 -->
+		<!--插件 ：生成的Java模型创建一个toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" /><!-- 是否取消注释 -->
+			<property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳 -->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://120.78.138.125:3306/happytrip" userId="root" password="root123" />
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 生成实体类地址 -->
+		<javaModelGenerator targetPackage="io.frame.dao.entity" targetProject="src/main/java">
+			<!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+			<property name="trimStrings" value="true" />
+			<property name="rootClass" value="io.frame.dao.base.BaseEntity" />
+		</javaModelGenerator>
+
+		<!-- 生成mapxml文件 -->
+		<sqlMapGenerator targetPackage="io.frame.dao.mapper" targetProject="src/main/java"> 
+		<!-- targetProject="dao" -->
+		</sqlMapGenerator>
+
+		<!-- 生成mapxml对应client，也就是接口dao -->
+		<javaClientGenerator targetPackage="io.frame.dao.mapper" targetProject="src/main/java" type="XMLMAPPER">
+
+		</javaClientGenerator>
+		<!-- tables -->
+
+<!-- 
+<table tableName="QRTZ_BLOB_TRIGGERS" domainObjectName="BLOBTRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_CALENDARS" domainObjectName="CALENDARS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_CRON_TRIGGERS" domainObjectName="CRONTRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_FIRED_TRIGGERS" domainObjectName="FIREDTRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_JOB_DETAILS" domainObjectName="JOBDETAILS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_LOCKS" domainObjectName="LOCKS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_PAUSED_TRIGGER_GRPS" domainObjectName="PAUSEDTRIGGERGRPS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_SCHEDULER_STATE" domainObjectName="SCHEDULERSTATE" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_SIMPLE_TRIGGERS" domainObjectName="SIMPLETRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_SIMPROP_TRIGGERS" domainObjectName="SIMPROPTRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="QRTZ_TRIGGERS" domainObjectName="TRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
+ -->
+<table tableName="b_order" domainObjectName="Order" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="b_product" domainObjectName="Product" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="b_product_type" domainObjectName="ProductType" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="b_welfare" domainObjectName="Welfare" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_config" domainObjectName="Config" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_log" domainObjectName="Log" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_schedule_job" domainObjectName="ScheduleJob" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_schedule_job_log" domainObjectName="ScheduleJobLog" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_sys_dept" domainObjectName="SysDept" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_sys_menu" domainObjectName="SysMenu" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_sys_oss" domainObjectName="SysOss" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_sys_role" domainObjectName="SysRole" ><property name="useActualColumnNames" value="true"/><generatedKey column="role_id" sqlStatement="MySql"  identity="true" type="post"/></table>
+<table tableName="s_sys_role_dept" domainObjectName="SysRoleDept" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_sys_role_menu" domainObjectName="SysRoleMenu" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_sys_user" domainObjectName="SysUser" ><property name="useActualColumnNames" value="true"/><generatedKey column="userId" sqlStatement="MySql"  identity="true" type="post"/></table>
+<table tableName="s_sys_user_role" domainObjectName="SysUserRole" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="u_recharge" domainObjectName="Recharge" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="u_recommend" domainObjectName="Recommend" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="u_token" domainObjectName="Token" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="u_user" domainObjectName="User" ><property name="useActualColumnNames" value="true"/><generatedKey column="userId" sqlStatement="MySql"  identity="true" type="post"/></table>
+<table tableName="u_wallet" domainObjectName="Wallet" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="u_wallet_change" domainObjectName="WalletChange" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="u_withdraw" domainObjectName="Withdraw" ><property name="useActualColumnNames" value="true"/></table>
+
+
+	</context>
+</generatorConfiguration>  

@@ -1,0 +1,35 @@
+spring:
+    ##json格式化
+    jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+    # 环境 dev|test|prod
+    profiles:
+        active: dev
+    servlet:
+      multipart:
+        enabled: true
+        max-file-size: 20MB
+        max-request-size: 20MB
+            
+frame:
+    redis:
+        open: false  # 是否开启redis缓存  true开启   false关闭
+
+
+#mybatis
+mybatis:
+  mapper-locations: classpath*:io/frame/dao/mapper/*.xml
+  type-aliases-package: io.frame.dao.entity   #实体扫描，多个package用逗号或者分号分隔
+#分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql 
+#日志
+logging:
+  level: debug
+  level.io.frame: debug
+  path: logs/
+  file: api.log
