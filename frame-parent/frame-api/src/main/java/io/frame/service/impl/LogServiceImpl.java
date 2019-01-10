@@ -20,7 +20,7 @@ import io.frame.service.LogService;
  *
  */
 @Transactional
-@Service
+@Service("logService")
 public class LogServiceImpl implements LogService {
 
 	Logger logger = LoggerFactory.getLogger(LogServiceImpl.class);

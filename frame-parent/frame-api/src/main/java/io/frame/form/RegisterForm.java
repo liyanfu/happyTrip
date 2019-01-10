@@ -18,8 +18,13 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "注册表单")
 public class RegisterForm {
 
+	@ApiModelProperty(value = "登录手机号", position = 1, required = true)
+	@Pattern(regexp = "^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$", message = "手机号格式错误")
+	@NotBlank(message = "登录手机号不能为空")
+	private String userMobile;
+
 	@ApiModelProperty(value = "用户名", required = true)
-	@NotBlank(message = "用户名不能为空")
+	@NotBlank(message = "用户昵称")
 	private String userName;
 
 	@ApiModelProperty(value = "密码1", required = true)
@@ -32,14 +37,25 @@ public class RegisterForm {
 	@Length(min = 6, max = 20, message = "密码长度不正确")
 	private String userPass2;
 
-	@ApiModelProperty(value = "手机号", position = 4, required = true)
-	@Pattern(regexp = "^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$", message = "手机号格式错误")
-	@NotBlank(message = "手机号不能为空")
-	private String mobile;
+	@ApiModelProperty(value = "支付宝名称", required = true)
+	@NotBlank(message = "支付宝名称不能为空")
+	private String alipayName;
 
-	@ApiModelProperty(value = "验证码", required = true)
-	@NotBlank(message = "验证码不能为空")
-	private String verificationCode;
+	@ApiModelProperty(value = "支付宝账号", required = true)
+	@NotBlank(message = "支付宝账号不能为空")
+	private String alipayMobile;
+
+	@ApiModelProperty(value = "推荐人账号", required = true)
+	@NotBlank(message = "推荐人账号不能为空")
+	private String recommendMobile;
+
+	public String getUserMobile() {
+		return userMobile;
+	}
+
+	public void setUserMobile(String userMobile) {
+		this.userMobile = userMobile;
+	}
 
 	public String getUserName() {
 		return userName;
@@ -65,20 +81,28 @@ public class RegisterForm {
 		this.userPass2 = userPass2;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public String getAlipayName() {
+		return alipayName;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setAlipayName(String alipayName) {
+		this.alipayName = alipayName;
 	}
 
-	public String getVerificationCode() {
-		return verificationCode;
+	public String getAlipayMobile() {
+		return alipayMobile;
 	}
 
-	public void setVerificationCode(String verificationCode) {
-		this.verificationCode = verificationCode;
+	public void setAlipayMobile(String alipayMobile) {
+		this.alipayMobile = alipayMobile;
+	}
+
+	public String getRecommendMobile() {
+		return recommendMobile;
+	}
+
+	public void setRecommendMobile(String recommendMobile) {
+		this.recommendMobile = recommendMobile;
 	}
 
 }

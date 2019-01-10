@@ -19,7 +19,7 @@ import io.frame.exception.ErrorCode;
 import io.frame.service.TokenService;
 
 @Transactional
-@Service
+@Service("tokenService")
 public class TokenServiceImpl implements TokenService {
 
 	Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);

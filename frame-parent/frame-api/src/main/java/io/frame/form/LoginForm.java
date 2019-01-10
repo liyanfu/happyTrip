@@ -15,20 +15,24 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "登录表单")
 public class LoginForm {
 
-	@ApiModelProperty(value = "用户名", required = true)
-	@NotBlank(message = "用户名不能为空")
-	private String userName;
+	@ApiModelProperty(value = "登录账号", required = true)
+	@NotBlank(message = "登录账号不能为空")
+	private String userMobile;
 
 	@ApiModelProperty(value = "密码", required = true)
 	@NotBlank(message = "密码不能为空")
 	private String userPass;
 
-	public String getUserName() {
-		return userName;
+	@ApiModelProperty(value = "验证码", required = true)
+	@NotBlank(message = "验证码不能为空")
+	private String captcha;
+
+	public String getUserMobile() {
+		return userMobile;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserMobile(String userMobile) {
+		this.userMobile = userMobile;
 	}
 
 	public String getUserPass() {
@@ -37,6 +41,14 @@ public class LoginForm {
 
 	public void setUserPass(String userPass) {
 		this.userPass = userPass;
+	}
+
+	public String getCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
 	}
 
 }

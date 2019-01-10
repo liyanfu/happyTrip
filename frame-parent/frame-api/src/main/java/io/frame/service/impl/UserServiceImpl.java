@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 import io.frame.annotation.SysLog;
+import io.frame.common.enums.Constant.Numbers;
 import io.frame.common.enums.Constant.Status;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.HttpContextUtils;
@@ -27,13 +28,15 @@ import io.frame.dao.entity.Token;
 import io.frame.dao.entity.User;
 import io.frame.dao.entity.UserExample;
 import io.frame.dao.mapper.UserMapper;
+import io.frame.entity.MyInfoVo;
 import io.frame.exception.ErrorCode;
 import io.frame.service.TokenService;
 import io.frame.service.UserService;
+import io.frame.service.WalletService;
 import io.frame.utils.SessionUtils;
 
 @Transactional
-@Service
+@Service("userService")
 public class UserServiceImpl implements UserService {
 
 	Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -43,6 +46,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserMapper userMapper;
+
+	@Autowired
+	WalletService walletService;
 
 	@Autowired
 	RedisUtils redisUtils;
@@ -60,22 +66,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public User queryByUserName(String userName) {
+	public User queryByMobile(String userMobile) {
 		UserExample example = new UserExample();
-		example.or().andUserNameEqualTo(userName);
-		try {
-			return userMapper.selectOneByExample(example);
-		} catch (Exception e) {
-			logger.error(ErrorCode.GET_INFO_FAILED, e);
-			throw new RRException(ErrorCode.GET_INFO_FAILED);
-		}
-	}
-
-	@Transactional(readOnly = true)
-	public User queryByNameOrMobile(String userName) {
-		UserExample example = new UserExample();
-		example.or().andUserNameEqualTo(userName);
-		example.or().andUserMobileEqualTo(userName);
+		example.createCriteria().andUserMobileEqualTo(userMobile);
 		try {
 			return userMapper.selectOneByExample(example);
 		} catch (Exception e) {
@@ -87,7 +80,7 @@ public class UserServiceImpl implements UserService {
 	@SysLog("登录接口")
 	@Override
 	public Map<String, Object> login(User user) {
-		User userBean = queryByNameOrMobile(user.getUserName());
+		User userBean = queryByMobile(user.getUserMobile());
 		Assert.isNull(user, ErrorCode.USERNAME_OR_USERPASS_ERROR);
 
 		// 用户名不存在
@@ -96,7 +89,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// 账号被禁用
-		if (userBean.getStatus() == 0) {
+		if (userBean.getStatus() == Status.ZERO.getValue()) {
 			throw new RRException(ErrorCode.USERNAME_DISABLE);
 		}
 
@@ -140,31 +133,39 @@ public class UserServiceImpl implements UserService {
 	public Map<String, Object> register(User user) {
 
 		UserExample example = new UserExample();
-		example.or().andUserNameEqualTo(user.getUserName());
-		example.or().andUserMobileEqualTo(user.getUserMobile());
+		example.createCriteria().andUserMobileEqualTo(user.getUserMobile());
 		// 校验是否存在相同用户名
 		int count = userMapper.countByExample(example);
 		if (count > Status.ZERO.getValue()) {
-			throw new RRException(ErrorCode.USERNAME_EXIST);
+			throw new RRException(ErrorCode.USER_MOBILE_EXIST);
 		}
 
+		UserExample parentExample = new UserExample();
+		parentExample.createCriteria().andUserMobileEqualTo(user.getRecommendMobile());
+
+		// 查询父级ID
+		User parentUser = userMapper.selectOneByExample(parentExample);
+		if (parentUser == null) {
+			throw new RRException(ErrorCode.RECOMMEND_MOBILE_NOT_EXIST);
+		}
+		user.setUserLevel(parentUser.getUserLevel() + 1);
+		user.setParentId(parentUser.getUserId());
 		user.setStatus(Status.ONE.getValue());
 		user.setCreateUser(user.getUserName());
-		user.setUserLevel(Status.ONE.getValue());
+		user.setRegisterType(Numbers.ZERO.getValue());
 		user.setCreateTime(new Date());
 
 		Token token = null;
 		try {
 			// 新增用户
 			userMapper.insertSelective(user);
+			// 修改用户组ID
+			user.setGroupUserIds(parentUser.getGroupUserIds() + user.getUserId() + ",");
+			userMapper.updateByPrimaryKey(user);
 			// 放session里,日志SysLog那用
 			SessionUtils.setCurrentUser(HttpContextUtils.getHttpServletRequest(), user);
-			// 新增用户账户
-			// Account account = new Account();
-			// account.setUserId(user.getUserId());
-			// account.setCreateUser(user.getUserName());
-			// accountService.createAccount(account);
-
+			// 新增用户钱包
+			walletService.createWallet(user.getUserId(), user.getUserName());
 			// 创建token 并标记为登录
 			token = tokenService.createToken(user.getUserId());
 		} catch (Exception e) {
@@ -178,7 +179,7 @@ public class UserServiceImpl implements UserService {
 		return map;
 	}
 
-	@SysLog("修改密码")
+	@SysLog("修改登录密码")
 	@Override
 	public void updateUserPass(Long userId, String oldUserPass, String newUserPass) {
 		User user = userMapper.selectByPrimaryKey(userId);
@@ -219,10 +220,11 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@SysLog("忘记密码")
 	@Override
 	public void updateUserPass(Long mobile, String newUserPass) {
 
-		User user = this.queryByNameOrMobile(String.valueOf(mobile));
+		User user = this.queryByMobile(String.valueOf(mobile));
 		if (user == null) {
 			throw new RRException(ErrorCode.USERNAME_NOT_EXIST);
 		}
@@ -236,6 +238,21 @@ public class UserServiceImpl implements UserService {
 		} catch (Exception e) {
 			logger.error(ErrorCode.OPERATE_FAILED, e);
 			throw new RRException(ErrorCode.OPERATE_FAILED);
+		}
+	}
+
+	@Override
+	public MyInfoVo getMyInfo(Long userId) {
+		MyInfoVo info = new MyInfoVo();
+		User user = SessionUtils.getCurrentUser();
+		info.setUserName(user.getUserName());
+		// 我的余额
+		info.setWalletBalance(walletService.getWallet(userId));
+		// 我的直推人数
+		try {
+
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 

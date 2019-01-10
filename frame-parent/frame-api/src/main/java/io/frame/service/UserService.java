@@ -4,6 +4,7 @@ package io.frame.service;
 import java.util.Map;
 
 import io.frame.dao.entity.User;
+import io.frame.entity.MyInfoVo;
 
 /**
  * 用户
@@ -60,5 +61,13 @@ public interface UserService {
 	 * @param newUserPass
 	 */
 	void updateUserPass(Long mobile, String newUserPass);
+
+	/**
+	 * 获取我的信息(包括团队基本信息)
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	MyInfoVo getMyInfo(Long userId);
 
 }

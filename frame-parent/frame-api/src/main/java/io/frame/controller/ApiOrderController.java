@@ -4,34 +4,36 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.frame.annotation.Login;
-import io.frame.dao.entity.ProductType;
-import io.frame.service.ProductTypeService;
+import io.frame.dao.entity.Order;
+import io.frame.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * topTab页标签
+ * 商品列表
  * 
  * @author fury
  *
  */
 @RestController
 @RequestMapping("/api")
-@Api(tags = "顶部tab页签接口")
-public class ApiIndexController {
+@Api(tags = "订单")
+public class ApiOrderController {
 
 	@Autowired
-	ProductTypeService productTypeService;
+	OrderService orderService;
 
 	@Login
-	@GetMapping("getTopTabList")
-	@ApiOperation("获取顶部Tab标签页")
-	public List<ProductType> getTopTabList() {
-		return productTypeService.getProductTypeList();
+	@GetMapping("getMyOrderList")
+	@ApiOperation("专属车位")
+	public List<Order> getMyOrderList(@ApiIgnore @RequestAttribute("userId") Long userId) {
+		return orderService.getMyOrderList(userId);
 	}
 
 }

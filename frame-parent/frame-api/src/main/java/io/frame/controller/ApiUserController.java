@@ -1,6 +1,5 @@
 package io.frame.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,26 +7,27 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Maps;
 
 import io.frame.annotation.Login;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.R;
-import io.frame.common.utils.RandomUtils;
 import io.frame.common.validator.ValidatorUtils;
+import io.frame.dao.entity.User;
+import io.frame.entity.MyInfoVo;
 import io.frame.exception.ErrorCode;
 import io.frame.form.ForgetPassForm;
 import io.frame.form.UserPassForm;
 import io.frame.service.UserService;
-import io.frame.utils.UploadUtils;
+import io.frame.utils.QRCodeUtils;
+import io.frame.utils.SessionUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
@@ -48,16 +48,36 @@ public class ApiUserController {
 	@Autowired
 	private UserService userService;
 
+	@Login
+	@PostMapping("myPromote")
+	@ApiOperation("我要推广-生成二维码")
+	public R myPromote(HttpServletRequest request, HttpServletResponse response,
+			@ApiIgnore @RequestAttribute("userId") Long userId) {
+
+		if (userId == null) {
+			throw new RRException(ErrorCode.TOKEN_NOT_NULL);
+		}
+
+		User user = SessionUtils.getCurrentUser(request);
+		// 把手机号生成二维码返回给前端
+		try {
+			QRCodeUtils.generateQRCode(user.getUserMobile(), 200, 200, "png", response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return R.ok();
+	}
+
 	/**
-	 * 修改用户密码
+	 * 修改登录密码
 	 * 
 	 * @param userId
 	 * @param form
 	 * @return
 	 */
 	@Login
-	@PostMapping("updateUserPass")
-	@ApiOperation("修改用户密码")
+	@PostMapping("updateLoginUserPass")
+	@ApiOperation("修改登录密码")
 	public R updateUserPass(@ApiIgnore @RequestAttribute("userId") Long userId, @RequestBody UserPassForm form) {
 		// 表单校验
 		ValidatorUtils.validateEntity(form);
@@ -72,88 +92,40 @@ public class ApiUserController {
 	}
 
 	/**
-	 * 修改用户头像
+	 * 修改支付密码
 	 * 
-	 * @param file
+	 * @param userId
+	 * @param form
 	 * @return
-	 * @throws Exception
 	 */
 	@Login
-	@PostMapping("updateHeadImg")
-	@ApiOperation("修改用户头像")
-	public R updateHeadImg(@RequestParam("file") MultipartFile file, @ApiIgnore @RequestAttribute("userId") Long userId)
-			throws Exception {
-		if (file.isEmpty()) {
-			throw new RRException(ErrorCode.PLEASE_SELECT_IMAGE);
+	@PostMapping("updatePayPassWord")
+	@ApiOperation("修改支付密码")
+	public R updatePayPassWord(@ApiIgnore @RequestAttribute("userId") Long userId, @RequestBody UserPassForm form) {
+		// 表单校验
+		ValidatorUtils.validateEntity(form);
+
+		if (!form.getNewUserPass1().equals(form.getNewUserPass2())) {
+			throw new RRException(ErrorCode.NEW_USERPASS_DIFFERENCE);
 		}
-
-		// 上传文件
-		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-		String imgUrl = UploadUtils.build().uploadSuffix(file.getBytes(), suffix);
-		// userService.updateHeadImg(userId, imgUrl);
-		Map<String, Object> data = new HashMap<>();
-		data.put("imgUrl", imgUrl);
-		return R.ok().put("data", data);
-	}
-
-	@PostMapping("forgetUserPass1")
-	@ApiOperation("忘记密码1(向手机发送短信验证码)")
-	public R forgetUserPass1(@RequestParam("mobile") Long mobile, HttpServletRequest request,
-			HttpServletResponse response) {
-
-		if (mobile == null) {
-			throw new RRException(ErrorCode.PLEASE_INPUT_MOBILE);
-		}
-		int code = RandomUtils.nextInt(1000, 9999);
-		request.getSession().setAttribute(FORGETVERIFICATIONCODE, code);
-		request.getSession().setMaxInactiveInterval(180);// 验证码180秒有效期
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("mobile", mobile);
-		map.put("verificationCode", code);
-		map.put("expireTime", 180);
-		return R.ok(map);
+		String oldUserPass = DigestUtils.sha256Hex(form.getOldUserPass().trim());
+		String newUserPass = DigestUtils.sha256Hex(form.getNewUserPass1().trim());
+		userService.updateUserPass(userId, oldUserPass, newUserPass);
+		return R.ok();
 	}
 
 	/**
-	 * 用户忘记密码
+	 * 用户忘记登录密码
 	 * 
 	 * @param userId
 	 * @param form
 	 * @return
 	 */
-	@PostMapping("forgetUserPass2")
-	@ApiOperation("忘记密码2(校验验证码)")
-	public R forgetUserPass2(@RequestParam("forgetVerificationCode") Integer forgetVerificationCode,
-			@RequestParam("mobile") Long mobile, HttpServletRequest request) {
-
-		if (forgetVerificationCode == null) {
-			throw new RRException(ErrorCode.PARAMS_IS_NOT_EMPTY);
-		}
-
-		Object verificationCode = request.getSession().getAttribute(FORGETVERIFICATIONCODE);
-
-		if (verificationCode == null) {
-			throw new RRException(ErrorCode.VERIFICATIONCODE_IS_EXPIRE);
-		}
-
-		if (forgetVerificationCode != Integer.parseInt(verificationCode.toString())) {
-			throw new RRException(ErrorCode.VERIFICATIONCODE_IS_ERROR);
-		}
-		Map<String, Object> map = Maps.newHashMap();
-		map.put("mobile", mobile);
-		return R.ok(map);
-	}
-
-	/**
-	 * 用户忘记密码
-	 * 
-	 * @param userId
-	 * @param form
-	 * @return
-	 */
-	@PostMapping("forgetUserPass3")
-	@ApiOperation("忘记密码3(修改密码)")
-	public R forgetUserPass3(@RequestBody ForgetPassForm form) {
+	@Login
+	@PostMapping("forgetUserPass")
+	@ApiOperation("用户忘记登录密码(修改密码)")
+	@ApiIgnore
+	public R forgetUserPass(@ApiIgnore @RequestAttribute("userId") Long userId, @RequestBody ForgetPassForm form) {
 		// 表单校验
 		ValidatorUtils.validateEntity(form);
 
@@ -165,4 +137,44 @@ public class ApiUserController {
 		return R.ok();
 	}
 
+	/**
+	 * 我的 信息展示
+	 * 
+	 * @param userId
+	 * @param form
+	 * @return
+	 */
+	@Login
+	@PostMapping("getMyInfo")
+	@ApiOperation("我的 信息展示")
+	@ApiIgnore
+	public R getMyInfo(@ApiIgnore @RequestAttribute("userId") Long userId) {
+
+		MyInfoVo infoVo = userService.getMyInfo(userId);
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("userInfo", infoVo);
+		return R.ok(map);
+	}
+
+	/**
+	 * 我的资料
+	 * 
+	 * @param userId
+	 * @param form
+	 * @return
+	 */
+	@Login
+	@GetMapping("getMydata")
+	@ApiOperation("我的 信息展示")
+	@ApiIgnore
+	public R getMydata(HttpServletRequest request, @ApiIgnore @RequestAttribute("userId") Long userId) {
+		User user = SessionUtils.getCurrentUser(request);
+		User u = new User();
+		u.setAlipayMobile(user.getAlipayMobile());
+		u.setAlipayName(user.getAlipayName());
+		u.setUserMobile(user.getUserMobile());
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("user", u);
+		return R.ok(map);
+	}
 }
