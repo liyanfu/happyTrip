@@ -72,42 +72,14 @@ public class Constant {
 	}
 
 	/**
-	 * 比赛类型
-	 */
-	public enum MatchTypeCode {
-		/** 重要 */
-		VS_IMPORTANT("VS_IMPORTANT"),
-		/** 关注 */
-		VS_CONCERN("VS_CONCERN"),
-		/** 全部 */
-		VS_WHOLE("VS_WHOLE"),
-		/** 历史 */
-		VS_HISTORY("VS_HISTORY");
-		private String value;
-
-		MatchTypeCode(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return value;
-		}
-	}
-
-	/**
-	 * -1,0,1
+	 * 0:禁用,1:启用
 	 */
 	public enum Status {
-		/** -1 */
-		NEGATIVEONE(-1),
+
 		/** 0 */
 		ZERO(0),
 		/** 1 */
-		ONE(1),
-		/** 2 */
-		TWO(2),
-		/** 3 */
-		THREE(3);
+		ONE(1);
 		private Integer value;
 
 		Status(Integer value) {
@@ -120,41 +92,17 @@ public class Constant {
 	}
 
 	/**
-	 * 竞猜类型
-	 * 
+	 * 数字
 	 */
-	public enum GuessingType {
-		/** 0让球胜负 */
+	public enum Numbers {
+
+		/** 0 */
 		ZERO(0),
-		/** 1晋级 */
-		ONE(1),
-		/** 2进球数 */
-		TWO(2),
-		/** 3总进球数 */
-		THREE(3);
-		private Integer value;
-
-		GuessingType(Integer value) {
-			this.value = value;
-		}
-
-		public Integer getValue() {
-			return value;
-		}
-	}
-
-	/**
-	 * 金额类型
-	 * 
-	 */
-	public enum CoinType {
-		/** 0金币 */
-		ZERO(0),
-		/** 1银币 */
+		/** 1 */
 		ONE(1);
 		private Integer value;
 
-		CoinType(Integer value) {
+		Numbers(Integer value) {
 			this.value = value;
 		}
 
