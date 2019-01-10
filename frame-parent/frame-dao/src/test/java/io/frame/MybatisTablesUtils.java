@@ -30,6 +30,9 @@ public class MybatisTablesUtils {
 		tableNameList.add("s_sys_user");// 后台管理用户表
 		tableNameList.add("s_sys_role");// 后台管理用户表
 		tableNameList.add("u_user");// 用户表
+		tableNameList.add("b_order");// 订单表
+		tableNameList.add("u_recharge");// 充值表
+		tableNameList.add("u_withdraw");// 提现表
 	}
 
 	public static void main(String[] args) {

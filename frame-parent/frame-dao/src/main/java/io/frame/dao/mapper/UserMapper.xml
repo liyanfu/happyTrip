@@ -22,6 +22,7 @@
     <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="updateUser" jdbcType="VARCHAR" property="updateUser" />
     <result column="registerType" jdbcType="INTEGER" property="registerType" />
+    <result column="payPassWord" jdbcType="VARCHAR" property="payPassWord" />
     <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastLoginTime" />
     <result column="lastLoginIp" jdbcType="VARCHAR" property="lastLoginIp" />
   </resultMap>
@@ -98,7 +99,7 @@
     -->
     userId, userName, userMobile, userPass, alipayName, alipayMobile, userLevel, parentId, 
     groupUserIds, status, recommendMobile, createTime, createUser, updateTime, updateUser, 
-    registerType, lastLoginTime, lastLoginIp
+    registerType, payPassWord, lastLoginTime, lastLoginIp
   </sql>
   <select id="selectByExample" parameterType="io.frame.dao.entity.UserExample" resultMap="BaseResultMap">
     <!--
@@ -192,13 +193,15 @@
       parentId, groupUserIds, status, 
       recommendMobile, createTime, createUser, 
       updateTime, updateUser, registerType, 
-      lastLoginTime, lastLoginIp)
+      payPassWord, lastLoginTime, lastLoginIp
+      )
     values (#{userName,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR}, 
       #{alipayName,jdbcType=VARCHAR}, #{alipayMobile,jdbcType=VARCHAR}, #{userLevel,jdbcType=INTEGER}, 
       #{parentId,jdbcType=BIGINT}, #{groupUserIds,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{recommendMobile,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{registerType,jdbcType=INTEGER}, 
-      #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR})
+      #{payPassWord,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="io.frame.dao.entity.User">
     <!--
@@ -255,6 +258,9 @@
       <if test="registerType != null">
         registerType,
       </if>
+      <if test="payPassWord != null">
+        payPassWord,
+      </if>
       <if test="lastLoginTime != null">
         lastLoginTime,
       </if>
@@ -307,6 +313,9 @@
       </if>
       <if test="registerType != null">
         #{registerType,jdbcType=INTEGER},
+      </if>
+      <if test="payPassWord != null">
+        #{payPassWord,jdbcType=VARCHAR},
       </if>
       <if test="lastLoginTime != null">
         #{lastLoginTime,jdbcType=TIMESTAMP},
@@ -381,6 +390,9 @@
       <if test="record.registerType != null">
         registerType = #{record.registerType,jdbcType=INTEGER},
       </if>
+      <if test="record.payPassWord != null">
+        payPassWord = #{record.payPassWord,jdbcType=VARCHAR},
+      </if>
       <if test="record.lastLoginTime != null">
         lastLoginTime = #{record.lastLoginTime,jdbcType=TIMESTAMP},
       </if>
@@ -414,6 +426,7 @@
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
       updateUser = #{record.updateUser,jdbcType=VARCHAR},
       registerType = #{record.registerType,jdbcType=INTEGER},
+      payPassWord = #{record.payPassWord,jdbcType=VARCHAR},
       lastLoginTime = #{record.lastLoginTime,jdbcType=TIMESTAMP},
       lastLoginIp = #{record.lastLoginIp,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -493,6 +506,9 @@
       <if test="registerType != null">
         registerType = #{registerType,jdbcType=INTEGER},
       </if>
+      <if test="payPassWord != null">
+        payPassWord = #{payPassWord,jdbcType=VARCHAR},
+      </if>
       <if test="lastLoginTime != null">
         lastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
@@ -523,6 +539,7 @@
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR},
       registerType = #{registerType,jdbcType=INTEGER},
+      payPassWord = #{payPassWord,jdbcType=VARCHAR},
       lastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
       lastLoginIp = #{lastLoginIp,jdbcType=VARCHAR}
     where userId = #{userId,jdbcType=BIGINT}
@@ -554,7 +571,7 @@
     insert into u_user
     (userName, userMobile, userPass, alipayName, alipayMobile, userLevel, parentId, groupUserIds, 
       status, recommendMobile, createTime, createUser, updateTime, updateUser, registerType, 
-      lastLoginTime, lastLoginIp)
+      payPassWord, lastLoginTime, lastLoginIp)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.userName,jdbcType=VARCHAR}, #{item.userMobile,jdbcType=VARCHAR}, #{item.userPass,jdbcType=VARCHAR}, 
@@ -562,7 +579,7 @@
         #{item.parentId,jdbcType=BIGINT}, #{item.groupUserIds,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
         #{item.recommendMobile,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
         #{item.createUser,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR}, 
-        #{item.registerType,jdbcType=INTEGER}, #{item.lastLoginTime,jdbcType=TIMESTAMP}, 
+        #{item.registerType,jdbcType=INTEGER}, #{item.payPassWord,jdbcType=VARCHAR}, #{item.lastLoginTime,jdbcType=TIMESTAMP}, 
         #{item.lastLoginIp,jdbcType=VARCHAR})
     </foreach>
   </insert>
@@ -625,6 +642,9 @@
         <if test="'registerType' == column">
           #{item.registerType,jdbcType=INTEGER}
         </if>
+        <if test="'payPassWord' == column">
+          #{item.payPassWord,jdbcType=VARCHAR}
+        </if>
         <if test="'lastLoginTime' == column">
           #{item.lastLoginTime,jdbcType=TIMESTAMP}
         </if>
@@ -677,15 +697,15 @@
     insert into u_user
     (userId, userName, userMobile, userPass, alipayName, alipayMobile, userLevel, parentId, 
       groupUserIds, status, recommendMobile, createTime, createUser, updateTime, updateUser, 
-      registerType, lastLoginTime, lastLoginIp)
+      registerType, payPassWord, lastLoginTime, lastLoginIp)
     values
     (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, 
       #{userPass,jdbcType=VARCHAR}, #{alipayName,jdbcType=VARCHAR}, #{alipayMobile,jdbcType=VARCHAR}, 
       #{userLevel,jdbcType=INTEGER}, #{parentId,jdbcType=BIGINT}, #{groupUserIds,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{recommendMobile,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{registerType,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}
-      )
+      #{registerType,jdbcType=INTEGER}, #{payPassWord,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
+      #{lastLoginIp,jdbcType=VARCHAR})
     on duplicate key update 
     userId =  #{userId,jdbcType=BIGINT},
     userName =  #{userName,jdbcType=VARCHAR},
@@ -703,6 +723,7 @@
     updateTime =  #{updateTime,jdbcType=TIMESTAMP},
     updateUser =  #{updateUser,jdbcType=VARCHAR},
     registerType =  #{registerType,jdbcType=INTEGER},
+    payPassWord =  #{payPassWord,jdbcType=VARCHAR},
     lastLoginTime =  #{lastLoginTime,jdbcType=TIMESTAMP},
     lastLoginIp =  #{lastLoginIp,jdbcType=VARCHAR}
   </insert>
@@ -761,6 +782,9 @@
       <if test="registerType != null">
         registerType,
       </if>
+      <if test="payPassWord != null">
+        payPassWord,
+      </if>
       <if test="lastLoginTime != null">
         lastLoginTime,
       </if>
@@ -818,6 +842,9 @@
       <if test="registerType != null">
         #{registerType,jdbcType=INTEGER},
       </if>
+      <if test="payPassWord != null">
+        #{payPassWord,jdbcType=VARCHAR},
+      </if>
       <if test="lastLoginTime != null">
         #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
@@ -874,6 +901,9 @@
       </if>
       <if test="registerType != null">
         registerType =  #{registerType,jdbcType=INTEGER},
+      </if>
+      <if test="payPassWord != null">
+        payPassWord =  #{payPassWord,jdbcType=VARCHAR},
       </if>
       <if test="lastLoginTime != null">
         lastLoginTime =  #{lastLoginTime,jdbcType=TIMESTAMP},

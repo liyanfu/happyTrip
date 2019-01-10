@@ -69,7 +69,7 @@
 <table tableName="QRTZ_SIMPROP_TRIGGERS" domainObjectName="SIMPROPTRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="QRTZ_TRIGGERS" domainObjectName="TRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
  -->
-<table tableName="b_order" domainObjectName="Order" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="b_order" domainObjectName="Order" ><property name="useActualColumnNames" value="true"/><generatedKey column="orderId" sqlStatement="MySql"  identity="true" type="post"/></table>
 <table tableName="b_product" domainObjectName="Product" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="b_product_type" domainObjectName="ProductType" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="b_welfare" domainObjectName="Welfare" ><property name="useActualColumnNames" value="true"/></table>
@@ -80,18 +80,18 @@
 <table tableName="s_sys_dept" domainObjectName="SysDept" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_sys_menu" domainObjectName="SysMenu" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_sys_oss" domainObjectName="SysOss" ><property name="useActualColumnNames" value="true"/></table>
-<table tableName="s_sys_role" domainObjectName="SysRole" ><property name="useActualColumnNames" value="true"/><generatedKey column="role_id" sqlStatement="MySql"  identity="true" type="post"/></table>
+<table tableName="s_sys_role" domainObjectName="SysRole" ><property name="useActualColumnNames" value="true"/><generatedKey column="roleId" sqlStatement="MySql"  identity="true" type="post"/></table>
 <table tableName="s_sys_role_dept" domainObjectName="SysRoleDept" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_sys_role_menu" domainObjectName="SysRoleMenu" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_sys_user" domainObjectName="SysUser" ><property name="useActualColumnNames" value="true"/><generatedKey column="userId" sqlStatement="MySql"  identity="true" type="post"/></table>
 <table tableName="s_sys_user_role" domainObjectName="SysUserRole" ><property name="useActualColumnNames" value="true"/></table>
-<table tableName="u_recharge" domainObjectName="Recharge" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="u_recharge" domainObjectName="Recharge" ><property name="useActualColumnNames" value="true"/><generatedKey column="rechargeId" sqlStatement="MySql"  identity="true" type="post"/></table>
 <table tableName="u_recommend" domainObjectName="Recommend" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="u_token" domainObjectName="Token" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="u_user" domainObjectName="User" ><property name="useActualColumnNames" value="true"/><generatedKey column="userId" sqlStatement="MySql"  identity="true" type="post"/></table>
 <table tableName="u_wallet" domainObjectName="Wallet" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="u_wallet_change" domainObjectName="WalletChange" ><property name="useActualColumnNames" value="true"/></table>
-<table tableName="u_withdraw" domainObjectName="Withdraw" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="u_withdraw" domainObjectName="Withdraw" ><property name="useActualColumnNames" value="true"/><generatedKey column="withdrawId" sqlStatement="MySql"  identity="true" type="post"/></table>
 
 
 	</context>

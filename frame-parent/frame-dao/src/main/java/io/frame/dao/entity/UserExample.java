@@ -1257,6 +1257,76 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andPayPassWordIsNull() {
+            addCriterion("payPassWord is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordIsNotNull() {
+            addCriterion("payPassWord is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordEqualTo(String value) {
+            addCriterion("payPassWord =", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordNotEqualTo(String value) {
+            addCriterion("payPassWord <>", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordGreaterThan(String value) {
+            addCriterion("payPassWord >", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordGreaterThanOrEqualTo(String value) {
+            addCriterion("payPassWord >=", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordLessThan(String value) {
+            addCriterion("payPassWord <", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordLessThanOrEqualTo(String value) {
+            addCriterion("payPassWord <=", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordLike(String value) {
+            addCriterion("payPassWord like", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordNotLike(String value) {
+            addCriterion("payPassWord not like", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordIn(List<String> values) {
+            addCriterion("payPassWord in", values, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordNotIn(List<String> values) {
+            addCriterion("payPassWord not in", values, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordBetween(String value1, String value2) {
+            addCriterion("payPassWord between", value1, value2, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordNotBetween(String value1, String value2) {
+            addCriterion("payPassWord not between", value1, value2, "payPassWord");
+            return (Criteria) this;
+        }
+
         public Criteria andLastLoginTimeIsNull() {
             addCriterion("lastLoginTime is null");
             return (Criteria) this;
@@ -1429,6 +1499,11 @@ public class UserExample {
 
         public Criteria andUpdateUserLikeInsensitive(String value) {
             addCriterion("upper(updateUser) like", value.toUpperCase(), "updateUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordLikeInsensitive(String value) {
+            addCriterion("upper(payPassWord) like", value.toUpperCase(), "payPassWord");
             return (Criteria) this;
         }
 
@@ -2187,6 +2262,56 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andPayPassWordEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("payPassWord =", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("payPassWord <>", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("payPassWord >", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("payPassWord >=", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("payPassWord <", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("payPassWord <=", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("payPassWord like", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("payPassWord not like", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("payPassWord in", value, "payPassWord");
+            return (Criteria) this;
+        }
+
+        public Criteria andPayPassWordNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("payPassWord not in", value, "payPassWord");
+            return (Criteria) this;
+        }
+
         public Criteria andLastLoginTimeEqualToIgnoreNull(Date value) {
             addCriterionIgnoreNull("lastLoginTime =", value, "lastLoginTime");
             return (Criteria) this;
@@ -2322,6 +2447,11 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andPayPassWordLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(payPassWord) like", value.toUpperCase(), "payPassWord");
+            return (Criteria) this;
+        }
+
         public Criteria andLastLoginIpLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(lastLoginIp) like", value.toUpperCase(), "lastLoginIp");
             return (Criteria) this;
@@ -2417,6 +2547,11 @@ public class UserExample {
 
         public Criteria andRegisterTypeLikeInsensitive(String value) {
             addCriterion("upper(registerType) like", value.toUpperCase(), "registerType");
+            return this;
+        }
+
+        public Criteria andPayPassWordLikeInsensitive(String value) {
+            addCriterion("upper(payPassWord) like", value.toUpperCase(), "payPassWord");
             return this;
         }
 

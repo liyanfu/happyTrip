@@ -728,6 +728,66 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andBuyQuantityIsNull() {
+            addCriterion("buyQuantity is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityIsNotNull() {
+            addCriterion("buyQuantity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityEqualTo(Integer value) {
+            addCriterion("buyQuantity =", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityNotEqualTo(Integer value) {
+            addCriterion("buyQuantity <>", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityGreaterThan(Integer value) {
+            addCriterion("buyQuantity >", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityGreaterThanOrEqualTo(Integer value) {
+            addCriterion("buyQuantity >=", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityLessThan(Integer value) {
+            addCriterion("buyQuantity <", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityLessThanOrEqualTo(Integer value) {
+            addCriterion("buyQuantity <=", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityIn(List<Integer> values) {
+            addCriterion("buyQuantity in", values, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityNotIn(List<Integer> values) {
+            addCriterion("buyQuantity not in", values, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityBetween(Integer value1, Integer value2) {
+            addCriterion("buyQuantity between", value1, value2, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityNotBetween(Integer value1, Integer value2) {
+            addCriterion("buyQuantity not between", value1, value2, "buyQuantity");
+            return (Criteria) this;
+        }
+
         public Criteria andBuyMoneyIsNull() {
             addCriterion("buyMoney is null");
             return (Criteria) this;
@@ -1833,6 +1893,46 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andBuyQuantityEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("buyQuantity =", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityNotEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("buyQuantity <>", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityGreaterThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("buyQuantity >", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityGreaterThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("buyQuantity >=", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityLessThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("buyQuantity <", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityLessThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("buyQuantity <=", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("buyQuantity in", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyQuantityNotInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("buyQuantity not in", value, "buyQuantity");
+            return (Criteria) this;
+        }
+
         public Criteria andBuyMoneyEqualToIgnoreNull(BigDecimal value) {
             addCriterionIgnoreNull("buyMoney =", value, "buyMoney");
             return (Criteria) this;
@@ -2388,6 +2488,11 @@ public class OrderExample {
 
         public Criteria andProductImgurlLikeInsensitive(String value) {
             addCriterion("upper(productImgurl) like", value.toUpperCase(), "productImgurl");
+            return this;
+        }
+
+        public Criteria andBuyQuantityLikeInsensitive(String value) {
+            addCriterion("upper(buyQuantity) like", value.toUpperCase(), "buyQuantity");
             return this;
         }
 
