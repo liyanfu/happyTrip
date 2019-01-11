@@ -13,8 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import io.frame.annotation.SysLog;
 import io.frame.common.enums.Constant.Numbers;
@@ -27,9 +29,13 @@ import io.frame.common.validator.Assert;
 import io.frame.dao.entity.Token;
 import io.frame.dao.entity.User;
 import io.frame.dao.entity.UserExample;
+import io.frame.dao.entity.Wallet;
 import io.frame.dao.mapper.UserMapper;
 import io.frame.entity.MyInfoVo;
+import io.frame.entity.MyTeamsVo;
 import io.frame.exception.ErrorCode;
+import io.frame.service.OrderService;
+import io.frame.service.RecommendService;
 import io.frame.service.TokenService;
 import io.frame.service.UserService;
 import io.frame.service.WalletService;
@@ -50,6 +56,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	WalletService walletService;
 
+	@Autowired
+	RecommendService recommendService;
+
+	@Autowired
+	OrderService orderService;
 	@Autowired
 	RedisUtils redisUtils;
 
@@ -241,19 +252,78 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public MyInfoVo getMyInfo(Long userId) {
 		MyInfoVo info = new MyInfoVo();
 		User user = SessionUtils.getCurrentUser();
 		info.setUserName(user.getUserName());
-		// 我的余额
-		info.setWalletBalance(walletService.getWallet(userId));
+		// 我的余额,我的总收益
+		Wallet wallet = walletService.getWallet(userId);
+		info.setWalletBalance(wallet.getBalance());
+		info.setTotalProfit(wallet.getProfitMoney());
+		// 我的团队人数
+		info.setTeamNum(this.getMyTeamNumByGroupIds(user.getGroupUserIds()));
 		// 我的直推人数
-		try {
+		info.setRecommendNum(recommendService.getRecommendNumByParentId(userId, Boolean.FALSE));
+		// 今日直推人数
+		info.setTodayRecomendNum(recommendService.getRecommendNumByParentId(userId, Boolean.TRUE));
+		// 团队总业绩
+		info.setTeamTotalMoney(recommendService.getTeamAchievementByGroupIds(user.getGroupUserIds(), Boolean.FALSE));
+		// 今日团队业绩
+		info.setTodayTeamMoney(recommendService.getTeamAchievementByGroupIds(user.getGroupUserIds(), Boolean.TRUE));
 
-		} catch (Exception e) {
-			// TODO: handle exception
+		return info;
+	}
+
+	/**
+	 * 我的团队人数,包括自己
+	 * 
+	 * @param userId
+	 * @param groupUserIds
+	 * @return
+	 */
+	private Integer getMyTeamNumByGroupIds(String groupUserIds) {
+		UserExample example = new UserExample();
+		example.createCriteria().andGroupUserIdsLike(groupUserIds + "%");
+		return userMapper.countByExample(example);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Map<String, Object> getMyTeams(Long userId) {
+		Map<String, Object> map = Maps.newHashMap();
+		User currentUser = SessionUtils.getCurrentUser();
+		// 团队人数
+		map.put("teamNum", this.getMyTeamNumByGroupIds(currentUser.getGroupUserIds()));
+		// 团队累计金额
+		map.put("teamTotalMoney",
+				recommendService.getTeamAchievementByGroupIds(currentUser.getGroupUserIds(), Boolean.FALSE));
+
+		// 查询出我名下的团队会员
+		List<MyTeamsVo> list = Lists.newArrayList();
+		List<String> showField = Lists.newArrayList();
+		showField.add(User.FD_USERID);
+		showField.add(User.FD_USERNAME);
+		showField.add(User.FD_USERLEVEL);
+		showField.add(User.FD_GROUPUSERIDS);
+		UserExample example = new UserExample();
+		example.createCriteria().andGroupUserIdsLike(currentUser.getGroupUserIds() + "%").andUserIdNotEqualTo(userId);
+		List<User> userList = userMapper.selectByExampleShowField(showField, example);
+		if (!CollectionUtils.isEmpty(userList)) {
+			for (User user : userList) {
+				MyTeamsVo myTeamsVo = new MyTeamsVo();
+				myTeamsVo.setCreateTime(user.getCreateTime());
+				myTeamsVo.setUserName(user.getUserName());
+				myTeamsVo.setUserLevel(user.getUserLevel());
+				myTeamsVo.setIsConsume(orderService.getMyBuyOrderListCount(user.getUserId()) == 0 ? "是" : "否");
+				myTeamsVo.setTeamsMoney(recommendService.getTeamAchievementByParentId(user.getUserId()));// 直属下级消费
+				list.add(myTeamsVo);
+			}
 		}
+		// 团队集合信息
+		map.put("list", list);
+		return map;
 	}
 
 }

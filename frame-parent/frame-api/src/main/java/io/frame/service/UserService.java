@@ -70,4 +70,12 @@ public interface UserService {
 	 */
 	MyInfoVo getMyInfo(Long userId);
 
+	/**
+	 * 我的团队
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	Map<String, Object> getMyTeams(Long userId);
+
 }

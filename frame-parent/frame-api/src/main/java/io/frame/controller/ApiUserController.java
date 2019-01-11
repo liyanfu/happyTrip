@@ -43,8 +43,6 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = "用户信息接口")
 public class ApiUserController {
 
-	private static final String FORGETVERIFICATIONCODE = "forgetVerificationCode";
-
 	@Autowired
 	private UserService userService;
 
@@ -165,7 +163,7 @@ public class ApiUserController {
 	 */
 	@Login
 	@GetMapping("getMydata")
-	@ApiOperation("我的 信息展示")
+	@ApiOperation("我的资料")
 	@ApiIgnore
 	public R getMydata(HttpServletRequest request, @ApiIgnore @RequestAttribute("userId") Long userId) {
 		User user = SessionUtils.getCurrentUser(request);
@@ -177,4 +175,20 @@ public class ApiUserController {
 		map.put("user", u);
 		return R.ok(map);
 	}
+
+	/**
+	 * 我的团队
+	 * 
+	 * @param userId
+	 * @param form
+	 * @return
+	 */
+	@Login
+	@GetMapping("getMyTeams")
+	@ApiOperation("我的团队")
+	@ApiIgnore
+	public R getMyTeams(@ApiIgnore @RequestAttribute("userId") Long userId) {
+		return R.ok(userService.getMyTeams(userId));
+	}
+
 }

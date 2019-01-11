@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 
 import io.frame.common.enums.Constant;
 import io.frame.common.exception.RRException;
+import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Product;
 import io.frame.dao.entity.ProductExample;
 import io.frame.dao.mapper.ProductMapper;
@@ -49,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 		showField.add(Product.FD_STARTREBATETIME);
 		ProductExample example = new ProductExample();
 		example.createCriteria().andProductTypeIdEqualTo(typeId).andStatusEqualTo(Constant.Status.ONE.getValue());
-		example.setOrderByClause(Constant.Sort.ASC.getValue() + Product.FD_SORT);
+		example.setOrderByClause(SqlTools.orderByAscField(Product.FD_SORT));
 		try {
 			return productMapper.selectByExampleShowField(showField, example);
 		} catch (Exception e) {

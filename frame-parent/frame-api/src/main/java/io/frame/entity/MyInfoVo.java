@@ -3,12 +3,16 @@ package io.frame.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * 我的信息展示
  * 
  * @author Fury
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class MyInfoVo implements Serializable {
 
 	/**
@@ -54,7 +58,7 @@ public class MyInfoVo implements Serializable {
 	/**
 	 * 今日团队业绩
 	 */
-	private Integer todayTeamMoney;
+	private BigDecimal todayTeamMoney;
 
 	public String getUserName() {
 		return userName;
@@ -112,16 +116,12 @@ public class MyInfoVo implements Serializable {
 		this.todayRecomendNum = todayRecomendNum;
 	}
 
-	public Integer getTodayTeamMoney() {
+	public BigDecimal getTodayTeamMoney() {
 		return todayTeamMoney;
 	}
 
-	public void setTodayTeamMoney(Integer todayTeamMoney) {
+	public void setTodayTeamMoney(BigDecimal todayTeamMoney) {
 		this.todayTeamMoney = todayTeamMoney;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }
