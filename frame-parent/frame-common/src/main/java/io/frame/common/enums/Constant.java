@@ -13,12 +13,12 @@ public class Constant {
 	 * 云配置类型
 	 */
 	public enum CloudEnum {
-		/** 七牛云 */
-		QINIU(1),
-		/** 阿里云 */
-		ALIYUN(2),
-		/** 腾讯云 */
-		QCLOUD(3);
+	/** 七牛云 */
+	QINIU(1),
+	/** 阿里云 */
+	ALIYUN(2),
+	/** 腾讯云 */
+	QCLOUD(3);
 		private int value;
 
 		CloudEnum(int value) {
@@ -112,16 +112,55 @@ public class Constant {
 	}
 
 	/**
+	 * 订单状态
+	 */
+	public enum OrderStatus {
+		/** 0未支付 */
+		ZERO("未支付", 0),
+		/** 1 */
+		ONE("收益中", 1),
+		/** 2已完成 */
+		TWO("已完成", 2),
+		/** 3 已取消 */
+		THREE("已取消", 3);
+		private String name;
+		private Integer value;
+
+		OrderStatus(String name, Integer value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(Integer value) {
+			OrderStatus[] list = OrderStatus.values();
+			for (OrderStatus orderStatus : list) {
+				if (orderStatus.value == value) {
+					return orderStatus.name;
+				}
+			}
+			return null;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
 	 * 金额类型
 	 * 
 	 */
 	public enum ChangeType {
 		/** 1:充值进账 */
-		ONE("充值进账", 1),
-		/** 2:竞猜支出 */
-		TWO("竞猜支出", 2),
-		/** 3.竞猜盈利 */
-		THREE("竞猜盈利", 3),
+		RECHARGE_IN_KEY("充值进账", "RECHARGE_IN_KEY"),
+		/** 2:汽车收益 */
+		CAR_PROFIT_KEY("汽车收益", "CAR_PROFIT_KEY"),
+		/** 3.全球分红 */
+		GLOBAL_BONUS_KEY("全球分红", "GLOBAL_BONUS_KEY"),
 		/** 4:竞猜返还 */
 		FOUR("竞猜返还", 4),
 		/** 5:挑战支出 */
@@ -139,9 +178,9 @@ public class Constant {
 		/** 11:手续费 */
 		ELEVEN("手续费", 11);
 		private String name;
-		private Integer value;
+		private String value;
 
-		ChangeType(String name, Integer value) {
+		ChangeType(String name, String value) {
 			this.name = name;
 			this.value = value;
 		}
@@ -149,14 +188,14 @@ public class Constant {
 		public static String getName(Integer value) {
 			ChangeType[] list = ChangeType.values();
 			for (ChangeType changeType : list) {
-				if (changeType.value == value) {
+				if (changeType.value.equals(value)) {
 					return changeType.name;
 				}
 			}
 			return null;
 		}
 
-		public Integer getValue() {
+		public String getValue() {
 			return value;
 		}
 
