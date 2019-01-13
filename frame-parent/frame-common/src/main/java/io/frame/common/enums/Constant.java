@@ -13,12 +13,12 @@ public class Constant {
 	 * 云配置类型
 	 */
 	public enum CloudEnum {
-	/** 七牛云 */
-	QINIU(1),
-	/** 阿里云 */
-	ALIYUN(2),
-	/** 腾讯云 */
-	QCLOUD(3);
+		/** 七牛云 */
+		QINIU(1),
+		/** 阿里云 */
+		ALIYUN(2),
+		/** 腾讯云 */
+		QCLOUD(3);
 		private int value;
 
 		CloudEnum(int value) {
@@ -92,6 +92,42 @@ public class Constant {
 	}
 
 	/**
+	 * 0:禁用,1:启用
+	 */
+	public enum PaymentKey {
+
+		/** 0未支付 */
+		PAYMENT_ALIPAY_KEY("支付宝", 1L),
+		/** 1 */
+		PAYMENT_WALLET_KEY("余额", 2L);
+		private String name;
+		private Long value;
+
+		PaymentKey(String name, Long value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(Long value) {
+			PaymentKey[] list = PaymentKey.values();
+			for (PaymentKey paymentKey : list) {
+				if (paymentKey.value.equals(value)) {
+					return paymentKey.name;
+				}
+			}
+			return null;
+		}
+
+		public Long getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
 	 * 数字
 	 */
 	public enum Numbers {
@@ -151,32 +187,64 @@ public class Constant {
 	}
 
 	/**
-	 * 金额类型
+	 * 提现状态
+	 */
+	public enum WithdrawStatus {
+		/** 0待审核 */
+		ZERO("待审核", 0),
+		/** 1 已完成 */
+		ONE("已完成", 1),
+		/** 2异常 */
+		TWO("提现异常", 2);
+		private String name;
+		private Integer value;
+
+		WithdrawStatus(String name, Integer value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(Integer value) {
+			WithdrawStatus[] list = WithdrawStatus.values();
+			for (WithdrawStatus withdrawStatus : list) {
+				if (withdrawStatus.value == value) {
+					return withdrawStatus.name;
+				}
+			}
+			return null;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
+	 * 钱包帐变类型
 	 * 
 	 */
 	public enum ChangeType {
-		/** 1:充值进账 */
-		RECHARGE_IN_KEY("充值进账", "RECHARGE_IN_KEY"),
-		/** 2:汽车收益 */
+		/** 充值入账 */
+		RECHARGE_IN_KEY("充值入账", "RECHARGE_IN_KEY"),
+		/** 汽车收益 */
 		CAR_PROFIT_KEY("汽车收益", "CAR_PROFIT_KEY"),
-		/** 3.全球分红 */
+		/** 全民福利 */
+		ALL_PEOPLE_WELFARE_KEY("", "ALL_PEOPLE_WELFARE_KEY"),
+		/** 全球分红 */
 		GLOBAL_BONUS_KEY("全球分红", "GLOBAL_BONUS_KEY"),
-		/** 4:竞猜返还 */
-		FOUR("竞猜返还", 4),
-		/** 5:挑战支出 */
-		FIVE("挑战支出", 5),
-		/** 6:挑战盈利 */
-		SIX("挑战盈利", 6),
-		/** 7:挑战返还 */
-		SEVEN("挑战返还", 7),
-		/** 8:转账支出 */
-		EIGHT("转账支出", 8),
-		/** 9:转账收入 */
-		NINE("转账收入", 9),
-		/** 10:签到赠送 */
-		TEN("签到赠送", 10),
-		/** 11:手续费 */
-		ELEVEN("手续费", 11);
+		/** 领导团队奖 */
+		TEAM_LEADERSHIP_AWARD_KEY("领导团队奖", "TEAM_LEADERSHIP_AWARD_KEY"),
+		/** 特别贡献奖 */
+		SPECIAL_CONTRIBUTION_AWARD_KEY("特别贡献奖", "SPECIAL_CONTRIBUTION_AWARD_KEY"),
+		/** 提现出款 */
+		WITHDRAW_OUT_KEY("提现出款", "WITHDRAW_OUT_KEY"),
+		/** 购买车位 */
+		PURCHASE_CAR_SPACE_KEY("购买车位", "PURCHASE_CAR_SPACE_KEY");
+
 		private String name;
 		private String value;
 
@@ -185,11 +253,174 @@ public class Constant {
 			this.value = value;
 		}
 
-		public static String getName(Integer value) {
+		public static String getName(String value) {
 			ChangeType[] list = ChangeType.values();
 			for (ChangeType changeType : list) {
 				if (changeType.value.equals(value)) {
 					return changeType.name;
+				}
+			}
+			return null;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
+	 * 配置项Type类型
+	 * 
+	 */
+	public enum ConfigType {
+		/** 充值时间段 */
+		WITHDRAW("充值时间段", "withdraw"),
+		/** 最小充值额 */
+		SYSTEM("最小充值额", "system"),
+		/** 最大充值额 */
+		RECHARGE("最大充值额", "recharge"),
+		/** 充值手续费 */
+		WELFARE("福利", "welfare");
+		private String name;
+		private String value;
+
+		ConfigType(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(String value) {
+			ConfigType[] list = ConfigType.values();
+			for (ConfigType configType : list) {
+				if (configType.value.equals(value)) {
+					return configType.name;
+				}
+			}
+			return null;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
+	 * 充值Key类型 ,name 为返回的提示信息
+	 */
+	public enum RechargeKey {
+		/** 充值时间段 */
+		RECHARGE_TIME_RANGE_KEY("不在充值时间段", "RECHARGE_TIME_RANGE_KEY"),
+		/** 最小充值额 */
+		RECHARGE_MIN_KEY("小于最小充值额", "RECHARGE_MIN_KEY"),
+		/** 最大充值额 */
+		RECHARGE_MAX_KEY("超过最大充值额", "RECHARGE_MAX_KEY"),
+		/** 充值手续费 */
+		RECHARGE_FEE_KEY("充值手续费", "RECHARGE_FEE_KEY"),
+		/** 充值开关 */
+		RECHARGE_SWITCH_KEY("充值接口关闭", "RECHARGE_SWITCH_KEY"),
+		/** 充值开关 */
+		RECHARGE_QRCODE_KEY("充值二维码收款图片", "RECHARGE_QRCODE_KEY");
+		private String name;
+		private String value;
+
+		RechargeKey(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(String value) {
+			RechargeKey[] list = RechargeKey.values();
+			for (RechargeKey rechargeKey : list) {
+				if (rechargeKey.value.equals(value)) {
+					return rechargeKey.name;
+				}
+			}
+			return null;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
+	 * 提现Key类型 ,name 为返回的提示信息
+	 */
+	public enum WithdrawKey {
+		/** 提现时间段 */
+		WITHDRAW_TIME_RANGE_KEY("不在提现时间段", "WITHDRAW_TIME_RANGE_KEY"),
+		/** 最小提现额 */
+		WITHDRAW_MIN_KEY("小于最小提现额", "WITHDRAW_MIN_KEY"),
+		/** 最大提现额 */
+		WITHDRAW_MAX_KEY("超过最大提现额", "WITHDRAW_MAX_KEY"),
+		/** 提现手续费 */
+		WITHDRAW_FEE_KEY("提现手续费", "WITHDRAW_FEE_KEY"),
+		/** 提现开关 */
+		WITHDRAW_SWITCH_KEY("提现接口关闭", "WITHDRAW_SWITCH_KEY"),
+		/** 提现次数 */
+		WITHDRAW_COUNT_KEY("超过提现次数", "WITHDRAW_COUNT_KEY");
+		private String name;
+		private String value;
+
+		WithdrawKey(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(String value) {
+			WithdrawKey[] list = WithdrawKey.values();
+			for (WithdrawKey withdrawKey : list) {
+				if (withdrawKey.value.equals(value)) {
+					return withdrawKey.name;
+				}
+			}
+			return null;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
+	 * 系统Key类型
+	 */
+	public enum SystemKey {
+		/** 客服二维码 */
+		SYSTEM_CUSTOMER_SERVICE_IMG_KEY("客服二维码", "SYSTEM_CUSTOMER_SERVICE_IMG_KEY"),
+		/** 推广域名 */
+		SYSTEM_REGISTER_DOMAIN_KEY("推广域名", "SYSTEM_REGISTER_DOMAIN_KEY"),
+		/** 公司介绍 */
+		SYSTEM_COMPANY_INTRODUCE_KEY("公司介绍", "SYSTEM_COMPANY_INTRODUCE_KEY");
+		private String name;
+		private String value;
+
+		SystemKey(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(String value) {
+			SystemKey[] list = SystemKey.values();
+			for (SystemKey systemKey : list) {
+				if (systemKey.value.equals(value)) {
+					return systemKey.name;
 				}
 			}
 			return null;
