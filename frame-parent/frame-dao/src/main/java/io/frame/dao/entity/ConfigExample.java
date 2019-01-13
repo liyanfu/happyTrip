@@ -547,6 +547,66 @@ public class ConfigExample {
             return (Criteria) this;
         }
 
+        public Criteria andConfigStatusIsNull() {
+            addCriterion("configStatus is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusIsNotNull() {
+            addCriterion("configStatus is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusEqualTo(Integer value) {
+            addCriterion("configStatus =", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusNotEqualTo(Integer value) {
+            addCriterion("configStatus <>", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusGreaterThan(Integer value) {
+            addCriterion("configStatus >", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("configStatus >=", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusLessThan(Integer value) {
+            addCriterion("configStatus <", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("configStatus <=", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusIn(List<Integer> values) {
+            addCriterion("configStatus in", values, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusNotIn(List<Integer> values) {
+            addCriterion("configStatus not in", values, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusBetween(Integer value1, Integer value2) {
+            addCriterion("configStatus between", value1, value2, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("configStatus not between", value1, value2, "configStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("createTime is null");
             return (Criteria) this;
@@ -804,66 +864,6 @@ public class ConfigExample {
 
         public Criteria andUpdateUserNotBetween(String value1, String value2) {
             addCriterion("updateUser not between", value1, value2, "updateUser");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusIsNull() {
-            addCriterion("configStatus is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusIsNotNull() {
-            addCriterion("configStatus is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusEqualTo(Integer value) {
-            addCriterion("configStatus =", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusNotEqualTo(Integer value) {
-            addCriterion("configStatus <>", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusGreaterThan(Integer value) {
-            addCriterion("configStatus >", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("configStatus >=", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusLessThan(Integer value) {
-            addCriterion("configStatus <", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("configStatus <=", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusIn(List<Integer> values) {
-            addCriterion("configStatus in", values, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusNotIn(List<Integer> values) {
-            addCriterion("configStatus not in", values, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusBetween(Integer value1, Integer value2) {
-            addCriterion("configStatus between", value1, value2, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("configStatus not between", value1, value2, "configStatus");
             return (Criteria) this;
         }
 
@@ -1232,6 +1232,46 @@ public class ConfigExample {
             return (Criteria) this;
         }
 
+        public Criteria andConfigStatusEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("configStatus =", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusNotEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("configStatus <>", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusGreaterThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("configStatus >", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusGreaterThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("configStatus >=", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusLessThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("configStatus <", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusLessThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("configStatus <=", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("configStatus in", value, "configStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigStatusNotInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("configStatus not in", value, "configStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeEqualToIgnoreNull(Date value) {
             addCriterionIgnoreNull("createTime =", value, "createTime");
             return (Criteria) this;
@@ -1412,46 +1452,6 @@ public class ConfigExample {
             return (Criteria) this;
         }
 
-        public Criteria andConfigStatusEqualToIgnoreNull(Integer value) {
-            addCriterionIgnoreNull("configStatus =", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusNotEqualToIgnoreNull(Integer value) {
-            addCriterionIgnoreNull("configStatus <>", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusGreaterThanIgnoreNull(Integer value) {
-            addCriterionIgnoreNull("configStatus >", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusGreaterThanOrEqualToIgnoreNull(Integer value) {
-            addCriterionIgnoreNull("configStatus >=", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusLessThanIgnoreNull(Integer value) {
-            addCriterionIgnoreNull("configStatus <", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusLessThanOrEqualToIgnoreNull(Integer value) {
-            addCriterionIgnoreNull("configStatus <=", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusInIgnoreNull(List<Integer> value) {
-            addCriterionIgnoreNull("configStatus in", value, "configStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andConfigStatusNotInIgnoreNull(List<Integer> value) {
-            addCriterionIgnoreNull("configStatus not in", value, "configStatus");
-            return (Criteria) this;
-        }
-
         public Criteria andRemarkEqualToIgnoreNull(String value) {
             addCriterionIgnoreNull("remark =", value, "remark");
             return (Criteria) this;
@@ -1575,6 +1575,11 @@ public class ConfigExample {
             return this;
         }
 
+        public Criteria andConfigStatusLikeInsensitive(String value) {
+            addCriterion("upper(configStatus) like", value.toUpperCase(), "configStatus");
+            return this;
+        }
+
         public Criteria andCreateTimeLikeInsensitive(String value) {
             addCriterion("upper(createTime) like", value.toUpperCase(), "createTime");
             return this;
@@ -1592,11 +1597,6 @@ public class ConfigExample {
 
         public Criteria andUpdateUserLikeInsensitive(String value) {
             addCriterion("upper(updateUser) like", value.toUpperCase(), "updateUser");
-            return this;
-        }
-
-        public Criteria andConfigStatusLikeInsensitive(String value) {
-            addCriterion("upper(configStatus) like", value.toUpperCase(), "configStatus");
             return this;
         }
 

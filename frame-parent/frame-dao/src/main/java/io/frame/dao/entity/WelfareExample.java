@@ -1,5 +1,6 @@
 package io.frame.dao.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -267,6 +268,76 @@ public class WelfareExample {
             return (Criteria) this;
         }
 
+        public Criteria andWelfareKeyIsNull() {
+            addCriterion("welfareKey is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyIsNotNull() {
+            addCriterion("welfareKey is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyEqualTo(String value) {
+            addCriterion("welfareKey =", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyNotEqualTo(String value) {
+            addCriterion("welfareKey <>", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyGreaterThan(String value) {
+            addCriterion("welfareKey >", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("welfareKey >=", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyLessThan(String value) {
+            addCriterion("welfareKey <", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyLessThanOrEqualTo(String value) {
+            addCriterion("welfareKey <=", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyLike(String value) {
+            addCriterion("welfareKey like", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyNotLike(String value) {
+            addCriterion("welfareKey not like", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyIn(List<String> values) {
+            addCriterion("welfareKey in", values, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyNotIn(List<String> values) {
+            addCriterion("welfareKey not in", values, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyBetween(String value1, String value2) {
+            addCriterion("welfareKey between", value1, value2, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyNotBetween(String value1, String value2) {
+            addCriterion("welfareKey not between", value1, value2, "welfareKey");
+            return (Criteria) this;
+        }
+
         public Criteria andWelfareNameIsNull() {
             addCriterion("welfareName is null");
             return (Criteria) this;
@@ -334,6 +405,136 @@ public class WelfareExample {
 
         public Criteria andWelfareNameNotBetween(String value1, String value2) {
             addCriterion("welfareName not between", value1, value2, "welfareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueIsNull() {
+            addCriterion("welfareValue is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueIsNotNull() {
+            addCriterion("welfareValue is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueEqualTo(String value) {
+            addCriterion("welfareValue =", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueNotEqualTo(String value) {
+            addCriterion("welfareValue <>", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueGreaterThan(String value) {
+            addCriterion("welfareValue >", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueGreaterThanOrEqualTo(String value) {
+            addCriterion("welfareValue >=", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueLessThan(String value) {
+            addCriterion("welfareValue <", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueLessThanOrEqualTo(String value) {
+            addCriterion("welfareValue <=", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueLike(String value) {
+            addCriterion("welfareValue like", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueNotLike(String value) {
+            addCriterion("welfareValue not like", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueIn(List<String> values) {
+            addCriterion("welfareValue in", values, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueNotIn(List<String> values) {
+            addCriterion("welfareValue not in", values, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueBetween(String value1, String value2) {
+            addCriterion("welfareValue between", value1, value2, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueNotBetween(String value1, String value2) {
+            addCriterion("welfareValue not between", value1, value2, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolIsNull() {
+            addCriterion("bonusPool is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolIsNotNull() {
+            addCriterion("bonusPool is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolEqualTo(BigDecimal value) {
+            addCriterion("bonusPool =", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolNotEqualTo(BigDecimal value) {
+            addCriterion("bonusPool <>", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolGreaterThan(BigDecimal value) {
+            addCriterion("bonusPool >", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("bonusPool >=", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolLessThan(BigDecimal value) {
+            addCriterion("bonusPool <", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("bonusPool <=", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolIn(List<BigDecimal> values) {
+            addCriterion("bonusPool in", values, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolNotIn(List<BigDecimal> values) {
+            addCriterion("bonusPool not in", values, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("bonusPool between", value1, value2, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("bonusPool not between", value1, value2, "bonusPool");
             return (Criteria) this;
         }
 
@@ -657,8 +858,88 @@ public class WelfareExample {
             return (Criteria) this;
         }
 
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyLikeInsensitive(String value) {
+            addCriterion("upper(welfareKey) like", value.toUpperCase(), "welfareKey");
+            return (Criteria) this;
+        }
+
         public Criteria andWelfareNameLikeInsensitive(String value) {
             addCriterion("upper(welfareName) like", value.toUpperCase(), "welfareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueLikeInsensitive(String value) {
+            addCriterion("upper(welfareValue) like", value.toUpperCase(), "welfareValue");
             return (Criteria) this;
         }
 
@@ -669,6 +950,11 @@ public class WelfareExample {
 
         public Criteria andUpdateUserLikeInsensitive(String value) {
             addCriterion("upper(updateUser) like", value.toUpperCase(), "updateUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLikeInsensitive(String value) {
+            addCriterion("upper(remark) like", value.toUpperCase(), "remark");
             return (Criteria) this;
         }
 
@@ -732,6 +1018,56 @@ public class WelfareExample {
             return (Criteria) this;
         }
 
+        public Criteria andWelfareKeyEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareKey =", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareKey <>", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareKey >", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareKey >=", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareKey <", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareKey <=", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareKey like", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareKey not like", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("welfareKey in", value, "welfareKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("welfareKey not in", value, "welfareKey");
+            return (Criteria) this;
+        }
+
         public Criteria andWelfareNameEqualToIgnoreNull(String value) {
             addCriterionIgnoreNull("welfareName =", value, "welfareName");
             return (Criteria) this;
@@ -779,6 +1115,96 @@ public class WelfareExample {
 
         public Criteria andWelfareNameNotInIgnoreNull(List<String> value) {
             addCriterionIgnoreNull("welfareName not in", value, "welfareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareValue =", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareValue <>", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareValue >", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareValue >=", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareValue <", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareValue <=", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareValue like", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("welfareValue not like", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("welfareValue in", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("welfareValue not in", value, "welfareValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("bonusPool =", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolNotEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("bonusPool <>", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolGreaterThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("bonusPool >", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolGreaterThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("bonusPool >=", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolLessThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("bonusPool <", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolLessThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("bonusPool <=", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("bonusPool in", value, "bonusPool");
+            return (Criteria) this;
+        }
+
+        public Criteria andBonusPoolNotInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("bonusPool not in", value, "bonusPool");
             return (Criteria) this;
         }
 
@@ -1002,8 +1428,68 @@ public class WelfareExample {
             return (Criteria) this;
         }
 
+        public Criteria andRemarkEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("remark in", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("remark not in", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareKeyLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(welfareKey) like", value.toUpperCase(), "welfareKey");
+            return (Criteria) this;
+        }
+
         public Criteria andWelfareNameLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(welfareName) like", value.toUpperCase(), "welfareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWelfareValueLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(welfareValue) like", value.toUpperCase(), "welfareValue");
             return (Criteria) this;
         }
 
@@ -1014,6 +1500,11 @@ public class WelfareExample {
 
         public Criteria andUpdateUserLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(updateUser) like", value.toUpperCase(), "updateUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(remark) like", value.toUpperCase(), "remark");
             return (Criteria) this;
         }
     }
@@ -1035,8 +1526,23 @@ public class WelfareExample {
             return this;
         }
 
+        public Criteria andWelfareKeyLikeInsensitive(String value) {
+            addCriterion("upper(welfareKey) like", value.toUpperCase(), "welfareKey");
+            return this;
+        }
+
         public Criteria andWelfareNameLikeInsensitive(String value) {
             addCriterion("upper(welfareName) like", value.toUpperCase(), "welfareName");
+            return this;
+        }
+
+        public Criteria andWelfareValueLikeInsensitive(String value) {
+            addCriterion("upper(welfareValue) like", value.toUpperCase(), "welfareValue");
+            return this;
+        }
+
+        public Criteria andBonusPoolLikeInsensitive(String value) {
+            addCriterion("upper(bonusPool) like", value.toUpperCase(), "bonusPool");
             return this;
         }
 
@@ -1062,6 +1568,11 @@ public class WelfareExample {
 
         public Criteria andUpdateUserLikeInsensitive(String value) {
             addCriterion("upper(updateUser) like", value.toUpperCase(), "updateUser");
+            return this;
+        }
+
+        public Criteria andRemarkLikeInsensitive(String value) {
+            addCriterion("upper(remark) like", value.toUpperCase(), "remark");
             return this;
         }
     }

@@ -75,6 +75,7 @@
 <table tableName="b_welfare" domainObjectName="Welfare" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_config" domainObjectName="Config" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_log" domainObjectName="Log" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="s_payment" domainObjectName="Payment" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_schedule_job" domainObjectName="ScheduleJob" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_schedule_job_log" domainObjectName="ScheduleJobLog" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_sys_dept" domainObjectName="SysDept" ><property name="useActualColumnNames" value="true"/></table>

@@ -1088,6 +1088,66 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andStartRebateTimeIsNull() {
+            addCriterion("startRebateTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeIsNotNull() {
+            addCriterion("startRebateTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeEqualTo(Integer value) {
+            addCriterion("startRebateTime =", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeNotEqualTo(Integer value) {
+            addCriterion("startRebateTime <>", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeGreaterThan(Integer value) {
+            addCriterion("startRebateTime >", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("startRebateTime >=", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeLessThan(Integer value) {
+            addCriterion("startRebateTime <", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeLessThanOrEqualTo(Integer value) {
+            addCriterion("startRebateTime <=", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeIn(List<Integer> values) {
+            addCriterion("startRebateTime in", values, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeNotIn(List<Integer> values) {
+            addCriterion("startRebateTime not in", values, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeBetween(Integer value1, Integer value2) {
+            addCriterion("startRebateTime between", value1, value2, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeNotBetween(Integer value1, Integer value2) {
+            addCriterion("startRebateTime not between", value1, value2, "startRebateTime");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
@@ -1145,6 +1205,136 @@ public class OrderExample {
 
         public Criteria andStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdIsNull() {
+            addCriterion("paymentId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdIsNotNull() {
+            addCriterion("paymentId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdEqualTo(Long value) {
+            addCriterion("paymentId =", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdNotEqualTo(Long value) {
+            addCriterion("paymentId <>", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdGreaterThan(Long value) {
+            addCriterion("paymentId >", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("paymentId >=", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdLessThan(Long value) {
+            addCriterion("paymentId <", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdLessThanOrEqualTo(Long value) {
+            addCriterion("paymentId <=", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdIn(List<Long> values) {
+            addCriterion("paymentId in", values, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdNotIn(List<Long> values) {
+            addCriterion("paymentId not in", values, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdBetween(Long value1, Long value2) {
+            addCriterion("paymentId between", value1, value2, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdNotBetween(Long value1, Long value2) {
+            addCriterion("paymentId not between", value1, value2, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeIsNull() {
+            addCriterion("randomCode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeIsNotNull() {
+            addCriterion("randomCode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeEqualTo(String value) {
+            addCriterion("randomCode =", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeNotEqualTo(String value) {
+            addCriterion("randomCode <>", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeGreaterThan(String value) {
+            addCriterion("randomCode >", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("randomCode >=", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeLessThan(String value) {
+            addCriterion("randomCode <", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeLessThanOrEqualTo(String value) {
+            addCriterion("randomCode <=", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeLike(String value) {
+            addCriterion("randomCode like", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeNotLike(String value) {
+            addCriterion("randomCode not like", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeIn(List<String> values) {
+            addCriterion("randomCode in", values, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeNotIn(List<String> values) {
+            addCriterion("randomCode not in", values, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeBetween(String value1, String value2) {
+            addCriterion("randomCode between", value1, value2, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeNotBetween(String value1, String value2) {
+            addCriterion("randomCode not between", value1, value2, "randomCode");
             return (Criteria) this;
         }
 
@@ -1495,6 +1685,11 @@ public class OrderExample {
 
         public Criteria andProductImgurlLikeInsensitive(String value) {
             addCriterion("upper(productImgurl) like", value.toUpperCase(), "productImgurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeLikeInsensitive(String value) {
+            addCriterion("upper(randomCode) like", value.toUpperCase(), "randomCode");
             return (Criteria) this;
         }
 
@@ -2133,6 +2328,46 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andStartRebateTimeEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("startRebateTime =", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeNotEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("startRebateTime <>", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeGreaterThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("startRebateTime >", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeGreaterThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("startRebateTime >=", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeLessThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("startRebateTime <", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeLessThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("startRebateTime <=", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("startRebateTime in", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartRebateTimeNotInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("startRebateTime not in", value, "startRebateTime");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusEqualToIgnoreNull(Integer value) {
             addCriterionIgnoreNull("status =", value, "status");
             return (Criteria) this;
@@ -2170,6 +2405,96 @@ public class OrderExample {
 
         public Criteria andStatusNotInIgnoreNull(List<Integer> value) {
             addCriterionIgnoreNull("status not in", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("paymentId =", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdNotEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("paymentId <>", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdGreaterThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("paymentId >", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdGreaterThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("paymentId >=", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdLessThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("paymentId <", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdLessThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("paymentId <=", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("paymentId in", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentIdNotInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("paymentId not in", value, "paymentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("randomCode =", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("randomCode <>", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("randomCode >", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("randomCode >=", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("randomCode <", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("randomCode <=", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("randomCode like", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("randomCode not like", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("randomCode in", value, "randomCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRandomCodeNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("randomCode not in", value, "randomCode");
             return (Criteria) this;
         }
 
@@ -2423,6 +2748,11 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andRandomCodeLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(randomCode) like", value.toUpperCase(), "randomCode");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateUserLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(createUser) like", value.toUpperCase(), "createUser");
             return (Criteria) this;
@@ -2521,8 +2851,23 @@ public class OrderExample {
             return this;
         }
 
+        public Criteria andStartRebateTimeLikeInsensitive(String value) {
+            addCriterion("upper(startRebateTime) like", value.toUpperCase(), "startRebateTime");
+            return this;
+        }
+
         public Criteria andStatusLikeInsensitive(String value) {
             addCriterion("upper(status) like", value.toUpperCase(), "status");
+            return this;
+        }
+
+        public Criteria andPaymentIdLikeInsensitive(String value) {
+            addCriterion("upper(paymentId) like", value.toUpperCase(), "paymentId");
+            return this;
+        }
+
+        public Criteria andRandomCodeLikeInsensitive(String value) {
+            addCriterion("upper(randomCode) like", value.toUpperCase(), "randomCode");
             return this;
         }
 

@@ -658,6 +658,66 @@ public class WalletChangeExample {
             return (Criteria) this;
         }
 
+        public Criteria andRelation_idIsNull() {
+            addCriterion("relation_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idIsNotNull() {
+            addCriterion("relation_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idEqualTo(Long value) {
+            addCriterion("relation_id =", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idNotEqualTo(Long value) {
+            addCriterion("relation_id <>", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idGreaterThan(Long value) {
+            addCriterion("relation_id >", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idGreaterThanOrEqualTo(Long value) {
+            addCriterion("relation_id >=", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idLessThan(Long value) {
+            addCriterion("relation_id <", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idLessThanOrEqualTo(Long value) {
+            addCriterion("relation_id <=", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idIn(List<Long> values) {
+            addCriterion("relation_id in", values, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idNotIn(List<Long> values) {
+            addCriterion("relation_id not in", values, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idBetween(Long value1, Long value2) {
+            addCriterion("relation_id between", value1, value2, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idNotBetween(Long value1, Long value2) {
+            addCriterion("relation_id not between", value1, value2, "relation_id");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;
@@ -1213,6 +1273,46 @@ public class WalletChangeExample {
             return (Criteria) this;
         }
 
+        public Criteria andRelation_idEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relation_id =", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idNotEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relation_id <>", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idGreaterThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relation_id >", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idGreaterThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relation_id >=", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idLessThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relation_id <", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idLessThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relation_id <=", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("relation_id in", value, "relation_id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelation_idNotInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("relation_id not in", value, "relation_id");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkEqualToIgnoreNull(String value) {
             addCriterionIgnoreNull("remark =", value, "remark");
             return (Criteria) this;
@@ -1423,6 +1523,11 @@ public class WalletChangeExample {
 
         public Criteria andBalanceLikeInsensitive(String value) {
             addCriterion("upper(balance) like", value.toUpperCase(), "balance");
+            return this;
+        }
+
+        public Criteria andRelation_IdLikeInsensitive(String value) {
+            addCriterion("upper(relation_id) like", value.toUpperCase(), "relation_id");
             return this;
         }
 

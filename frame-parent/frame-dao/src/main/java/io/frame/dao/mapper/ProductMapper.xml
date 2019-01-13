@@ -8,7 +8,7 @@
     -->
     <id column="productId" jdbcType="BIGINT" property="productId" />
     <result column="productName" jdbcType="VARCHAR" property="productName" />
-    <result column="productTypeId" jdbcType="INTEGER" property="productTypeId" />
+    <result column="productTypeId" jdbcType="BIGINT" property="productTypeId" />
     <result column="saleMoney" jdbcType="DECIMAL" property="saleMoney" />
     <result column="saleQuantity" jdbcType="INTEGER" property="saleQuantity" />
     <result column="saleVolumes" jdbcType="INTEGER" property="saleVolumes" />
@@ -192,7 +192,7 @@
       productImgurl, sort, remark, 
       createTime, createUser, updateTime, 
       updateUser)
-    values (#{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{productTypeId,jdbcType=INTEGER}, 
+    values (#{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{productTypeId,jdbcType=BIGINT}, 
       #{saleMoney,jdbcType=DECIMAL}, #{saleQuantity,jdbcType=INTEGER}, #{saleVolumes,jdbcType=INTEGER}, 
       #{rebateMoney,jdbcType=DECIMAL}, #{rebatePeriods,jdbcType=INTEGER}, #{rebateTotals,jdbcType=DECIMAL}, 
       #{purchaseRestriction,jdbcType=INTEGER}, #{startRebateTime,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
@@ -273,7 +273,7 @@
         #{productName,jdbcType=VARCHAR},
       </if>
       <if test="productTypeId != null">
-        #{productTypeId,jdbcType=INTEGER},
+        #{productTypeId,jdbcType=BIGINT},
       </if>
       <if test="saleMoney != null">
         #{saleMoney,jdbcType=DECIMAL},
@@ -349,7 +349,7 @@
         productName = #{record.productName,jdbcType=VARCHAR},
       </if>
       <if test="record.productTypeId != null">
-        productTypeId = #{record.productTypeId,jdbcType=INTEGER},
+        productTypeId = #{record.productTypeId,jdbcType=BIGINT},
       </if>
       <if test="record.saleMoney != null">
         saleMoney = #{record.saleMoney,jdbcType=DECIMAL},
@@ -412,7 +412,7 @@
     update b_product
     set productId = #{record.productId,jdbcType=BIGINT},
       productName = #{record.productName,jdbcType=VARCHAR},
-      productTypeId = #{record.productTypeId,jdbcType=INTEGER},
+      productTypeId = #{record.productTypeId,jdbcType=BIGINT},
       saleMoney = #{record.saleMoney,jdbcType=DECIMAL},
       saleQuantity = #{record.saleQuantity,jdbcType=INTEGER},
       saleVolumes = #{record.saleVolumes,jdbcType=INTEGER},
@@ -440,9 +440,6 @@
     -->
     update  b_product
     <set>
-    <if test="record.productTypeId != null">
-       productTypeId = (case when productTypeId is null then #{record.productTypeId,jdbcType=INTEGER} else productTypeId + #{record.productTypeId,jdbcType=INTEGER} end ),
-    </if>
     <if test="record.saleMoney != null">
        saleMoney = (case when saleMoney is null then #{record.saleMoney,jdbcType=DECIMAL} else saleMoney + #{record.saleMoney,jdbcType=DECIMAL} end ),
     </if>
@@ -489,7 +486,7 @@
         productName = #{productName,jdbcType=VARCHAR},
       </if>
       <if test="productTypeId != null">
-        productTypeId = #{productTypeId,jdbcType=INTEGER},
+        productTypeId = #{productTypeId,jdbcType=BIGINT},
       </if>
       <if test="saleMoney != null">
         saleMoney = #{saleMoney,jdbcType=DECIMAL},
@@ -549,7 +546,7 @@
     -->
     update b_product
     set productName = #{productName,jdbcType=VARCHAR},
-      productTypeId = #{productTypeId,jdbcType=INTEGER},
+      productTypeId = #{productTypeId,jdbcType=BIGINT},
       saleMoney = #{saleMoney,jdbcType=DECIMAL},
       saleQuantity = #{saleQuantity,jdbcType=INTEGER},
       saleVolumes = #{saleVolumes,jdbcType=INTEGER},
@@ -575,9 +572,6 @@
     -->
     update  b_product
     <set>
-    <if test="productTypeId != null">
-       productTypeId = (case when productTypeId is null then #{productTypeId,jdbcType=INTEGER} else productTypeId + #{productTypeId,jdbcType=INTEGER} end ),
-    </if>
     <if test="saleMoney != null">
        saleMoney = (case when saleMoney is null then #{saleMoney,jdbcType=DECIMAL} else saleMoney + #{saleMoney,jdbcType=DECIMAL} end ),
     </if>
@@ -622,7 +616,7 @@
       sort, remark, createTime, createUser, updateTime, updateUser)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.productId,jdbcType=BIGINT}, #{item.productName,jdbcType=VARCHAR}, #{item.productTypeId,jdbcType=INTEGER}, 
+      (#{item.productId,jdbcType=BIGINT}, #{item.productName,jdbcType=VARCHAR}, #{item.productTypeId,jdbcType=BIGINT}, 
         #{item.saleMoney,jdbcType=DECIMAL}, #{item.saleQuantity,jdbcType=INTEGER}, #{item.saleVolumes,jdbcType=INTEGER}, 
         #{item.rebateMoney,jdbcType=DECIMAL}, #{item.rebatePeriods,jdbcType=INTEGER}, #{item.rebateTotals,jdbcType=DECIMAL}, 
         #{item.purchaseRestriction,jdbcType=INTEGER}, #{item.startRebateTime,jdbcType=INTEGER}, 
@@ -652,7 +646,7 @@
           #{item.productName,jdbcType=VARCHAR}
         </if>
         <if test="'productTypeId' == column">
-          #{item.productTypeId,jdbcType=INTEGER}
+          #{item.productTypeId,jdbcType=BIGINT}
         </if>
         <if test="'saleMoney' == column">
           #{item.saleMoney,jdbcType=DECIMAL}
@@ -750,7 +744,7 @@
       rebatePeriods, rebateTotals, purchaseRestriction, startRebateTime, status, productImgurl, 
       sort, remark, createTime, createUser, updateTime, updateUser)
     values
-    (#{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{productTypeId,jdbcType=INTEGER}, 
+    (#{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{productTypeId,jdbcType=BIGINT}, 
       #{saleMoney,jdbcType=DECIMAL}, #{saleQuantity,jdbcType=INTEGER}, #{saleVolumes,jdbcType=INTEGER}, 
       #{rebateMoney,jdbcType=DECIMAL}, #{rebatePeriods,jdbcType=INTEGER}, #{rebateTotals,jdbcType=DECIMAL}, 
       #{purchaseRestriction,jdbcType=INTEGER}, #{startRebateTime,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
@@ -760,7 +754,7 @@
     on duplicate key update 
     productId =  #{productId,jdbcType=BIGINT},
     productName =  #{productName,jdbcType=VARCHAR},
-    productTypeId =  #{productTypeId,jdbcType=INTEGER},
+    productTypeId =  #{productTypeId,jdbcType=BIGINT},
     saleMoney = (case when saleMoney is null then #{saleMoney,jdbcType=DECIMAL} else saleMoney + #{saleMoney,jdbcType=DECIMAL} end ),
     saleQuantity =  #{saleQuantity,jdbcType=INTEGER},
     saleVolumes =  #{saleVolumes,jdbcType=INTEGER},
@@ -852,7 +846,7 @@
         #{productName,jdbcType=VARCHAR},
       </if>
       <if test="productTypeId != null">
-        #{productTypeId,jdbcType=INTEGER},
+        #{productTypeId,jdbcType=BIGINT},
       </if>
       <if test="saleMoney != null">
         #{saleMoney,jdbcType=DECIMAL},
@@ -912,7 +906,7 @@
         productName =  #{productName,jdbcType=VARCHAR},
       </if>
       <if test="productTypeId != null">
-        productTypeId =  #{productTypeId,jdbcType=INTEGER},
+        productTypeId =  #{productTypeId,jdbcType=BIGINT},
       </if>
       <if test="saleMoney != null">
         saleMoney = (case when saleMoney is null then #{saleMoney,jdbcType=DECIMAL} else saleMoney + #{saleMoney,jdbcType=DECIMAL} end ),

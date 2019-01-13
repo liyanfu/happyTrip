@@ -348,52 +348,52 @@ public class ProductExample {
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdEqualTo(Integer value) {
+        public Criteria andProductTypeIdEqualTo(Long value) {
             addCriterion("productTypeId =", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdNotEqualTo(Integer value) {
+        public Criteria andProductTypeIdNotEqualTo(Long value) {
             addCriterion("productTypeId <>", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdGreaterThan(Integer value) {
+        public Criteria andProductTypeIdGreaterThan(Long value) {
             addCriterion("productTypeId >", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andProductTypeIdGreaterThanOrEqualTo(Long value) {
             addCriterion("productTypeId >=", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdLessThan(Integer value) {
+        public Criteria andProductTypeIdLessThan(Long value) {
             addCriterion("productTypeId <", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdLessThanOrEqualTo(Integer value) {
+        public Criteria andProductTypeIdLessThanOrEqualTo(Long value) {
             addCriterion("productTypeId <=", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdIn(List<Integer> values) {
+        public Criteria andProductTypeIdIn(List<Long> values) {
             addCriterion("productTypeId in", values, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdNotIn(List<Integer> values) {
+        public Criteria andProductTypeIdNotIn(List<Long> values) {
             addCriterion("productTypeId not in", values, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdBetween(Integer value1, Integer value2) {
+        public Criteria andProductTypeIdBetween(Long value1, Long value2) {
             addCriterion("productTypeId between", value1, value2, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andProductTypeIdNotBetween(Long value1, Long value2) {
             addCriterion("productTypeId not between", value1, value2, "productTypeId");
             return (Criteria) this;
         }
@@ -1533,42 +1533,42 @@ public class ProductExample {
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdEqualToIgnoreNull(Integer value) {
+        public Criteria andProductTypeIdEqualToIgnoreNull(Long value) {
             addCriterionIgnoreNull("productTypeId =", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdNotEqualToIgnoreNull(Integer value) {
+        public Criteria andProductTypeIdNotEqualToIgnoreNull(Long value) {
             addCriterionIgnoreNull("productTypeId <>", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdGreaterThanIgnoreNull(Integer value) {
+        public Criteria andProductTypeIdGreaterThanIgnoreNull(Long value) {
             addCriterionIgnoreNull("productTypeId >", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdGreaterThanOrEqualToIgnoreNull(Integer value) {
+        public Criteria andProductTypeIdGreaterThanOrEqualToIgnoreNull(Long value) {
             addCriterionIgnoreNull("productTypeId >=", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdLessThanIgnoreNull(Integer value) {
+        public Criteria andProductTypeIdLessThanIgnoreNull(Long value) {
             addCriterionIgnoreNull("productTypeId <", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdLessThanOrEqualToIgnoreNull(Integer value) {
+        public Criteria andProductTypeIdLessThanOrEqualToIgnoreNull(Long value) {
             addCriterionIgnoreNull("productTypeId <=", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdInIgnoreNull(List<Integer> value) {
+        public Criteria andProductTypeIdInIgnoreNull(List<Long> value) {
             addCriterionIgnoreNull("productTypeId in", value, "productTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andProductTypeIdNotInIgnoreNull(List<Integer> value) {
+        public Criteria andProductTypeIdNotInIgnoreNull(List<Long> value) {
             addCriterionIgnoreNull("productTypeId not in", value, "productTypeId");
             return (Criteria) this;
         }

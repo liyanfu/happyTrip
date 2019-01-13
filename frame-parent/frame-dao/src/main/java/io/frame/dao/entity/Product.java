@@ -31,7 +31,7 @@ public class Product extends BaseEntity implements Serializable {
      *
      * @mbggenerated
      */
-    private Integer productTypeId;
+    private Long productTypeId;
 
     /**
      *
@@ -412,7 +412,7 @@ public class Product extends BaseEntity implements Serializable {
      *
      * @mbggenerated
      */
-    public Integer getProductTypeId() {
+    public Long getProductTypeId() {
         return productTypeId;
     }
 
@@ -424,7 +424,7 @@ public class Product extends BaseEntity implements Serializable {
      *
      * @mbggenerated
      */
-    public void setProductTypeId(Integer productTypeId) {
+    public void setProductTypeId(Long productTypeId) {
         this.productTypeId = productTypeId;
     }
 
