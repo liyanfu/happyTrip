@@ -37,8 +37,8 @@ public class SysConfigServiceImpl implements SysConfigService {
 	@Override
 	public PageUtils<Config> queryPage(Config config) {
 		ConfigExample example = new ConfigExample();
-		example.or().andConfigKeyEqualToIgnoreNull(config.getConfigKey())
-				.andConfigStatusEqualToIgnoreNull(config.getConfigStatus());
+		example.or().andConfigKeyEqualToIgnoreNull(config.getConfigKey());
+		// .andConfigStatusEqualToIgnoreNull(config.getConfigStatus());
 		example.setOrderByClause(Config.FD_CREATETIME + Sort.DESC.getValue());
 		PageHelper.startPage(config.getPageNumber(), config.getPageSize());
 		Page<Config> page = (Page<Config>) configMapper.selectByExample(example);

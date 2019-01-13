@@ -12,9 +12,9 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
         druid:
-            url: jdbc:mysql://localhost:3306/vsball?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+            url: jdbc:mysql://localhost:3306/happytrip?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
             username: root
-            password: Admin123.
+            password: root123
             initial-size: 10
             max-active: 100
             min-idle: 10

@@ -96,7 +96,7 @@ public class SysConfigController extends AbstractController {
 
 		Config config = new Config();
 		config.setConfigId(configId);
-		config.setConfigStatus(status);
+		// config.setConfigStatus(status);
 		sysConfigService.update(config);
 
 		return R.ok();
