@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 
+import io.frame.common.enums.Constant;
 import io.frame.common.exception.RRException;
 import io.frame.dao.entity.Config;
 import io.frame.dao.entity.ConfigExample;
@@ -34,12 +35,13 @@ public class ConfigServiceImpl implements ConfigService {
 	@Autowired
 	ConfigMapper configMapper;
 
+	@Transactional(readOnly = true)
 	@Override
 	public String getConfigByKey(String configKey) {
 		List<String> showField = Lists.newArrayList();
 		showField.add(Config.FD_CONFIGVAL);
 		ConfigExample example = new ConfigExample();
-		example.or().andConfigKeyEqualTo(configKey);
+		example.or().andConfigKeyEqualTo(configKey).andConfigStatusEqualTo(Constant.Status.ONE.getValue());
 		try {
 			Config config = configMapper.selectOneByExampleShowField(showField, example);
 			return config == null ? null : config.getConfigVal();
@@ -50,6 +52,7 @@ public class ConfigServiceImpl implements ConfigService {
 
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public <T> T getConfigObject(String key, Class<T> clazz) {
 		String value = getConfigByKey(key);
@@ -61,6 +64,23 @@ public class ConfigServiceImpl implements ConfigService {
 			return clazz.newInstance();
 		} catch (Exception e) {
 			throw new RRException(ErrorCode.GET_PARAMS_ERROR);
+		}
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Config> getConfigListByType(String configType) {
+		List<String> showField = Lists.newArrayList();
+		showField.add(Config.FD_CONFIGKEY);
+		showField.add(Config.FD_CONFIGNAME);
+		showField.add(Config.FD_CONFIGVAL);
+		ConfigExample example = new ConfigExample();
+		example.or().andConfigTypeEqualTo(configType).andConfigStatusEqualTo(Constant.Status.ONE.getValue());
+		try {
+			return configMapper.selectByExampleShowField(showField, example);
+		} catch (Exception e) {
+			logger.error(ErrorCode.GET_INFO_FAILED, e);
+			throw new RRException(ErrorCode.GET_INFO_FAILED);
 		}
 	}
 }

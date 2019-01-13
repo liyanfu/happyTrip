@@ -242,7 +242,7 @@ public class QRCodeUtils extends LuminanceSource {
 	}
 
 	public static void main(String[] args) {
-		String text = "hello world!"; // 随机生成验证码
+		String text = "http://localhost:38888/api/register"; // 随机生成验证码
 		System.out.println("随机码： " + text);
 		int width = 200; // 二维码图片的宽
 		int height = 200; // 二维码图片的高

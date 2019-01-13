@@ -3,6 +3,7 @@ package io.frame.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,29 +11,30 @@ import com.google.common.collect.Maps;
 
 import io.frame.annotation.Login;
 import io.frame.common.utils.R;
-import io.frame.service.ProductTypeService;
+import io.frame.service.Paymentervice;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * topTab页标签
+ * 支付方式
  * 
  * @author fury
  *
  */
 @RestController
 @RequestMapping("/api")
-@Api(tags = "商品类别接口")
-public class ApiIndexController {
+@Api(tags = "支付方式接口")
+public class ApiPaymentController {
 
 	@Autowired
-	ProductTypeService productTypeService;
+	Paymentervice paymentervice;
 
 	@Login
-	@ApiOperation(notes = "{msg:消息提示,code:状态码,productTypeList:[{productTypeId:商品类别ID,productTypeName:商品类别名称}]}", value = "获取顶部Tab标签页(商品类别)")
-	public R getTopTabList() {
+	@GetMapping("getPaymentList")
+	@ApiOperation(notes = "{msg:消息提示,code:状态码,paymentList:[{paymentId:支付方式ID,paymentKey:支付方式Key,paymentName:支付方式名称}]}", value = "支付方式")
+	public R getPaymentList() {
 		Map<String, Object> map = Maps.newHashMap();
-		map.put("productTypeList", productTypeService.getProductTypeList());
+		map.put("paymentList", paymentervice.getPaymentList());
 		return R.ok(map);
 	}
 

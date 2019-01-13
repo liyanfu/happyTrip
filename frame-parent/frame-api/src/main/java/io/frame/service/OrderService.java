@@ -1,7 +1,9 @@
 
 package io.frame.service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import io.frame.dao.entity.Order;
 import io.frame.entity.OrderVo;
@@ -20,7 +22,7 @@ public interface OrderService {
 	 * @param userId
 	 * @return
 	 */
-	public List<Order> getMyOrderList(Long userId);
+	List<Order> getMyOrderList(Long userId);
 
 	/**
 	 * 购买记录(订单记录)
@@ -28,7 +30,7 @@ public interface OrderService {
 	 * @param userId
 	 * @return
 	 */
-	public List<OrderVo> getMyBuyOrderList(Long userId, Long typeId);
+	List<OrderVo> getMyBuyOrderList(Long userId, Long typeId);
 
 	/**
 	 * 购买记录(订单记录)
@@ -36,5 +38,23 @@ public interface OrderService {
 	 * @param userId
 	 * @return
 	 */
-	public int getMyBuyOrderListCount(Long userId);
+	int getMyBuyOrderListCount(Long userId);
+
+	/**
+	 * 查询收益中的所有订单总价格
+	 * 
+	 * 
+	 * @return
+	 */
+	BigDecimal getProfitOrderMoney();
+
+	/**
+	 * 创建订单,购买
+	 * 
+	 * @param userId
+	 * @param productId
+	 * @param paymentId
+	 * @return
+	 */
+	Map<String, Object> payOrder(Long userId, Long productId, Long paymentId);
 }

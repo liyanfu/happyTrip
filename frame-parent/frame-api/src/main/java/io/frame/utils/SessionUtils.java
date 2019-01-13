@@ -2,8 +2,10 @@ package io.frame.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
+import io.frame.common.exception.RRException;
 import io.frame.common.utils.HttpContextUtils;
 import io.frame.dao.entity.User;
+import io.frame.exception.ErrorCode;
 
 /**
  * 当前用户session管理
@@ -25,7 +27,7 @@ public class SessionUtils {
 			User bean = (User) request.getSession().getAttribute(USERINFO_KEY);
 			return bean;
 		} else {
-			return null;
+			throw new RRException(ErrorCode.TOKEN_IS_EXPIRE, 530);
 		}
 	}
 
@@ -36,7 +38,7 @@ public class SessionUtils {
 			User bean = (User) request.getSession().getAttribute(USERINFO_KEY);
 			return bean;
 		} else {
-			return null;
+			throw new RRException(ErrorCode.TOKEN_IS_EXPIRE, 530);
 		}
 	}
 

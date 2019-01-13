@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public User queryByUserId(Long userId) {
+	public User getUserById(Long userId) {
 		try {
 			return userMapper.selectByPrimaryKey(userId);
 		} catch (Exception e) {
@@ -105,7 +104,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// 密码错误
-		if (!userBean.getUserPass().equals(DigestUtils.sha256Hex(user.getUserPass()))) {
+		if (!userBean.getUserPass().equals(user.getUserPass())) {
 			throw new RRException(ErrorCode.USERNAME_OR_USERPASS_ERROR);
 		}
 
@@ -145,7 +144,7 @@ public class UserServiceImpl implements UserService {
 
 		UserExample example = new UserExample();
 		example.createCriteria().andUserMobileEqualTo(user.getUserMobile());
-		// 校验是否存在相同用户名
+		// 校验是否存在相同账号
 		int count = userMapper.countByExample(example);
 		if (count > Status.ZERO.getValue()) {
 			throw new RRException(ErrorCode.USER_MOBILE_EXIST);
@@ -166,7 +165,7 @@ public class UserServiceImpl implements UserService {
 		user.setRegisterType(Numbers.ZERO.getValue());
 		user.setCreateTime(new Date());
 
-		Token token = null;
+		// Token token = null;
 		try {
 			// 新增用户
 			userMapper.insertSelective(user);
@@ -177,16 +176,19 @@ public class UserServiceImpl implements UserService {
 			SessionUtils.setCurrentUser(HttpContextUtils.getHttpServletRequest(), user);
 			// 新增用户钱包
 			walletService.createWallet(user.getUserId(), user.getUserName());
+			// 更新父级推荐表中记录
+			recommendService.upsert(parentUser.getUserId(), null);
 			// 创建token 并标记为登录
-			token = tokenService.createToken(user.getUserId());
+			// token = tokenService.createToken(user.getUserId());
 		} catch (Exception e) {
 			logger.error(ErrorCode.OPERATE_FAILED, e);
 			throw new RRException(ErrorCode.OPERATE_FAILED);
 		}
 
 		Map<String, Object> map = new HashMap<>(2);
-		map.put("token", token.getToken());
-		map.put("expire", token.getExpireTime().getTime() - System.currentTimeMillis());
+		// map.put("token", token.getToken());
+		// map.put("expire", token.getExpireTime().getTime() -
+		// System.currentTimeMillis());
 		return map;
 	}
 
@@ -308,7 +310,7 @@ public class UserServiceImpl implements UserService {
 		showField.add(User.FD_USERLEVEL);
 		showField.add(User.FD_GROUPUSERIDS);
 		UserExample example = new UserExample();
-		example.createCriteria().andGroupUserIdsLike(currentUser.getGroupUserIds() + "%").andUserIdNotEqualTo(userId);
+		example.createCriteria().andGroupUserIdsLike(currentUser.getGroupUserIds() + "%");
 		List<User> userList = userMapper.selectByExampleShowField(showField, example);
 		if (!CollectionUtils.isEmpty(userList)) {
 			for (User user : userList) {
@@ -316,7 +318,7 @@ public class UserServiceImpl implements UserService {
 				myTeamsVo.setCreateTime(user.getCreateTime());
 				myTeamsVo.setUserName(user.getUserName());
 				myTeamsVo.setUserLevel(user.getUserLevel());
-				myTeamsVo.setIsConsume(orderService.getMyBuyOrderListCount(user.getUserId()) == 0 ? "是" : "否");
+				myTeamsVo.setIsConsume(orderService.getMyBuyOrderListCount(user.getUserId()) != 0 ? "是" : "否");
 				myTeamsVo.setTeamsMoney(recommendService.getTeamAchievementByParentId(user.getUserId()));// 直属下级消费
 				list.add(myTeamsVo);
 			}

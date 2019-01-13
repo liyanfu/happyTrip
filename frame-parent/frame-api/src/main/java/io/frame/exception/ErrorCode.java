@@ -24,10 +24,8 @@ public class ErrorCode {
 	public static String USERNAME_NOT_EXIST = "账号不存在";
 	/** 用户钱包不存在 */
 	public static String USER_ACCOUNT_NOT_EXIST = "用户钱包不存在";
-	/** 金币不足,请先充值 */
-	public static String GOLDCOIN_IS_NOT_ENOUGH = "金币不足,请先充值";
-	/** 银币不足,无法进行试玩 */
-	public static String SILVERCOIN_IS_NOT_ENOUGH = "银币不足";
+	/** 金币不足 */
+	public static String GOLDCOIN_IS_NOT_ENOUGH = "余额不足";
 	/** 两次新密码不一致 */
 	public static String NEW_USERPASS_DIFFERENCE = "两次新密码不一致";
 	/** 请输入手机号 */
@@ -38,38 +36,41 @@ public class ErrorCode {
 	public static String VERIFICATIONCODE_IS_ERROR = "验证码错误";
 	/** 原始密码错误 */
 	public static String ORIGINAL_PASS_ERROR = "原始密码错误";
-	/** 请选择图片 */
-	public static String PLEASE_SELECT_IMAGE = "请选择图片";
 	/** 获取参数失败 */
 	public static String GET_PARAMS_ERROR = "获取参数失败";
 	/** 参数不能为空 */
 	public static String PARAMS_IS_NOT_EMPTY = "参数不能为空";
-
 	/** 新增帐变失败 */
 	public static String ADD_ACCOUNTCHANGE_FAILED = "新增帐变失败";
-
 	/** 新增用户账户失败 */
 	public static String ADD_USERACCOUNT_FAILED = "新增用户账户失败";
-
 	/** 获取用户账户失败 */
 	public static String GET_USERACCOUNT_FAILED = "获取用户账户失败";
-
 	/** 获取信息失败 */
 	public static String GET_INFO_FAILED = "获取信息失败";
-
 	/** 操作失败 */
 	public static String OPERATE_FAILED = "操作失败,请联系管理员";
-
-	/** 充值接口已不可用 */
-	public static String PAY_CONFIG_IS_NOT_USE = "充值接口已不可用";
-
-	/** 充值接口已被关闭 */
-	public static String PAY_CONFIG_BE_CLOSED = "充值接口已被关闭";
-
 	/** 提交充值申请失败 */
-	public static String SUBMIT_RECHARGE_FAILED = "提交充值申请失败";
-
+	public static String SUBMIT_FAILED = "提交申请失败";
 	/** 提交充值申请成功 */
-	public static String SUBMIT_RECHARGE_SUCCESS = "提交充值申请成功";
+	public static String SUBMIT_RECHARGE_SUCCESS = "提交申请成功";
+
+	/** 充值金额输入不正确 */
+	public static String RECHAGER_MONEY_IS_ERROR = "充值金额输入不正确";
+
+	/** 提现金额输入不正确 */
+	public static String WITHDRAW_MONEY_IS_ERROR = "提现金额输入不正确";
+
+	/** 库存不足 */
+	public static String INSUFFICIENT_STOCK = "库存不足";
+
+	/** 超过购买限制 */
+	public static String EXCEEDING_THE_PURCHASE_LIMIT = "超过购买限制";
+
+	/** 车位已下架 */
+	public static String CAR_LOWER_SHEIF = "车位已下架";
+
+	/** 注册域名不存在 */
+	public static String SYSTEM_REGISTER_DOMAIN_KEY_IS_NOT_EXIST = "注册域名不存在";
 
 }

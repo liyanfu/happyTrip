@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
+import io.frame.annotation.SysLog;
 import io.frame.common.enums.Constant;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.SqlTools;
@@ -36,12 +37,13 @@ public class ProductServiceImpl implements ProductService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public List<Product> getProductList(Integer typeId) {
+	public List<Product> getProductList(Long typeId) {
 		List<String> showField = Lists.newArrayList();
 		showField.add(Product.FD_PRODUCTID);
 		showField.add(Product.FD_PRODUCTNAME);
 		showField.add(Product.FD_SALEMONEY);
 		showField.add(Product.FD_SALEQUANTITY);
+		showField.add(Product.FD_SALEVOLUMES);
 		showField.add(Product.FD_REBATEMONEY);
 		showField.add(Product.FD_REBATEPERIODS);
 		showField.add(Product.FD_REBATETOTALS);
@@ -57,6 +59,28 @@ public class ProductServiceImpl implements ProductService {
 			logger.error(ErrorCode.GET_INFO_FAILED, e);
 			throw new RRException(ErrorCode.GET_INFO_FAILED);
 		}
+
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Product getProductById(Long productId) {
+		try {
+			return productMapper.selectByPrimaryKey(productId);
+		} catch (Exception e) {
+			logger.error(ErrorCode.GET_INFO_FAILED, e);
+			throw new RRException(ErrorCode.GET_INFO_FAILED);
+		}
+	}
+
+	@SysLog("删减库存")
+	@Override
+	public void reduceStock(Long productId, Integer quantityNum) {
+		Product product = new Product();
+		product.setProductId(productId);
+		product.setSaleQuantity(-quantityNum); // 卖出库存-1
+		product.setSaleVolumes(1); // 已卖出 +1
+		productMapper.updateByPrimaryKeySelectiveSync(product);
 
 	}
 

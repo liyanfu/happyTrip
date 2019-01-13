@@ -19,7 +19,7 @@ import io.frame.exception.ErrorCode;
 import io.frame.service.ProductTypeService;
 
 /**
- * 商品列表
+ * 商品类型
  * 
  * @author fury
  *
@@ -43,6 +43,23 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		example.createCriteria().andStatusEqualTo(Constant.Status.ONE.getValue());
 		try {
 			return productTypeMapper.selectByExampleShowField(showField, example);
+		} catch (Exception e) {
+			logger.error(ErrorCode.GET_INFO_FAILED, e);
+			throw new RRException(ErrorCode.GET_INFO_FAILED);
+		}
+
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ProductType getProductTypeById(Long productTypeId) {
+		List<String> showField = Lists.newArrayList();
+		showField.add(ProductType.FD_PRODUCTTYPEID);
+		showField.add(ProductType.FD_PRODUCTTYPENAME);
+		ProductTypeExample example = new ProductTypeExample();
+		example.createCriteria().andStatusEqualTo(Constant.Status.ONE.getValue());
+		try {
+			return productTypeMapper.selectOneByExampleShowField(showField, example);
 		} catch (Exception e) {
 			logger.error(ErrorCode.GET_INFO_FAILED, e);
 			throw new RRException(ErrorCode.GET_INFO_FAILED);

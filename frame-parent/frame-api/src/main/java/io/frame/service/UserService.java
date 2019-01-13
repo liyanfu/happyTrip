@@ -27,7 +27,7 @@ public interface UserService {
 	 * @param userName
 	 * @return
 	 */
-	User queryByUserId(Long userId);
+	User getUserById(Long userId);
 
 	/**
 	 * 用户登录

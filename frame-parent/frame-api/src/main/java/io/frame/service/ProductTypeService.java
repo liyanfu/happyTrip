@@ -20,4 +20,12 @@ public interface ProductTypeService {
 	 * @return
 	 */
 	public List<ProductType> getProductTypeList();
+
+	/**
+	 * 获取商品类型
+	 * 
+	 * @param productTypeId
+	 * @return
+	 */
+	public ProductType getProductTypeById(Long productTypeId);
 }

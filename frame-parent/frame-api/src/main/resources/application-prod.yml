@@ -13,11 +13,11 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
         druid:
-            url: jdbc:mysql://localhost:3306/douqiu?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+            url: jdbc:mysql://localhost:3306/happytrip?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
             username: root
             password: root
             initial-size: 10
-            max-active: 100
+            max-active: 500
             min-idle: 10
             max-wait: 60000
             pool-prepared-statements: true
@@ -45,9 +45,9 @@ spring:
      #redis                    
     redis:
         database: 0
-        host: 172.18.62.57
+        host: localhost
         port: 6379
-        password: Admin123.  # 密码（默认为空）
+        password:   # 密码（默认为空）
         timeout: 6000  # 连接超时时长（毫秒）
         jedis:
           pool:

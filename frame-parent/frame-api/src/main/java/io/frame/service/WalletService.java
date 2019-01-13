@@ -1,6 +1,8 @@
 
 package io.frame.service;
 
+import java.math.BigDecimal;
+
 import io.frame.dao.entity.Wallet;
 
 /**
@@ -26,4 +28,13 @@ public interface WalletService {
 	 * @return
 	 */
 	Wallet getWallet(Long userId);
+
+	/**
+	 * 扣款
+	 * 
+	 * @param userId
+	 * @param buyMoney
+	 */
+	void deduction(Long walletId, BigDecimal buyMoney);
+
 }
