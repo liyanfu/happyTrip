@@ -11,7 +11,7 @@
     <result column="methodName" jdbcType="VARCHAR" property="methodName" />
     <result column="params" jdbcType="VARCHAR" property="params" />
     <result column="cronExpression" jdbcType="VARCHAR" property="cronExpression" />
-    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
@@ -176,7 +176,7 @@
       params, cronExpression, status, 
       remark, createTime)
     values (#{jobId,jdbcType=BIGINT}, #{beanName,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, 
-      #{params,jdbcType=VARCHAR}, #{cronExpression,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{params,jdbcType=VARCHAR}, #{cronExpression,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="io.frame.dao.entity.ScheduleJob">
@@ -228,7 +228,7 @@
         #{cronExpression,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=TINYINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -271,7 +271,7 @@
         cronExpression = #{record.cronExpression,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=TINYINT},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.remark != null">
         remark = #{record.remark,jdbcType=VARCHAR},
@@ -295,7 +295,7 @@
       methodName = #{record.methodName,jdbcType=VARCHAR},
       params = #{record.params,jdbcType=VARCHAR},
       cronExpression = #{record.cronExpression,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -309,6 +309,9 @@
     -->
     update  s_schedule_job
     <set>
+    <if test="record.status != null">
+       status = (case when status is null then #{record.status,jdbcType=INTEGER} else status + #{record.status,jdbcType=INTEGER} end ),
+    </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -334,7 +337,7 @@
         cronExpression = #{cronExpression,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
@@ -355,7 +358,7 @@
       methodName = #{methodName,jdbcType=VARCHAR},
       params = #{params,jdbcType=VARCHAR},
       cronExpression = #{cronExpression,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
+      status = #{status,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP}
     where jobId = #{jobId,jdbcType=BIGINT}
@@ -367,6 +370,9 @@
     -->
     update  s_schedule_job
     <set>
+    <if test="status != null">
+       status = (case when status is null then #{status,jdbcType=INTEGER} else status + #{status,jdbcType=INTEGER} end ),
+    </if>
     </set>
     where jobId = #{jobId,jdbcType=BIGINT}
   </update>
@@ -380,7 +386,7 @@
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.jobId,jdbcType=BIGINT}, #{item.beanName,jdbcType=VARCHAR}, #{item.methodName,jdbcType=VARCHAR}, 
-        #{item.params,jdbcType=VARCHAR}, #{item.cronExpression,jdbcType=VARCHAR}, #{item.status,jdbcType=TINYINT}, 
+        #{item.params,jdbcType=VARCHAR}, #{item.cronExpression,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
         #{item.remark,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
@@ -414,7 +420,7 @@
           #{item.cronExpression,jdbcType=VARCHAR}
         </if>
         <if test="'status' == column">
-          #{item.status,jdbcType=TINYINT}
+          #{item.status,jdbcType=INTEGER}
         </if>
         <if test="'remark' == column">
           #{item.remark,jdbcType=VARCHAR}
@@ -469,7 +475,7 @@
     (jobId, beanName, methodName, params, cronExpression, status, remark, createTime)
     values
     (#{jobId,jdbcType=BIGINT}, #{beanName,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, 
-      #{params,jdbcType=VARCHAR}, #{cronExpression,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{params,jdbcType=VARCHAR}, #{cronExpression,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
     on duplicate key update 
     jobId =  #{jobId,jdbcType=BIGINT},
@@ -477,7 +483,7 @@
     methodName =  #{methodName,jdbcType=VARCHAR},
     params =  #{params,jdbcType=VARCHAR},
     cronExpression =  #{cronExpression,jdbcType=VARCHAR},
-    status =  #{status,jdbcType=TINYINT},
+    status =  #{status,jdbcType=INTEGER},
     remark =  #{remark,jdbcType=VARCHAR},
     createTime =  #{createTime,jdbcType=TIMESTAMP}
   </insert>
@@ -531,7 +537,7 @@
         #{cronExpression,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=TINYINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -558,7 +564,7 @@
         cronExpression =  #{cronExpression,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status =  #{status,jdbcType=TINYINT},
+        status =  #{status,jdbcType=INTEGER},
       </if>
       <if test="remark != null">
         remark =  #{remark,jdbcType=VARCHAR},

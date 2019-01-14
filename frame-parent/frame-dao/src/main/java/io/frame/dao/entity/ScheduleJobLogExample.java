@@ -547,52 +547,52 @@ public class ScheduleJobLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Byte value) {
+        public Criteria andStatusEqualTo(Integer value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Byte value) {
+        public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Byte value) {
+        public Criteria andStatusGreaterThan(Integer value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Byte value) {
+        public Criteria andStatusLessThan(Integer value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Byte value) {
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Byte> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Byte> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Byte value1, Byte value2) {
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
@@ -1057,42 +1057,42 @@ public class ScheduleJobLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualToIgnoreNull(Byte value) {
+        public Criteria andStatusEqualToIgnoreNull(Integer value) {
             addCriterionIgnoreNull("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualToIgnoreNull(Byte value) {
+        public Criteria andStatusNotEqualToIgnoreNull(Integer value) {
             addCriterionIgnoreNull("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanIgnoreNull(Byte value) {
+        public Criteria andStatusGreaterThanIgnoreNull(Integer value) {
             addCriterionIgnoreNull("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualToIgnoreNull(Byte value) {
+        public Criteria andStatusGreaterThanOrEqualToIgnoreNull(Integer value) {
             addCriterionIgnoreNull("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanIgnoreNull(Byte value) {
+        public Criteria andStatusLessThanIgnoreNull(Integer value) {
             addCriterionIgnoreNull("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualToIgnoreNull(Byte value) {
+        public Criteria andStatusLessThanOrEqualToIgnoreNull(Integer value) {
             addCriterionIgnoreNull("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusInIgnoreNull(List<Byte> value) {
+        public Criteria andStatusInIgnoreNull(List<Integer> value) {
             addCriterionIgnoreNull("status in", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotInIgnoreNull(List<Byte> value) {
+        public Criteria andStatusNotInIgnoreNull(List<Integer> value) {
             addCriterionIgnoreNull("status not in", value, "status");
             return (Criteria) this;
         }

@@ -11,7 +11,7 @@
     <result column="beanName" jdbcType="VARCHAR" property="beanName" />
     <result column="methodName" jdbcType="VARCHAR" property="methodName" />
     <result column="params" jdbcType="VARCHAR" property="params" />
-    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="error" jdbcType="VARCHAR" property="error" />
     <result column="times" jdbcType="INTEGER" property="times" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
@@ -178,7 +178,7 @@
       error, times, createTime
       )
     values (#{logId,jdbcType=BIGINT}, #{jobId,jdbcType=BIGINT}, #{beanName,jdbcType=VARCHAR}, 
-      #{methodName,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{methodName,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{error,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -234,7 +234,7 @@
         #{params,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=TINYINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="error != null">
         #{error,jdbcType=VARCHAR},
@@ -280,7 +280,7 @@
         params = #{record.params,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=TINYINT},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.error != null">
         error = #{record.error,jdbcType=VARCHAR},
@@ -307,7 +307,7 @@
       beanName = #{record.beanName,jdbcType=VARCHAR},
       methodName = #{record.methodName,jdbcType=VARCHAR},
       params = #{record.params,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=INTEGER},
       error = #{record.error,jdbcType=VARCHAR},
       times = #{record.times,jdbcType=INTEGER},
       createTime = #{record.createTime,jdbcType=TIMESTAMP}
@@ -322,6 +322,9 @@
     -->
     update  s_schedule_job_log
     <set>
+    <if test="record.status != null">
+       status = (case when status is null then #{record.status,jdbcType=INTEGER} else status + #{record.status,jdbcType=INTEGER} end ),
+    </if>
     <if test="record.times != null">
        times = (case when times is null then #{record.times,jdbcType=INTEGER} else times + #{record.times,jdbcType=INTEGER} end ),
     </if>
@@ -350,7 +353,7 @@
         params = #{params,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="error != null">
         error = #{error,jdbcType=VARCHAR},
@@ -374,7 +377,7 @@
       beanName = #{beanName,jdbcType=VARCHAR},
       methodName = #{methodName,jdbcType=VARCHAR},
       params = #{params,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
+      status = #{status,jdbcType=INTEGER},
       error = #{error,jdbcType=VARCHAR},
       times = #{times,jdbcType=INTEGER},
       createTime = #{createTime,jdbcType=TIMESTAMP}
@@ -387,6 +390,9 @@
     -->
     update  s_schedule_job_log
     <set>
+    <if test="status != null">
+       status = (case when status is null then #{status,jdbcType=INTEGER} else status + #{status,jdbcType=INTEGER} end ),
+    </if>
     <if test="times != null">
        times = (case when times is null then #{times,jdbcType=INTEGER} else times + #{times,jdbcType=INTEGER} end ),
     </if>
@@ -403,7 +409,7 @@
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.logId,jdbcType=BIGINT}, #{item.jobId,jdbcType=BIGINT}, #{item.beanName,jdbcType=VARCHAR}, 
-        #{item.methodName,jdbcType=VARCHAR}, #{item.params,jdbcType=VARCHAR}, #{item.status,jdbcType=TINYINT}, 
+        #{item.methodName,jdbcType=VARCHAR}, #{item.params,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
         #{item.error,jdbcType=VARCHAR}, #{item.times,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}
         )
     </foreach>
@@ -438,7 +444,7 @@
           #{item.params,jdbcType=VARCHAR}
         </if>
         <if test="'status' == column">
-          #{item.status,jdbcType=TINYINT}
+          #{item.status,jdbcType=INTEGER}
         </if>
         <if test="'error' == column">
           #{item.error,jdbcType=VARCHAR}
@@ -496,7 +502,7 @@
     (logId, jobId, beanName, methodName, params, status, error, times, createTime)
     values
     (#{logId,jdbcType=BIGINT}, #{jobId,jdbcType=BIGINT}, #{beanName,jdbcType=VARCHAR}, 
-      #{methodName,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{methodName,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{error,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
     on duplicate key update 
@@ -505,7 +511,7 @@
     beanName =  #{beanName,jdbcType=VARCHAR},
     methodName =  #{methodName,jdbcType=VARCHAR},
     params =  #{params,jdbcType=VARCHAR},
-    status =  #{status,jdbcType=TINYINT},
+    status =  #{status,jdbcType=INTEGER},
     error =  #{error,jdbcType=VARCHAR},
     times =  #{times,jdbcType=INTEGER},
     createTime =  #{createTime,jdbcType=TIMESTAMP}
@@ -563,7 +569,7 @@
         #{params,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=TINYINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="error != null">
         #{error,jdbcType=VARCHAR},
@@ -593,7 +599,7 @@
         params =  #{params,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status =  #{status,jdbcType=TINYINT},
+        status =  #{status,jdbcType=INTEGER},
       </if>
       <if test="error != null">
         error =  #{error,jdbcType=VARCHAR},

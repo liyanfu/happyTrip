@@ -57,7 +57,7 @@ public class ScheduleJob extends BaseEntity implements Serializable {
      *
      * @mbggenerated
      */
-    private Byte status;
+    private Integer status;
 
     /**
      *
@@ -285,7 +285,7 @@ public class ScheduleJob extends BaseEntity implements Serializable {
      *
      * @mbggenerated
      */
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -297,7 +297,7 @@ public class ScheduleJob extends BaseEntity implements Serializable {
      *
      * @mbggenerated
      */
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
