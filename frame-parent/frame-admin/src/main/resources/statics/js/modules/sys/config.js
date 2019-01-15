@@ -5,7 +5,7 @@ $(function () {
         {type:'checkbox'},
         {field:'configId', width:100, title: 'ID'},
         {field:'configKey', minWidth:100, title: '参数名'},
-        {field:'configValue', minWidth:100, title: '参数值'},
+        {field:'configVal', minWidth:100, title: '参数值'},
         {field:'configStatus', width:100, align:'center', title: '状态',templet: '#statusTpl'},
         {field:'remark', minWidth:100, title: '备注'},
         {title: '操作', width:120, templet:'#barTpl',fixed:"right",align:"center"}

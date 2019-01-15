@@ -1,12 +1,8 @@
 
 package io.frame.modules.job.service;
 
-import java.util.Map;
-
-import com.baomidou.mybatisplus.service.IService;
-
 import io.frame.common.utils.PageUtils;
-import io.frame.modules.job.entity.ScheduleJobLogEntity;
+import io.frame.dao.entity.ScheduleJobLog;
 
 /**
  * 定时任务日志
@@ -14,8 +10,22 @@ import io.frame.modules.job.entity.ScheduleJobLogEntity;
  * @author Fury
  *
  */
-public interface ScheduleJobLogService extends IService<ScheduleJobLogEntity> {
+public interface ScheduleJobLogService {
+	PageUtils<ScheduleJobLog> queryPage(ScheduleJobLog scheduleJobLog);
 
-	PageUtils queryPage(Map<String, Object> params);
-	
+	/**
+	 * 查询定时任务日志
+	 * 
+	 * @param logId
+	 * @return
+	 */
+	ScheduleJobLog selectById(Long logId);
+
+	/**
+	 * 新增定时任务日志记录
+	 * 
+	 * @param logId
+	 * @return
+	 */
+	int insert(ScheduleJobLog scheduleJobLog);
 }

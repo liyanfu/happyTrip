@@ -17,9 +17,11 @@
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-normal" @click="add">新增</a>
 			</div>
+			<!-- 
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-danger layui-btn-normal delBatch">批量删除</a>
 			</div>
+			 -->
 		</form>
 	</blockquote>
 	<table class="layui-hide" id="grid" lay-filter="grid"></table>
@@ -35,7 +37,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">参数值</label>
 			<div class="layui-input-block">
-				<input type="text" lay-verify="required" v-model="config.configValue" autocomplete="off" placeholder="参数值" class="layui-input">
+				<input type="text" lay-verify="required" v-model="config.configVal" autocomplete="off" placeholder="参数值" class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
@@ -55,7 +57,10 @@
 <!--操作-->
 <script type="text/html" id="barTpl">
 	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	<!-- 
 	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	-->
+
 </script>
 <script type="text/html" id="statusTpl">
 	<input type="checkbox" name="configStatus" lay-filter="configStatus" value="{{d.configId}}" lay-skin="switch" lay-text="启用|禁用" {{d.configStatus == 1 ? 'checked' : ''}}>

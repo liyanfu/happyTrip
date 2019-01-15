@@ -87,16 +87,13 @@ public class SysConfigController extends AbstractController {
 	@RequestMapping("/status")
 	@RequiresPermissions("sys:config:update")
 	public R status(Long configId, Integer status) {
-		if (configId == null) {
+		if (configId == null || status == null) {
 			throw new RRException(ErrorCode.PARAMS_IS_NOT_EMPTY);
-		}
-		if (status == null) {
-			throw new RRException("状态不能为空");
 		}
 
 		Config config = new Config();
 		config.setConfigId(configId);
-		// config.setConfigStatus(status);
+		config.setConfigStatus(status);
 		sysConfigService.update(config);
 
 		return R.ok();

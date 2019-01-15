@@ -83,7 +83,7 @@ public class SysUserServiceImpl implements SysUserService {
 		for (SysUser sysUserEntity : page) {
 			SysDept sysDept = sysDeptMapper.selectByPrimaryKey(sysUserEntity.getDeptId());
 			Map<String, Object> map = Maps.newHashMap();
-			map.put("deptName", sysDept.getName());
+			map.put("deptName", sysDept == null ? "" : sysDept.getName());
 			sysUserEntity.setMap(map);
 		}
 

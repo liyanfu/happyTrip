@@ -115,3 +115,31 @@ var formatterDateHour=function(time){
 		return "";
 	}	
 }
+
+
+//选择一条记录 返回整条数据
+var getSelectedRow= function(table,tableId) {
+	var checkStatus = table.checkStatus(tableId); //tableId 即为基础参数 id 对应的值
+    if(checkStatus.data.length==0){
+    	alert("请选择一条记录!");
+    	return null;
+    }
+    
+    if(checkStatus.data.length > 1){
+    	alert("只能选择一条记录!");
+    	return null;
+    }
+    
+    return checkStatus.data[0];
+}
+
+//选择多条记录 返回全部数据
+var getSelectedRows = function(table,tableId) {
+	var checkStatus = table.checkStatus(tableId); //tableId 即为基础参数 id 对应的值
+    if(checkStatus.data.length==0){
+    	alert("请至少选择一条记录!");
+    	return null;
+    }
+    return checkStatus.data;
+}
+

@@ -9,123 +9,141 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang.StringUtils;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
-import io.frame.common.utils.Constant;
+import io.frame.common.enums.Constant;
 import io.frame.common.utils.PageUtils;
-import io.frame.common.utils.Query;
-import io.frame.modules.job.dao.ScheduleJobDao;
-import io.frame.modules.job.entity.ScheduleJobEntity;
+import io.frame.common.utils.SqlTools;
+import io.frame.dao.entity.ScheduleJob;
+import io.frame.dao.entity.ScheduleJobExample;
+import io.frame.dao.mapper.ScheduleJobMapper;
 import io.frame.modules.job.service.ScheduleJobService;
 import io.frame.modules.job.utils.ScheduleUtils;
 
 @Service("scheduleJobService")
-public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobDao, ScheduleJobEntity> implements ScheduleJobService {
+public class ScheduleJobServiceImpl implements ScheduleJobService {
 	@Autowired
-    private Scheduler scheduler;
-	
+	private Scheduler scheduler;
+
+	@Autowired
+	private ScheduleJobMapper scheduleJobMapper;
+
 	/**
 	 * 项目启动时，初始化定时器
 	 */
 	@PostConstruct
-	public void init(){
-		List<ScheduleJobEntity> scheduleJobList = this.selectList(null);
-		for(ScheduleJobEntity scheduleJob : scheduleJobList){
+	public void init() {
+		List<ScheduleJob> scheduleJobList = this.selectList(new ScheduleJob());
+		for (ScheduleJob scheduleJob : scheduleJobList) {
 			CronTrigger cronTrigger = ScheduleUtils.getCronTrigger(scheduler, scheduleJob.getJobId());
-            //如果不存在，则创建
-            if(cronTrigger == null) {
-                ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
-            }else {
-                ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
-            }
+			// 如果不存在，则创建
+			if (cronTrigger == null) {
+				ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
+			} else {
+				ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
+			}
+		}
+	}
+
+	public List<ScheduleJob> selectList(ScheduleJob scheduleJob) {
+		ScheduleJobExample example = new ScheduleJobExample();
+		ScheduleJobExample.Criteria cr = example.createCriteria();
+		cr.andStatusEqualToIgnoreNull(scheduleJob.getStatus());
+		example.setOrderByClause(SqlTools.orderByDescField(scheduleJob.FD_CREATETIME));
+		return scheduleJobMapper.selectByExample(example);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void save(ScheduleJob scheduleJob) {
+		scheduleJob.setCreateTime(new Date());
+		scheduleJob.setStatus(Constant.ScheduleStatus.NORMAL.getValue());
+		scheduleJobMapper.insertSelective(scheduleJob);
+		ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void update(ScheduleJob scheduleJob) {
+		ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
+		scheduleJobMapper.updateByPrimaryKeySelective(scheduleJob);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteBatch(Long[] jobIds) {
+		for (Long jobId : jobIds) {
+			ScheduleUtils.deleteScheduleJob(scheduler, jobId);
+		}
+		// 删除数据
+		for (Long jobId : jobIds) {
+			scheduleJobMapper.deleteByPrimaryKey(jobId);
 		}
 	}
 
 	@Override
-	public PageUtils queryPage(Map<String, Object> params) {
-		String beanName = (String)params.get("beanName");
-
-		Page<ScheduleJobEntity> page = this.selectPage(
-				new Query<ScheduleJobEntity>(params).getPage(),
-				new EntityWrapper<ScheduleJobEntity>().like(StringUtils.isNotBlank(beanName),"bean_name", beanName)
-		);
-
-		return new PageUtils(page);
-	}
-
-
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public void save(ScheduleJobEntity scheduleJob) {
-		scheduleJob.setCreateTime(new Date());
-		scheduleJob.setStatus(Constant.ScheduleStatus.NORMAL.getValue());
-        this.insert(scheduleJob);
-        
-        ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
-    }
-	
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public void update(ScheduleJobEntity scheduleJob) {
-        ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
-                
-        this.updateById(scheduleJob);
-    }
-
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-    public void deleteBatch(Long[] jobIds) {
-    	for(Long jobId : jobIds){
-    		ScheduleUtils.deleteScheduleJob(scheduler, jobId);
-    	}
-    	
-    	//删除数据
-    	this.deleteBatchIds(Arrays.asList(jobIds));
+	public int updateBatch(Long[] jobIds, int status) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", jobIds);
+		map.put("status", status);
+		ScheduleJob record = new ScheduleJob();
+		record.setStatus(status);
+		ScheduleJobExample example = new ScheduleJobExample();
+		example.or().andJobIdIn(Arrays.asList(jobIds));
+		return scheduleJobMapper.updateByExampleSelective(record, example);
 	}
 
 	@Override
-    public int updateBatch(Long[] jobIds, int status){
-    	Map<String, Object> map = new HashMap<>();
-    	map.put("list", jobIds);
-    	map.put("status", status);
-    	return baseMapper.updateBatch(map);
-    }
-    
-	@Override
 	@Transactional(rollbackFor = Exception.class)
-    public void run(Long[] jobIds) {
-    	for(Long jobId : jobIds){
-    		ScheduleUtils.run(scheduler, this.selectById(jobId));
-    	}
-    }
+	public void run(Long[] jobIds) {
+		for (Long jobId : jobIds) {
+			ScheduleUtils.run(scheduler, this.selectById(jobId));
+		}
+	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-    public void pause(Long[] jobIds) {
-        for(Long jobId : jobIds){
-    		ScheduleUtils.pauseJob(scheduler, jobId);
-    	}
-        
-    	updateBatch(jobIds, Constant.ScheduleStatus.PAUSE.getValue());
-    }
+	public void pause(Long[] jobIds) {
+		for (Long jobId : jobIds) {
+			ScheduleUtils.pauseJob(scheduler, jobId);
+		}
+
+		updateBatch(jobIds, Constant.ScheduleStatus.PAUSE.getValue());
+	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-    public void resume(Long[] jobIds) {
-    	for(Long jobId : jobIds){
-    		ScheduleUtils.resumeJob(scheduler, jobId);
-    	}
+	public void resume(Long[] jobIds) {
+		for (Long jobId : jobIds) {
+			ScheduleUtils.resumeJob(scheduler, jobId);
+		}
 
-    	updateBatch(jobIds, Constant.ScheduleStatus.NORMAL.getValue());
-    }
-    
+		updateBatch(jobIds, Constant.ScheduleStatus.NORMAL.getValue());
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public PageUtils<ScheduleJob> queryPage(ScheduleJob scheduleJob) {
+		ScheduleJobExample example = new ScheduleJobExample();
+		ScheduleJobExample.Criteria cr = example.createCriteria();
+		cr.andStatusEqualToIgnoreNull(scheduleJob.getStatus());
+		example.setOrderByClause(SqlTools.orderByDescField(scheduleJob.FD_CREATETIME));
+		PageHelper.startPage(scheduleJob.getPageNumber(), scheduleJob.getPageSize());
+		Page<ScheduleJob> page = (Page<ScheduleJob>) scheduleJobMapper.selectByExample(example);
+		return new PageUtils<ScheduleJob>(page);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public ScheduleJob selectById(Long jobId) {
+		return scheduleJobMapper.selectByPrimaryKey(jobId);
+	}
+
 }

@@ -1,45 +1,61 @@
 $(function () {
-    $("#jqGrid").jqGrid({
-        url: baseURL + 'sys/schedule/list',
-        datatype: "json",
-        colModel: [			
-			{ label: '任务ID', name: 'jobId', width: 60, key: true },
-			{ label: 'bean名称', name: 'beanName', width: 100 },
-			{ label: '方法名称', name: 'methodName', width: 100 },
-			{ label: '参数', name: 'params', width: 100 },
-			{ label: 'cron表达式 ', name: 'cronExpression', width: 100 },
-			{ label: '备注 ', name: 'remark', width: 100 },
-			{ label: '状态', name: 'status', width: 60, formatter: function(value, options, row){
-				return value === 0 ? 
-					'<span class="label label-success">正常</span>' : 
-					'<span class="label label-danger">暂停</span>';
-			}}
-        ],
-		viewrecords: true,
-        height: 385,
-        rowNum: 10,
-		rowList : [10,30,50],
-        rownumbers: true, 
-        rownumWidth: 25, 
-        autowidth:true,
-        multiselect: true,
-        pager: "#jqGridPager",
-        jsonReader : {
-            root: "page.list",
-            page: "page.currPage",
-            total: "page.totalPage",
-            records: "page.totalCount"
-        },
-        prmNames : {
-            page:"page", 
-            rows:"limit", 
-            order: "order"
-        },
-        gridComplete:function(){
-        	//隐藏grid底部滚动条
-        	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+	
+	//表格参数
+	tableOption.cols =  [[
+        {type:'checkbox'},
+        {field:'jobId', width:100, title: '任务ID'},
+        {field:'beanName', minWidth:100, title: 'bean名称'},
+        {field:'methodName', minWidth:100, title: '方法名称'},
+        {field:'params', minWidth:100, title: '参数'},
+        {field:'cronExpression', minWidth:100, title: 'cron表达式'},
+        {field:'remark', minWidth:100, title: '备注'},
+        {field:'status', width:100, align:'center', title: '状态',templet: '#statusTpl'},
+        {title: '操作', width:120, templet:'#barTpl',fixed:"right",align:"center"}
+    ]];
+	tableOption.url =  baseURL + 'sys/schedule/list';
+	//初始化表格
+    gridTable = layui.table.render(tableOption);
+
+    //状态
+    layui.form.on('switch(status)', function(data){
+        var index = layer.msg('修改中，请稍候',{icon: 16,time:false});
+        var status = 0;
+        if(data.elem.checked){
+            status = 1;
+        }
+        vm.updateStatus(data.value, status);
+
+        layer.close(index);
+    });
+    
+    layui.form.on('submit(saveOrUpdate)', function(){
+        vm.saveOrUpdate();
+        return false;
+    });
+
+
+    //批量删除
+    $(".delBatch").click(function(){
+        var ids = vm.selectedRows();
+        if(ids == null){
+            return;
+        }
+
+        vm.del(ids);
+    });
+
+    //操作
+    layui.table.on('tool(grid)', function(obj){
+        var layEvent = obj.event,
+            data = obj.data;
+        if(layEvent === 'edit'){
+            vm.update(data.configId);
+        } else if(layEvent === 'del'){
+            var ids = [data.configId];
+            vm.del(ids);
         }
     });
+	
 });
 
 var vm = new Vue({
@@ -48,7 +64,7 @@ var vm = new Vue({
 		q:{
 			beanName: null
 		},
-		showList: true,
+		showForm: false,
 		title: null,
 		schedule: {}
 	},
@@ -57,7 +73,7 @@ var vm = new Vue({
 			vm.reload();
 		},
 		add: function(){
-			vm.showList = false;
+			vm.showForm = true;
 			vm.title = "新增";
 			vm.schedule = {};
 		},
@@ -68,7 +84,7 @@ var vm = new Vue({
 			}
 			
 			$.get(baseURL + "sys/schedule/info/"+jobId, function(r){
-				vm.showList = false;
+				vm.showForm = true;
                 vm.title = "修改";
 				vm.schedule = r.schedule;
 			});
@@ -91,6 +107,23 @@ var vm = new Vue({
 				}
 			});
 		},
+		updateStatus: function (jobId, status) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/schedule/status",
+                data: {jobId: jobId, status: status},
+                success: function(r){
+                    if(r.code == 0){
+                        layer.alert('操作成功', function(index){
+                            layer.close(index);
+                            vm.reload();
+                        });
+                    }else{
+                        layer.alert(r.msg);
+                    }
+                }
+            });
+        },
 		del: function (event) {
 			var jobIds = getSelectedRows();
 			if(jobIds == null){
@@ -188,7 +221,7 @@ var vm = new Vue({
 			});
 		},
 		reload: function (event) {
-			vm.showList = true;
+			vm.showForm = false;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
                 postData:{'beanName': vm.q.beanName},

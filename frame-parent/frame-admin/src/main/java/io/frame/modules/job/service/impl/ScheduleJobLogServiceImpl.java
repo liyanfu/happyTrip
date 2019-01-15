@@ -1,34 +1,48 @@
 
 package io.frame.modules.job.service.impl;
 
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import io.frame.common.utils.PageUtils;
-import io.frame.common.utils.Query;
-import io.frame.modules.job.dao.ScheduleJobLogDao;
-import io.frame.modules.job.entity.ScheduleJobLogEntity;
+import io.frame.common.utils.SqlTools;
+import io.frame.dao.entity.ScheduleJobLog;
+import io.frame.dao.entity.ScheduleJobLogExample;
+import io.frame.dao.mapper.ScheduleJobLogMapper;
 import io.frame.modules.job.service.ScheduleJobLogService;
 
+@Transactional
 @Service("scheduleJobLogService")
-public class ScheduleJobLogServiceImpl extends ServiceImpl<ScheduleJobLogDao, ScheduleJobLogEntity> implements ScheduleJobLogService {
+public class ScheduleJobLogServiceImpl implements ScheduleJobLogService {
+
+	@Autowired
+	ScheduleJobLogMapper scheduleJobLogMapper;
+
+	@Transactional(readOnly = true)
+	@Override
+	public PageUtils<ScheduleJobLog> queryPage(ScheduleJobLog scheduleJobLog) {
+		ScheduleJobLogExample example = new ScheduleJobLogExample();
+		ScheduleJobLogExample.Criteria cr = example.createCriteria();
+		cr.andStatusEqualToIgnoreNull(scheduleJobLog.getStatus());
+		example.setOrderByClause(SqlTools.orderByDescField(scheduleJobLog.FD_CREATETIME));
+		PageHelper.startPage(scheduleJobLog.getPageNumber(), scheduleJobLog.getPageSize());
+		Page<ScheduleJobLog> page = (Page<ScheduleJobLog>) scheduleJobLogMapper.selectByExample(example);
+		return new PageUtils<ScheduleJobLog>(page);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public ScheduleJobLog selectById(Long logId) {
+		return scheduleJobLogMapper.selectByPrimaryKey(logId);
+	}
 
 	@Override
-	public PageUtils queryPage(Map<String, Object> params) {
-		String jobId = (String)params.get("jobId");
-
-		Page<ScheduleJobLogEntity> page = this.selectPage(
-				new Query<ScheduleJobLogEntity>(params).getPage(),
-				new EntityWrapper<ScheduleJobLogEntity>().like(StringUtils.isNotBlank(jobId),"job_id", jobId)
-		);
-
-		return new PageUtils(page);
+	public int insert(ScheduleJobLog scheduleJobLog) {
+		return scheduleJobLogMapper.insertSelective(scheduleJobLog);
 	}
 
 }

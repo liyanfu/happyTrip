@@ -64,11 +64,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 		for (SysRole sysRole2 : page) {
 			SysDept sysDept = sysDeptMapper.selectByPrimaryKey(sysRole2.getDeptId());
-			if (sysDept != null) {
-				Map<String, Object> map = Maps.newHashMap();
-				map.put("deptName", sysDept.getName());
-				sysRole2.setMap(map);
-			}
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("deptName", sysDept == null ? "" : sysDept.getName());
+			sysRole2.setMap(map);
 		}
 
 		return new PageUtils<SysRole>(page);
