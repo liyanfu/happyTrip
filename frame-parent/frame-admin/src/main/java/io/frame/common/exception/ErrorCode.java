@@ -16,6 +16,8 @@ public class ErrorCode {
 	public static String USERNAME_OR_USERPASS_ERROR = "账号或密码错误";
 	/** 账号被禁用,请联系管理员 */
 	public static String USERNAME_DISABLE = "账号被禁用,请联系管理员";
+	/** 账号已存在 */
+	public static String USER_MOBILE_EXIST = "账号已存在";
 	/** 用户名已存在 */
 	public static String USERNAME_EXIST = "用户名已存在";
 	/** 用户名不存在 */
@@ -38,5 +40,7 @@ public class ErrorCode {
 	public static String GET_INFO_FAILED = "获取信息失败";
 	/** 操作失败 */
 	public static String OPERATE_FAILED = "操作失败,请联系管理员";
+	/** 父级账号不存在或已禁用 */
+	public static String RECOMMEND_MOBILE_NOT_EXIST = "父级账号不存在或已禁用";
 
 }
