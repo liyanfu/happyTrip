@@ -13,12 +13,12 @@ public class Constant {
 	 * 云配置类型
 	 */
 	public enum CloudEnum {
-	/** 七牛云 */
-	QINIU(1),
-	/** 阿里云 */
-	ALIYUN(2),
-	/** 腾讯云 */
-	QCLOUD(3);
+		/** 七牛云 */
+		QINIU(1),
+		/** 阿里云 */
+		ALIYUN(2),
+		/** 腾讯云 */
+		QCLOUD(3);
 		private int value;
 
 		CloudEnum(int value) {
@@ -233,7 +233,7 @@ public class Constant {
 		/** 汽车收益 */
 		CAR_PROFIT_KEY("汽车收益", "CAR_PROFIT_KEY"),
 		/** 全民福利 */
-		ALL_PEOPLE_WELFARE_KEY("", "ALL_PEOPLE_WELFARE_KEY"),
+		ALL_PEOPLE_WELFARE_KEY("全民福利", "ALL_PEOPLE_WELFARE_KEY"),
 		/** 全球分红 */
 		GLOBAL_BONUS_KEY("全球分红", "GLOBAL_BONUS_KEY"),
 		/** 领导团队奖 */
@@ -242,8 +242,12 @@ public class Constant {
 		SPECIAL_CONTRIBUTION_AWARD_KEY("特别贡献奖", "SPECIAL_CONTRIBUTION_AWARD_KEY"),
 		/** 提现出款 */
 		WITHDRAW_OUT_KEY("提现出款", "WITHDRAW_OUT_KEY"),
-		/** 购买车位 */
-		PURCHASE_CAR_SPACE_KEY("购买车位", "PURCHASE_CAR_SPACE_KEY");
+		/** 购买车位 下单 */
+		PURCHASE_CAR_SPACE_KEY("购买车位", "PURCHASE_CAR_SPACE_KEY"),
+		/** 人工充值 */
+		ARTIFICIAL_RECHARGE_KEY("人工充值", "ARTIFICIAL_RECHARGE_KEY"),
+		/** 人工扣款 */
+		MANUAL_DEDUCTION_KEY("人工扣款", "MANUAL_DEDUCTION_KEY");
 
 		private String name;
 		private String value;
