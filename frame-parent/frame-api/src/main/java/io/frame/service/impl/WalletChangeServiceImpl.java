@@ -77,7 +77,7 @@ public class WalletChangeServiceImpl implements WalletChangeService {
 		walletChange.setCreateTime(new Date());
 		walletChange.setOperatorName(changeType.getName());
 		walletChange.setOperatorType(changeType.getValue());
-		walletChange.setRelation_id(orderId);
+		walletChange.setRelationId(orderId);
 		walletChange.setUserId(userId);
 		walletChange.setUserName(user.getUserName());
 		walletChangeMapper.insertSelective(walletChange);
