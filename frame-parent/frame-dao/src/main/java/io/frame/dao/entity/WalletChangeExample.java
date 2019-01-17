@@ -658,63 +658,63 @@ public class WalletChangeExample {
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idIsNull() {
-            addCriterion("relation_id is null");
+        public Criteria andRelationIdIsNull() {
+            addCriterion("relationId is null");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idIsNotNull() {
-            addCriterion("relation_id is not null");
+        public Criteria andRelationIdIsNotNull() {
+            addCriterion("relationId is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idEqualTo(Long value) {
-            addCriterion("relation_id =", value, "relation_id");
+        public Criteria andRelationIdEqualTo(Long value) {
+            addCriterion("relationId =", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idNotEqualTo(Long value) {
-            addCriterion("relation_id <>", value, "relation_id");
+        public Criteria andRelationIdNotEqualTo(Long value) {
+            addCriterion("relationId <>", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idGreaterThan(Long value) {
-            addCriterion("relation_id >", value, "relation_id");
+        public Criteria andRelationIdGreaterThan(Long value) {
+            addCriterion("relationId >", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idGreaterThanOrEqualTo(Long value) {
-            addCriterion("relation_id >=", value, "relation_id");
+        public Criteria andRelationIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("relationId >=", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idLessThan(Long value) {
-            addCriterion("relation_id <", value, "relation_id");
+        public Criteria andRelationIdLessThan(Long value) {
+            addCriterion("relationId <", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idLessThanOrEqualTo(Long value) {
-            addCriterion("relation_id <=", value, "relation_id");
+        public Criteria andRelationIdLessThanOrEqualTo(Long value) {
+            addCriterion("relationId <=", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idIn(List<Long> values) {
-            addCriterion("relation_id in", values, "relation_id");
+        public Criteria andRelationIdIn(List<Long> values) {
+            addCriterion("relationId in", values, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idNotIn(List<Long> values) {
-            addCriterion("relation_id not in", values, "relation_id");
+        public Criteria andRelationIdNotIn(List<Long> values) {
+            addCriterion("relationId not in", values, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idBetween(Long value1, Long value2) {
-            addCriterion("relation_id between", value1, value2, "relation_id");
+        public Criteria andRelationIdBetween(Long value1, Long value2) {
+            addCriterion("relationId between", value1, value2, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idNotBetween(Long value1, Long value2) {
-            addCriterion("relation_id not between", value1, value2, "relation_id");
+        public Criteria andRelationIdNotBetween(Long value1, Long value2) {
+            addCriterion("relationId not between", value1, value2, "relationId");
             return (Criteria) this;
         }
 
@@ -1273,43 +1273,43 @@ public class WalletChangeExample {
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idEqualToIgnoreNull(Long value) {
-            addCriterionIgnoreNull("relation_id =", value, "relation_id");
+        public Criteria andRelationIdEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relationId =", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idNotEqualToIgnoreNull(Long value) {
-            addCriterionIgnoreNull("relation_id <>", value, "relation_id");
+        public Criteria andRelationIdNotEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relationId <>", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idGreaterThanIgnoreNull(Long value) {
-            addCriterionIgnoreNull("relation_id >", value, "relation_id");
+        public Criteria andRelationIdGreaterThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relationId >", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idGreaterThanOrEqualToIgnoreNull(Long value) {
-            addCriterionIgnoreNull("relation_id >=", value, "relation_id");
+        public Criteria andRelationIdGreaterThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relationId >=", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idLessThanIgnoreNull(Long value) {
-            addCriterionIgnoreNull("relation_id <", value, "relation_id");
+        public Criteria andRelationIdLessThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relationId <", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idLessThanOrEqualToIgnoreNull(Long value) {
-            addCriterionIgnoreNull("relation_id <=", value, "relation_id");
+        public Criteria andRelationIdLessThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("relationId <=", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idInIgnoreNull(List<Long> value) {
-            addCriterionIgnoreNull("relation_id in", value, "relation_id");
+        public Criteria andRelationIdInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("relationId in", value, "relationId");
             return (Criteria) this;
         }
 
-        public Criteria andRelation_idNotInIgnoreNull(List<Long> value) {
-            addCriterionIgnoreNull("relation_id not in", value, "relation_id");
+        public Criteria andRelationIdNotInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("relationId not in", value, "relationId");
             return (Criteria) this;
         }
 
@@ -1526,8 +1526,8 @@ public class WalletChangeExample {
             return this;
         }
 
-        public Criteria andRelation_IdLikeInsensitive(String value) {
-            addCriterion("upper(relation_id) like", value.toUpperCase(), "relation_id");
+        public Criteria andRelationIdLikeInsensitive(String value) {
+            addCriterion("upper(relationId) like", value.toUpperCase(), "relationId");
             return this;
         }
 

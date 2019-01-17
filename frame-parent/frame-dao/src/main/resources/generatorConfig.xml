@@ -72,6 +72,7 @@
 <table tableName="b_order" domainObjectName="Order" ><property name="useActualColumnNames" value="true"/><generatedKey column="orderId" sqlStatement="MySql"  identity="true" type="post"/></table>
 <table tableName="b_product" domainObjectName="Product" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="b_product_type" domainObjectName="ProductType" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="b_report" domainObjectName="Report" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="b_welfare" domainObjectName="Welfare" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_config" domainObjectName="Config" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_log" domainObjectName="Log" ><property name="useActualColumnNames" value="true"/></table>
