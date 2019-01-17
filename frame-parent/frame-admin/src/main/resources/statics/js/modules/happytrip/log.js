@@ -10,7 +10,7 @@ $(function () {
         {field:'time', width:130, title: '执行时长(毫秒)'},
         {field:'ip', width:140, title: 'IP地址'},
         {field:'sources', width:120, title: '来源',templet:function(d){
-        	return d.sources==0 ? "App":"后台";
+        	return d.sources==0 ? "前端":"后台";
         }},
         {field:'createTime', width:160, title: '创建时间',templet:function(d){
         	return formatterTime(d.createTime);

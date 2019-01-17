@@ -72,7 +72,7 @@ $(function () {
         	vm.copyBean(obj.data);
         
     	if(layEvent === 'add'){//新增
-             vm.add(data.userId);
+             vm.add();
             // $("#userHeadImg").attr('src',data.headImgUrl);
         }else if(layEvent === 'edit'){//编辑
             vm.update(data.userId);
@@ -86,6 +86,8 @@ $(function () {
             vm.recharge(data.userId);
         }else if(layEvent === 'subtract'){//扣款
             vm.subtract(data.userId);
+        }else if(layEvent === 'addnderling'){//扣款
+            vm.addnderling(data.userId);	//新增下级
         }
     });
 
@@ -96,10 +98,10 @@ $(function () {
 	  		   return false;
      	  });
      	  
-     	 form.on('select(selectCoinType)', function(data){
-      		  vm.accountChange.coinType = data.value;
-      		   return false;
-      	  });
+     	 //form.on('select(selectCoinType)', function(data){
+      	//	  vm.accountChange.coinType = data.value;
+      	//	   return false;
+      	//  });
      	  
      	  form.render();
     });
@@ -119,6 +121,8 @@ var vm = new Vue({
 		walletForm:false,		//充值扣款form表达
         user:{},				//用户对象
         wallet:{},				//账户对象
+        rechargeTotalMoney:null,//充值总金额
+        withdrawTotalMoney:null,//提现总金额
         walletChange:{},		 //帐变对象
         rechargeOrSubtractFlag:null //充值还是扣款
     },
@@ -165,7 +169,7 @@ var vm = new Vue({
         	//账号信息
         	vm.getUser(userId);
         	//账户信息
-        	vm.getWallet(userId);
+        	vm.getUserWallet(userId);
         	//帐变信息
         	vm.getUserWalletChange(userId);
         	
@@ -181,6 +185,29 @@ var vm = new Vue({
                     layer.closeAll();
                 }
             });
+            vm.addForm = true;
+            layer.full(index);
+        },
+        addnderling: function (userId) {
+        	if(userId == null || isNaN(userId)){
+        		userId = vm.selectedRow();
+        	}
+        	
+        	if(userId == null){
+        		return ;
+        	}
+        	vm.user ={};
+        	vm.user.parentId = userId;
+            var index = layer.open({
+                title: "新增下级",
+                type: 1,
+                content: $("#addForm"),
+                end: function(){
+                    vm.addForm = false;
+                    layer.closeAll();
+                }
+            });
+
             vm.addForm = true;
             layer.full(index);
         },
@@ -200,19 +227,23 @@ var vm = new Vue({
             layer.full(index);
         },
         resetpass: function (userId) { //重置登录密码
-            vm.getUser(userId);
-            var index = layer.open({
-                title: "修改",
-                type: 1,
-                content: $("#editForm"),
-                end: function(){
-                    vm.showForm = false;
-                    layer.closeAll();
-                }
-            });
-
-            vm.showForm = true;
-            layer.full(index);
+        	confirm('确定要重置当前账号的密码吗？', function(){
+				$.ajax({
+					type: "POST",
+				    url: baseURL + "sys/user/resetpass",
+                    contentType: "application/json",
+				    data: {userId:userId},
+				    success: function(r){
+						if(r.code == 0){
+							alert('密码重置成功,重置密码为888888', function(index){
+								vm.reload();
+							});
+						}else{
+							alert(r.msg);
+						}
+					}
+				});
+			});
         },
         updateStatus: function (userId, status) {
             $.ajax({
@@ -255,17 +286,17 @@ var vm = new Vue({
         	if(vm.rechargeOrSubtractFlag==null){
         		return;
         	}
-            var url = vm.rechargeOrSubtractFlag ? "ht/wallte/recharge" : "ht/wallte/subtract";
+            var url = vm.rechargeOrSubtractFlag ? "ht/wallet/recharge" : "ht/wallet/subtract";
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
                 contentType: "application/json",
-                data: JSON.stringify(vm.accountChange),
+                data: JSON.stringify(vm.walletChange),
                 success: function(r){
                     if(r.code === 0){
                         layer.alert('操作成功', function(){
                             layer.closeAll();
-                            vm.accountChange = {};
+                            vm.walletChange = {};
                             vm.reload();
                         });
                     }else{
@@ -282,6 +313,8 @@ var vm = new Vue({
         getUserWallet: function(userId){
             $.get(baseURL + "ht/wallet/info/"+userId, function(r){
                 vm.wallet = r.wallet;
+                vm.rechargeTotalMoney = r.rechargeTotalMoney;
+                vm.rechargeTotalMoney = r.rechargeTotalMoney;
             });
         },
         getUserWalletChange: function(userId){
@@ -298,21 +331,20 @@ var vm = new Vue({
         	var selectTableOption = tableOption;
         	//表格参数
         	selectTableOption.cols = [[
-                {field:'changeId',      minWidth:120,  title: '帐变ID',   align:'center'},
-                {field:'userName',      minWidth:120,  title: '用户名称',  align:'center',templet:function(d){
-                	return d.map.userName;
-                }},
+                {field:'historyId',      minWidth:120,  title: '帐变ID',   align:'center'},
+                {field:'userName',      minWidth:120,  title: '用户名称',  align:'center'},
                 {field:'createTime', 	minWidth:160,  title: '帐变时间',  align:'center',templet:function(d){
                 	return formatterTime(d.createTime);
                 }},
                 {field:'operatorMoney',   minWidth:120,   title: '帐变金额',   align:'center'},
-                {field:'balance',minWidth:120,   title: '剩余金额',   align:'center'},
+                {field:'balance',minWidth:120,   title: '账户余额',   align:'center'},
                 {field:'operatorName',    minWidth:120,   title: '帐变类型',   align:'center'},
-                {field:'relationId',    minWidth:120,   title: '关联Id',   align:'center'}
+                {field:'relationId',    minWidth:120,   title: '关联Id',   align:'center'},
+                {field:'createUser',    minWidth:120,   title: '创建者',   align:'center'}
             ]];
         	
         	selectTableOption.id = 'walletChangeGrid';
-        	selectTableOption.elem = '#awalletChangeGrid';
+        	selectTableOption.elem = '#walletChangeGrid';
         	selectTableOption.height =  315; //设置高度
         	selectTableOption.url = baseURL + 'ht/walletChange/list';
         	selectTableOption.where ={userId:userId} ;
@@ -333,7 +365,7 @@ var vm = new Vue({
         	}
         	
         	vm.rechargeOrSubtractFlag = true;
-        	vm.accountChange.userId = userId;
+        	vm.walletChange.userId = userId;
         	
         	 var index = layer.open({
                  title: "人工充值",

@@ -1,6 +1,7 @@
 package io.frame.modules.happytrip.service;
 
 import io.frame.dao.entity.Wallet;
+import io.frame.dao.entity.WalletChange;
 
 /**
  * 钱包接口
@@ -25,5 +26,19 @@ public interface WalletService {
 	 * @param userName
 	 */
 	void createWallet(Long userId, String userName);
+
+	/**
+	 * 人工充值
+	 * 
+	 * @param walletChange
+	 */
+	void recharge(WalletChange walletChange);
+
+	/**
+	 * 人工扣款
+	 * 
+	 * @param walletChange
+	 */
+	void subtract(WalletChange walletChange);
 
 }

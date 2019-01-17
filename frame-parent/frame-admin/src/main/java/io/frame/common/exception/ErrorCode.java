@@ -43,4 +43,10 @@ public class ErrorCode {
 	/** 父级账号不存在或已禁用 */
 	public static String RECOMMEND_MOBILE_NOT_EXIST = "父级账号不存在或已禁用";
 
+	/** 金额不能为负数 */
+	public static String THE_AMOUNT_CANNOT_BE_NEGATIVE = "金额不能为负数";
+
+	/** 余额不足 */
+	public static String INSUFFICIENT_BALANCE_OF_GOLDCOINS = "余额不足";
+
 }

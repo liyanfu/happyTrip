@@ -16,7 +16,7 @@ $(function () {
         }},
         {field:'remark',    minWidth:120,   title: '备注信息',   align:'center'}
     ]];
-	tableOption.url = baseURL + 'vsball/accountChange/list';
+	tableOption.url = baseURL + 'ht/walletChange/list';
 	//初始化表格
     gridTable = layui.table.render(tableOption);
     

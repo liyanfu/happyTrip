@@ -141,11 +141,12 @@ public class UserServiceImpl implements UserService {
 			// 修改用户组ID
 			user.setUserLevel(parentUser == null ? 1 : parentUser.getUserLevel() + 1);
 			user.setParentId(parentUser == null ? user.getUserId() : parentUser.getUserId());
-			user.setGroupUserIds(parentUser == null ? user.getUserId() + "," : parentUser.getGroupUserIds() + ",");
+			user.setGroupUserIds(parentUser == null ? null : parentUser.getGroupUserIds());
 			// 新增用户
 			userMapper.insertSelective(user);
 			user.setParentId(parentUser == null ? user.getUserId() : parentUser.getUserId());
-			user.setGroupUserIds(parentUser == null ? user.getUserId() + "," : parentUser.getGroupUserIds() + ",");
+			user.setGroupUserIds(parentUser == null ? user.getUserId() + ","
+					: parentUser.getGroupUserIds() + user.getUserId() + ",");
 			userMapper.updateByPrimaryKey(user);
 			// 新增用户钱包
 			walletService.createWallet(user.getUserId(), sysUser.getUserName());

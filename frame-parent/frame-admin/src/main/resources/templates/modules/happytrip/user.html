@@ -42,6 +42,12 @@
 				</div>
 			</#if>
 			
+			<#if shiro.hasPermission("ht:user:resetpass")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-bg-blue" @click="addnderling">新增下级</a>
+				</div>
+			</#if>
+			
 			<div style="margin-top: 8px"></div>
 			
 			<div class="layui-block">
@@ -63,6 +69,15 @@
 
 	<!-- 新增表单  -->
 	<form v-show="addForm" class="layui-form ren-form" id="addForm">
+	
+		
+		<div v-show="user.parentId!=null" class="layui-form-item">
+			<label class="layui-form-label">父级ID</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="user.parentId"  readonly="readonly" class="layui-input layui-bg-gray">
+			</div>
+		</div>
+	
 	
 		<div class="layui-form-item">
 			<label class="layui-form-label">用户名称</label>
@@ -289,21 +304,21 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">总收益</label>
 			<div class="layui-input-block">
-				<input type="text"  v-model="wallet.balance" readonly="readonly"  class="layui-input layui-bg-gray">
+				<input type="text"  v-model="wallet.profitMoney" readonly="readonly"  class="layui-input layui-bg-gray">
 			</div>
 		</div>
 		
 		<div class="layui-form-item">
 			<label class="layui-form-label">充值总数</label>
 			<div class="layui-input-block">
-				<input type="text"  v-model="wallet.balance" readonly="readonly"  class="layui-input layui-bg-gray">
+				<input type="text"  v-model="rechargeTotalMoney" readonly="readonly"  class="layui-input layui-bg-gray">
 			</div>
 		</div>
 		
 		<div class="layui-form-item">
-			<label class="layui-form-label">提现</label>
+			<label class="layui-form-label">提现总数</label>
 			<div class="layui-input-block">
-				<input type="text"  v-model="wallet.balance" readonly="readonly"  class="layui-input layui-bg-gray">
+				<input type="text"  v-model="withdrawTotalMoney" readonly="readonly"  class="layui-input layui-bg-gray">
 			</div>
 		</div>
 		
@@ -318,7 +333,6 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">帐变列表</label>
 			<div class="layui-input-block">
-				<!-- 赛事竞猜表格 -->
 				<table class="layui-hide" id="walletChangeGrid" lay-filter="walletChangeGrid"></table>
 			</div>
 		</div>
@@ -335,7 +349,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">操作金额</label>
 			<div class="layui-input-block">
-				<input type="text" lay-verify="required|number"   v-model="walletChange.changeMoney" min="0" placeholder="请输入正数"  class="layui-input">
+				<input type="text" lay-verify="required|number"   v-model="walletChange.operatorMoney" min="0" placeholder="请输入正数"  class="layui-input">
 			</div>
 		</div>
 		
