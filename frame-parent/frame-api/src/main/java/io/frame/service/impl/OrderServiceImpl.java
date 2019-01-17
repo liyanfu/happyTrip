@@ -24,14 +24,18 @@ import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.enums.Constant.OrderStatus;
 import io.frame.common.enums.Constant.RechargeKey;
 import io.frame.common.exception.RRException;
+import io.frame.common.utils.DateUtils;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Order;
 import io.frame.dao.entity.OrderExample;
 import io.frame.dao.entity.Product;
 import io.frame.dao.entity.ProductType;
+import io.frame.dao.entity.Report;
+import io.frame.dao.entity.ReportExample;
 import io.frame.dao.entity.User;
 import io.frame.dao.entity.Wallet;
 import io.frame.dao.mapper.OrderMapper;
+import io.frame.dao.mapper.ReportMapper;
 import io.frame.entity.OrderVo;
 import io.frame.exception.ErrorCode;
 import io.frame.service.ConfigService;
@@ -75,6 +79,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	ProductTypeService productTypeService;
+
+	@Autowired
+	ReportMapper reportMapper;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -237,6 +244,10 @@ public class OrderServiceImpl implements OrderService {
 			// 记录帐变
 			walletChangeService.createWalletChange(userId, order.getBuyMoney(), order.getOrderId(),
 					ChangeType.PURCHASE_CAR_SPACE_KEY);
+
+			// 记录报表进行汇总统计
+			this.recordReport(userId, order.getBuyMoney());
+
 			// 写入推荐表信息 ,算入父级的团队业绩中..
 			recommendService.upsert(user.getParentId(), order.getBuyMoney());
 		} else {
@@ -251,6 +262,48 @@ public class OrderServiceImpl implements OrderService {
 		map.put("randomCode", order.getRandomCode());
 		map.put("orderId", order.getOrderId());
 		return map;
+
+	}
+
+	/**
+	 * 订单金额增加
+	 * 
+	 * @param userId
+	 * @param buyMoney
+	 */
+	public void recordReport(Long userId, BigDecimal buyMoney) {
+
+		User user = SessionUtils.getCurrentUser();
+		// 查询今日是否已经有记录
+		ReportExample example = new ReportExample();
+		ReportExample.Criteria cr = example.createCriteria();
+		cr.andUserIdEqualTo(userId);
+		Date date = new Date();
+		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
+		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		Report report = reportMapper.selectOneByExample(example);
+		if (report == null) {
+			// 新建
+			report = new Report();
+			report.setUserId(userId);
+			report.setUserName(user.getUserName());
+			report.setUserMobile(user.getUserMobile());
+			report.setUserLevel(user.getUserLevel());
+			report.setGroupUserIds(user.getGroupUserIds());
+			report.setParentId(user.getParentId());
+			report.setOrderMoney(buyMoney);
+			report.setCreateTime(new Date());
+			report.setCreateUser(user.getUserName());
+			reportMapper.insertSelective(report);
+		} else {
+			// 修改今日订单金额数+
+			Report updateReport = new Report();
+			updateReport.setReportId(report.getReportId());
+			updateReport.setOrderMoney(buyMoney);
+			updateReport.setUpdateTime(new Date());
+			updateReport.setUpdateUser(user.getUserName());
+			reportMapper.updateByPrimaryKeySelectiveSync(updateReport);
+		}
 
 	}
 
