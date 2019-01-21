@@ -20,6 +20,7 @@ import com.google.common.collect.Maps;
 
 import io.frame.annotation.SysLog;
 import io.frame.common.enums.Constant;
+import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.enums.Constant.ConfigType;
 import io.frame.common.enums.Constant.WithdrawKey;
 import io.frame.common.exception.RRException;
@@ -34,6 +35,7 @@ import io.frame.dao.mapper.WithdrawMapper;
 import io.frame.entity.WithdrawVo;
 import io.frame.exception.ErrorCode;
 import io.frame.service.ConfigService;
+import io.frame.service.WalletChangeService;
 import io.frame.service.WalletService;
 import io.frame.service.WithdrawService;
 import io.frame.utils.SessionUtils;
@@ -63,6 +65,9 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 	@Autowired
 	WalletService walletService;
+
+	@Autowired
+	WalletChangeService walletChangeService;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -109,13 +114,20 @@ public class WithdrawServiceImpl implements WithdrawService {
 		BigDecimal fee = "-1".equals(value) ? BigDecimal.ZERO : new BigDecimal(value);
 		BigDecimal feeMoney = money.multiply(fee);
 		withdraw.setWithdrawFee(feeMoney);
-		withdraw.setWithdrawRealMoney(money.subtract(fee));
+		withdraw.setWithdrawRealMoney(money.subtract(fee)); // 实际到账金额
 		withdraw.setCreateTime(new Date());
 		withdraw.setCreateUser(currentUser.getUserName());
 		withdraw.setStatus(Constant.Status.ZERO.getValue());
 		try {
 			// 保存
 			withdrawMapper.insertSelective(withdraw);
+
+			// 先扣钱
+			walletService.deduction(userId, money);
+			// 记录账变
+			walletChangeService.createWalletChange(userId, withdraw.getWithdrawRealMoney(), withdraw.getWithdrawId(), ChangeType.WITHDRAW_OUT_KEY);
+			// 记录账变手续费
+			walletChangeService.createWalletChange(userId, feeMoney, withdraw.getWithdrawId(), ChangeType.WITHDRAW_OUT_FEE_KEY);
 		} catch (Exception e) {
 			logger.error(ErrorCode.SUBMIT_FAILED, e);
 			throw new RRException(ErrorCode.SUBMIT_FAILED);

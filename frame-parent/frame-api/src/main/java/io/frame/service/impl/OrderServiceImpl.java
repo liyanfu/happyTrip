@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
 		return order == null ? BigDecimal.ZERO : order.getBuyMoney();
 	}
 
-	@SysLog("购买车位")
+	@SysLog("购买下单")
 	@Override
 	public Map<String, Object> payOrder(Long userId, Long productId, Long paymentId) {
 		Map<String, Object> map = Maps.newHashMap();
@@ -206,6 +206,8 @@ public class OrderServiceImpl implements OrderService {
 		// 生成订单
 		Order order = new Order();
 		order.setUserId(userId);
+		order.setParentId(user.getParentId());
+		order.setGroupUserIds(user.getGroupUserIds());
 		order.setUserName(user.getUserName());
 		order.setUserMobile(user.getUserMobile());
 		order.setBuyQuantity(1);// 默认1
