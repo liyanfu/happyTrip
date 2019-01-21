@@ -10,6 +10,11 @@ package io.frame.common.enums;
 public class Constant {
 
 	/**
+	 * 读图片方法名
+	 */
+	public static final String readImg = "/readImg?path=";
+
+	/**
 	 * 云配置类型
 	 */
 	public enum CloudEnum {
@@ -408,8 +413,10 @@ public class Constant {
 	public enum SystemKey {
 		/** 客服二维码 */
 		SYSTEM_CUSTOMER_SERVICE_IMG_KEY("客服二维码", "SYSTEM_CUSTOMER_SERVICE_IMG_KEY"),
+		/** 注册域名 */
+		SYSTEM_REGISTER_DOMAIN_KEY("注册域名", "SYSTEM_REGISTER_DOMAIN_KEY"),
 		/** 推广域名 */
-		SYSTEM_REGISTER_DOMAIN_KEY("推广域名", "SYSTEM_REGISTER_DOMAIN_KEY"),
+		SYSTEM_SPREAD_DOMAIN_KEY("推广域名", "SYSTEM_SPREAD_DOMAIN_KEY"),
 		/** 公司介绍 */
 		SYSTEM_COMPANY_INTRODUCE_KEY("公司介绍", "SYSTEM_COMPANY_INTRODUCE_KEY");
 		private String name;

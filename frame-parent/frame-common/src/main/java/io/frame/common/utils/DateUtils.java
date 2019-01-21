@@ -2,6 +2,7 @@ package io.frame.common.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,10 +22,6 @@ public class DateUtils {
 	public final static String DATE_PATTERN = "yyyy-MM-dd";
 	/** 时间格式(yyyy-MM-dd HH:mm:ss) */
 	public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-	/** 时间格式(yyyy-MM-dd 00:00:00) */
-	public final static String DATE_TIME_START_PATTERN = "yyyy-MM-dd 00:00:00";
-	/** 时间格式(yyyy-MM-dd 23:59:59) */
-	public final static String DATE_TIME_END_PATTERN = "yyyy-MM-dd 23:59:59";
 
 	/**
 	 * 日期格式化 日期格式为：yyyy-MM-dd
@@ -210,14 +207,11 @@ public class DateUtils {
 	 * @return
 	 */
 	public static Date getStartTime(Date date) {
-		try {
-			if (date != null) {
-				SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_START_PATTERN);
-				String strDate = df.format(date);
-				return new SimpleDateFormat(DATE_TIME_START_PATTERN).parse(strDate);
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
+		if (date != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
+					00, 00, 00);
+			return calendar.getTime();
 		}
 		return null;
 	}
@@ -229,14 +223,12 @@ public class DateUtils {
 	 * @return
 	 */
 	public static Date getEndTime(Date date) {
-		try {
-			if (date != null) {
-				SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_END_PATTERN);
-				String strDate = df.format(date);
-				return new SimpleDateFormat(DATE_TIME_END_PATTERN).parse(strDate);
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
+		if (date != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
+					23, 59, 59);
+			return calendar.getTime();
+
 		}
 		return null;
 	}
