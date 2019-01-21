@@ -6,7 +6,7 @@ import io.frame.common.utils.PageUtils;
 import io.frame.dao.entity.User;
 
 /**
- * 注册用户
+ * 用户
  * 
  * @author fury
  *
@@ -27,7 +27,7 @@ public interface UserService {
 	 * @param userId
 	 * @return
 	 */
-	User getUserById(Long userId);
+	User getInfoById(Long userId);
 
 	void save(User user);
 

@@ -49,4 +49,25 @@ public class ErrorCode {
 	/** 余额不足 */
 	public static String INSUFFICIENT_BALANCE_OF_GOLDCOINS = "余额不足";
 
+	/** 已存在类型和名称相同商品 */
+	public static String PRODUCT_TYPE_ANDM_NAME_EXIST = "已存在类型和名称相同商品";
+
+	/** 存在该类型的商品,无法删除 */
+	public static String EXIST_THIS_PRODUCT = "存在该类型的商品,无法删除";
+
+	/** 上传失败 */
+	public static String UPLOAD_ERROR = "上传失败";
+
+	/** 请先下架商品 */
+	public static String PLEASE_DOWN_PRODUCT = "请先下架商品";
+
+	/** 只能修改待支付的订单 */
+	public static String ONLY_UPDATE_ZERO_ORDER_STATUS = "只能修改待支付的订单";
+
+	/** 只能将待支付订单修改为收益中 */
+	public static String ONLY_UPDATE_ONE_ORDER_STATUS = "只能将待支付订单修改为收益中 ";
+
+	/** 订单正在收益中 无法删除 */
+	public static String ORDER_IS_OPEN = " 订单正在收益中无法删除 ";
+
 }

@@ -80,8 +80,8 @@ public class WalletChangeServiceImpl implements WalletChangeService {
 	@Override
 	public void createWalletChange(Long userId, BigDecimal changeMoney, String remark, ChangeType changeType) {
 		SysUser sysUser = ShiroUtils.getUserEntity();
-		Wallet wallet = walletService.getWalletById(userId);
-		User user = userService.getUserById(userId);
+		Wallet wallet = walletService.getInfoById(userId);
+		User user = userService.getInfoById(userId);
 		WalletChange walletChange = new WalletChange();
 		walletChange.setUserId(userId);
 		walletChange.setUserName(user.getUserName());

@@ -19,6 +19,7 @@ import io.frame.dao.entity.Wallet;
 import io.frame.dao.entity.WalletChange;
 import io.frame.dao.entity.WalletExample;
 import io.frame.dao.mapper.WalletMapper;
+import io.frame.modules.happytrip.service.ReportService;
 import io.frame.modules.happytrip.service.WalletChangeService;
 import io.frame.modules.happytrip.service.WalletService;
 import io.frame.modules.sys.shiro.ShiroUtils;
@@ -40,9 +41,12 @@ public class WalletServiceImpl implements WalletService {
 	@Autowired
 	WalletChangeService walletChangeService;
 
+	@Autowired
+	ReportService reportService;
+
 	@Transactional(readOnly = true)
 	@Override
-	public Wallet getWalletById(Long userId) {
+	public Wallet getInfoById(Long userId) {
 		try {
 			WalletExample example = new WalletExample();
 			example.or().andUserIdEqualTo(userId);
@@ -78,7 +82,7 @@ public class WalletServiceImpl implements WalletService {
 		}
 
 		// 获取用户账户信息
-		Wallet wallet = this.getWalletById(userId);
+		Wallet wallet = this.getInfoById(userId);
 		Wallet updateWallet = new Wallet();
 		updateWallet.setWalletId(wallet.getWalletId());
 		updateWallet.setUserId(userId);
@@ -93,6 +97,8 @@ public class WalletServiceImpl implements WalletService {
 			// 记录帐变
 			walletChangeService.createWalletChange(userId, changeMoney, walletChange.getRemark(),
 					ChangeType.ARTIFICIAL_RECHARGE_KEY);
+			// 刷新报表
+			reportService.upsert(userId, changeMoney, BigDecimal.ZERO, ChangeType.ARTIFICIAL_RECHARGE_KEY);
 		} catch (Exception e) {
 			logger.error(ErrorCode.OPERATE_FAILED, e);
 			throw new RRException(ErrorCode.OPERATE_FAILED);
@@ -112,7 +118,7 @@ public class WalletServiceImpl implements WalletService {
 		}
 
 		// 获取用户账户信息
-		Wallet wallet = this.getWalletById(userId);
+		Wallet wallet = this.getInfoById(userId);
 		Wallet updateWallet = new Wallet();
 		updateWallet.setWalletId(wallet.getWalletId());
 		updateWallet.setUserId(userId);
@@ -131,6 +137,8 @@ public class WalletServiceImpl implements WalletService {
 			// 记录帐变
 			walletChangeService.createWalletChange(userId, changeMoney.negate(), walletChange.getRemark(),
 					ChangeType.MANUAL_DEDUCTION_KEY);
+			// 刷新报表
+			reportService.upsert(userId, changeMoney, BigDecimal.ZERO, ChangeType.MANUAL_DEDUCTION_KEY);
 		} catch (Exception e) {
 			logger.error(ErrorCode.OPERATE_FAILED, e);
 			throw new RRException(ErrorCode.OPERATE_FAILED);

@@ -17,12 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 
 import io.frame.common.cloud.CloudStorageConfig;
+import io.frame.common.enums.Constant;
 import io.frame.common.enums.Constant.CloudEnum;
 import io.frame.common.enums.Constant.ConfigEnum;
+import io.frame.common.exception.ErrorCode;
 import io.frame.common.exception.RRException;
+import io.frame.common.utils.FileUtils;
 import io.frame.common.utils.PageUtils;
 import io.frame.common.utils.R;
-import io.frame.common.utils.UploadUtils;
 import io.frame.common.validator.ValidatorUtils;
 import io.frame.common.validator.group.AliyunGroup;
 import io.frame.common.validator.group.QcloudGroup;
@@ -102,20 +104,27 @@ public class SysOssController {
 			throw new RRException("上传文件不能为空");
 		}
 
+		Map<String, Object> map = new HashMap<>();
 		// 上传文件
-		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-		String url = UploadUtils.build().uploadSuffix(file.getBytes(), suffix);
+		// String suffix =
+		// file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		// String url = UploadUtils.build().uploadSuffix(file.getBytes(), suffix);
+		String path = "/home/images/";
+		if (file.getSize() != 0) {
+			// 上传文件到本地
+			String url = FileUtils.uploadFileToLocal(file, path);
+			// 保存文件信息
+			SysOss sysOss = new SysOss();
+			sysOss.setUrl(url);
+			sysOss.setCreateTime(new Date());
+			sysOssService.insert(sysOss);
 
-		// 保存文件信息
-		SysOss sysOss = new SysOss();
-		sysOss.setUrl(url);
-		sysOss.setCreateTime(new Date());
-		sysOssService.insert(sysOss);
-
-		Map<String, Object> data = new HashMap<>();
-		data.put("src", url);
-
-		return R.ok().put("data", data);
+			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			map.put("showPath", value + Constant.readImg + url);// 显示路径
+			map.put("src", url);// 存库如今
+			return R.ok().put("data", map);
+		}
+		return R.error(ErrorCode.UPLOAD_ERROR);
 	}
 
 	/**

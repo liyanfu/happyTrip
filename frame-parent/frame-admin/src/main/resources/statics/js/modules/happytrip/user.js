@@ -4,20 +4,20 @@ $(function () {
         {type:'checkbox'},
         {field:'userId', 			width:100, 	title: '用户ID'},
         {field:'userName', 			width:120, 	title: '用户名' ,templet:function(d){
-        	return  '<a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="userAccount" title="账户信息" >'+d.userName+'</a>'; ;
+        	return  '<a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="userWallet" title="账号信息" >'+d.userName+'</a>'; ;
         }},
         {field:'userMobile', 			width:120, 		title: '登录账号'},
-        {field:'balance', 		minWidth:100,   title: '账户余额',	 templet:function(d){
+        {field:'balance', 		minWidth:100,   title: '账户余额', sort: true,	 templet:function(d){
         	return d.map.balance;
         }},
         {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet: '#statusTpl'},
-        {field:'recomendNum', 	minWidth:100, 	title: '今日推荐人数', templet:function(d){
+        {field:'recomendNum', 	minWidth:100, 	title: '今日推荐人数',sort: true, templet:function(d){
         	return d.map.recomendNum;
         }},
-        {field:'teamAchievement', 	minWidth:100, 	title: '今日团队业绩', templet:function(d){
+        {field:'teamAchievement', 	minWidth:100, 	title: '今日团队业绩',sort: true, templet:function(d){
         	return d.map.teamAchievement;
         }},
-        {field:'createTime', 		minWidth:160, 	title: '创建时间',	templet:function(d){
+        {field:'createTime', 		minWidth:160, 	title: '创建时间',	sort: true,templet:function(d){
         	return formatterTime(d.createTime);
         }},
         {field:'lastLoginTime', minWidth:160, title: '上次登录时间',templet:function(d){
@@ -40,6 +40,7 @@ $(function () {
         vm.updateStatus(data.value, status);
 
         layer.close(index);
+        return false;
     });
 
     layui.form.on('submit(saveOrUpdate)', function(data){
@@ -53,14 +54,14 @@ $(function () {
         return false;
     });
     
-    layui.form.on('submit(rechargeOrSubtract)', function(data){
-    	if(data.field.coinType==""){
-    		alert("请选择货币类型");
-    		return false;
-    	}
-        vm.rechargeOrSubtract();
-        return false;
-    });
+//    layui.form.on('submit(rechargeOrSubtract)', function(data){
+//    	if(data.field.coinType==""){
+//    		alert("请选择货币类型");
+//    		return false;
+//    	}
+//        vm.rechargeOrSubtract();
+//        return false;
+//    });
     
     
     
@@ -88,7 +89,10 @@ $(function () {
             vm.subtract(data.userId);
         }else if(layEvent === 'addnderling'){//扣款
             vm.addnderling(data.userId);	//新增下级
+        }else if(layEvent === 'resetpass'){//重置登录密码
+            vm.resetpass(data.userId);	//重置登录密码
         }
+    	
     });
 
     layui.use('form', function(){
@@ -214,7 +218,7 @@ var vm = new Vue({
         update: function (userId) {
             vm.getUser(userId);
             var index = layer.open({
-                title: "修改",
+                title: "编辑",
                 type: 1,
                 content: $("#editForm"),
                 end: function(){
@@ -227,11 +231,17 @@ var vm = new Vue({
             layer.full(index);
         },
         resetpass: function (userId) { //重置登录密码
+        	if(userId == null || isNaN(userId)){
+        		userId = vm.selectedRow();
+        	}
+        	
+        	if(userId == null){
+        		return ;
+        	}
         	confirm('确定要重置当前账号的密码吗？', function(){
 				$.ajax({
 					type: "POST",
-				    url: baseURL + "sys/user/resetpass",
-                    contentType: "application/json",
+				    url: baseURL + "ht/user/resetpass",
 				    data: {userId:userId},
 				    success: function(r){
 						if(r.code == 0){
@@ -264,6 +274,8 @@ var vm = new Vue({
         },
         saveOrUpdate: function () {
             var url = vm.user.userId == null ? "ht/user/save" : "ht/user/update";
+            //修改报错.
+           vm.user.createTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,

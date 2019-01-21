@@ -1,6 +1,7 @@
 
 package io.frame.modules.happytrip.controller;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +45,7 @@ public class UserController extends AbstractController {
 	@RequestMapping("/info/{userId}")
 	@RequiresPermissions("ht:user:info")
 	public R info(@PathVariable("userId") Long userId) {
-		User user = userService.getUserById(userId);
+		User user = userService.getInfoById(userId);
 		return R.ok().put("user", user);
 	}
 
@@ -66,6 +67,23 @@ public class UserController extends AbstractController {
 	@RequestMapping("/update")
 	@RequiresPermissions("ht:user:update")
 	public R update(@RequestBody User user) {
+		userService.update(user);
+		return R.ok();
+	}
+
+	/**
+	 * 重置密码
+	 */
+	@SysLog("重置密码")
+	@RequestMapping("/resetpass")
+	@RequiresPermissions("ht:user:resetpass")
+	public R resetpass(Long userId) {
+		if (userId == null) {
+			throw new RRException(ErrorCode.PARAMS_IS_NOT_EMPTY);
+		}
+		User user = new User();
+		user.setUserId(userId);
+		user.setUserPass(DigestUtils.sha256Hex("888888"));
 		userService.update(user);
 		return R.ok();
 	}

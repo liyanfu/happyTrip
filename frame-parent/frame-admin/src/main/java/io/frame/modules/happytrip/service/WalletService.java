@@ -17,7 +17,7 @@ public interface WalletService {
 	 * @param userId
 	 * @return
 	 */
-	Wallet getWalletById(Long userId);
+	Wallet getInfoById(Long userId);
 
 	/**
 	 * 新增用户钱包

@@ -16,10 +16,12 @@ import io.frame.common.exception.RRException;
 import io.frame.common.utils.DateUtils;
 import io.frame.dao.entity.Recommend;
 import io.frame.dao.entity.RecommendExample;
+import io.frame.dao.entity.SysUser;
 import io.frame.dao.entity.User;
 import io.frame.dao.mapper.RecommendMapper;
 import io.frame.modules.happytrip.service.RecommendService;
 import io.frame.modules.happytrip.service.UserService;
+import io.frame.modules.sys.shiro.ShiroUtils;
 
 /**
  * 推荐表信息
@@ -55,6 +57,7 @@ public class RecommendServiceImpl implements RecommendService {
 	@SysLog("更新推荐")
 	@Override
 	public void upsert(Long userId, BigDecimal money) {
+		SysUser sysUser = ShiroUtils.getUserEntity();
 		RecommendExample example = new RecommendExample();
 		RecommendExample.Criteria cr = example.createCriteria();
 		cr.andUserIdEqualTo(userId);
@@ -64,13 +67,13 @@ public class RecommendServiceImpl implements RecommendService {
 		Recommend recommend = recommendMapper.selectOneByExample(example);
 		if (recommend == null) {
 			// 新增
-			User user = userService.getUserById(userId);
+			User user = userService.getInfoById(userId);
 			recommend = new Recommend();
 			recommend.setUserId(userId);
 			recommend.setParentId(user.getParentId());
 			recommend.setGroupUserIds(user.getGroupUserIds());
 			recommend.setCreateTime(date);
-			recommend.setCreateUser(user.getUserName());
+			recommend.setCreateUser(sysUser.getUserName());
 			recommend.setRecommendNumber(1);
 			recommend.setTeamAchievement(money);
 			recommendMapper.insertSelective(recommend);
@@ -80,6 +83,14 @@ public class RecommendServiceImpl implements RecommendService {
 			recommend.setRecommendNumber(1);
 			recommend.setTeamAchievement(money);
 			recommendMapper.updateByPrimaryKeySelectiveSync(recommend);
+
+			Recommend updateRecommend = new Recommend();
+			updateRecommend.setRecommendId(recommend.getRecommendId());
+			updateRecommend.setUpdateTime(date);
+			updateRecommend.setUpdateUser(sysUser.getUserName());
+			// 更新操作者和时间
+			recommendMapper.updateByPrimaryKey(updateRecommend);
+
 		}
 
 	}

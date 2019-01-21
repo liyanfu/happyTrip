@@ -65,8 +65,8 @@ public class UserServiceImpl implements UserService {
 			userName = user.getUserName() + "%";
 		}
 		UserExample example = new UserExample();
-		example.or().andUserNameLikeIgnoreNull(userName)//
-				.andStatusEqualToIgnoreNull(user.getStatus());
+		example.or().andUserMobileLikeIgnoreNull(userName).andStatusEqualToIgnoreNull(user.getStatus());
+		example.or().andUserNameLikeIgnoreNull(userName).andStatusEqualToIgnoreNull(user.getStatus());
 		PageHelper.startPage(user.getPageNumber(), user.getPageSize());
 		example.setOrderByClause(User.FD_CREATETIME + Sort.DESC.getValue());
 
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 			for (User bean : page.getResult()) {
 				Map<String, Object> map = Maps.newHashMap();
 				// 查询用户账户信息
-				Wallet wallet = walletService.getWalletById(bean.getUserId());
+				Wallet wallet = walletService.getInfoById(bean.getUserId());
 				map.put("balance", wallet == null ? BigDecimal.ZERO : wallet.getBalance());
 				Recommend recommend = recommendService.getRecommendById(bean.getUserId());
 				// 今日推荐人数
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public User getUserById(Long userId) {
+	public User getInfoById(Long userId) {
 		try {
 			return userMapper.selectByPrimaryKey(userId);
 		} catch (Exception e) {

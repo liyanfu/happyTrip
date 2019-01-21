@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>订单列表</title>
+<#include "/header.html">
+</head>
+<body class="ren-body">
+<div id="rrapp" v-cloak>
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div class="layui-inline">
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input searchVal" v-model="q.orderId" placeholder="请输入订单ID" />
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input searchVal" v-model="q.userName" placeholder="请输入用户名称" />
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input searchVal" v-model="q.productName" placeholder="请输入商品名称" />
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" lay-verify="date" id="beginTime"  class="layui-input" placeholder="开始日期">
+				</div>
+				~
+				<div class="layui-input-inline">
+					<input type="text" lay-verify="date" id="endTime"  class="layui-input" placeholder="结束日期">
+				</div>
+				<a class="layui-btn search_btn" @click="query">查询</a>
+			</div>
+			<!-- 
+			<#if shiro.hasPermission("ht:order:save")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-bg-blue" @click="add">新增</a>
+				</div>
+			</#if>
+			 -->
+			<#if shiro.hasPermission("ht:order:select")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-btn-warm" @click="select">查看</a>
+				</div>
+			</#if>
+			
+			<div style="margin-top: 8px"></div>
+			
+			<div class="layui-block">
+				<div class="layui-inline">
+				      <select lay-filter="selectStatus"	>
+				        <option value="">状态</option>
+				        <option value="0">待支付</option>
+				        <option value="1">收益中</option>
+				        <option value="2">已完成</option>
+				        <option value="3">已取消</option>
+				      </select>
+				</div>
+				
+				<div class="layui-inline">
+				 <select  lay-filter="selectProductTypeStatus">
+				 	<option value="">商品类型</option>
+				  	<option v-for="productType in productTypeList" :value="productType.productTypeId" >{{productType.productTypeName}}</option>
+			      </select>
+				</div>
+			</div>
+				    
+		</form>
+	</blockquote>
+	
+	<!-- 表格 -->
+	<table class="layui-hide" id="grid" lay-filter="grid"></table>
+	
+	
+	<!-- 查看-编辑 表单  -->
+	<form v-show="showSelectForm" class="layui-form ren-form" id="selectForm">
+	
+		<div class="layui-form-item">
+			<label class="layui-form-label">订单ID</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="order.orderId"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">用户名称</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="order.userName"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">用户账号</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="order.userMobile"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">商品名称</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="order.productName"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">商品图片</label>
+			<div class="layui-input-block"> 
+				<img class="layui-upload-img" :src="order.productImgurl"  id="looklocalImg" width="200" height="200">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">商品类型</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="order.productTypeName"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">投资金额</label>
+			<div class="layui-input-block">
+				<input type="number"  v-model="order.buyMoney"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">投资数量</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.buyQuantity"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">每天返利金额</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.rebateMoney"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">总收益金额</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.profitMoney"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">已收益金额</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.alreadyProfitMoney"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">总返利期数</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.totalRebatePeriods"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">已返利期数</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.rebatePeriods" readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">购买之后几天开始返利</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.startRebateTime"   readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">支付方式ID</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.paymentId"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">支付随机码</label>
+			<div class="layui-input-block"> 
+				<input type="number"  v-model="order.randomCode"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">创建时间</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="order.createTime"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">创建者</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="order.createUser"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">修改时间</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="order.updateTime"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">修改者</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="order.updateUser"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+				 <select lay-filter="selectOrderStatus"	 v-model="order.status">
+				        <option value="">状态</option>
+				        <option value="0">待支付</option>
+				        <option value="1">收益中</option>
+				        <option value="2">已完成</option>
+				        <option value="3">已取消</option>
+				      </select>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveOrUpdate">确定</button>
+			</div>
+		</div>
+	 	
+	</form>
+	
+</div>
+
+
+<!--操作-->
+<script type="text/html" id="barTpl">
+	<#if shiro.hasPermission("ht:order:update")>
+	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	</#if>
+	
+	<#if shiro.hasPermission("ht:order:delete")>
+	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	</#if>
+ 
+</script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/order.js"></script>
+</body>
+</html>
