@@ -268,6 +268,66 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andParentIdIsNull() {
+            addCriterion("parentId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdIsNotNull() {
+            addCriterion("parentId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdEqualTo(Long value) {
+            addCriterion("parentId =", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdNotEqualTo(Long value) {
+            addCriterion("parentId <>", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdGreaterThan(Long value) {
+            addCriterion("parentId >", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("parentId >=", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdLessThan(Long value) {
+            addCriterion("parentId <", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdLessThanOrEqualTo(Long value) {
+            addCriterion("parentId <=", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdIn(List<Long> values) {
+            addCriterion("parentId in", values, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdNotIn(List<Long> values) {
+            addCriterion("parentId not in", values, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdBetween(Long value1, Long value2) {
+            addCriterion("parentId between", value1, value2, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdNotBetween(Long value1, Long value2) {
+            addCriterion("parentId not between", value1, value2, "parentId");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdIsNull() {
             addCriterion("userId is null");
             return (Criteria) this;
@@ -395,6 +455,76 @@ public class OrderExample {
 
         public Criteria andUserNameNotBetween(String value1, String value2) {
             addCriterion("userName not between", value1, value2, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsIsNull() {
+            addCriterion("groupUserIds is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsIsNotNull() {
+            addCriterion("groupUserIds is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsEqualTo(String value) {
+            addCriterion("groupUserIds =", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsNotEqualTo(String value) {
+            addCriterion("groupUserIds <>", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsGreaterThan(String value) {
+            addCriterion("groupUserIds >", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsGreaterThanOrEqualTo(String value) {
+            addCriterion("groupUserIds >=", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsLessThan(String value) {
+            addCriterion("groupUserIds <", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsLessThanOrEqualTo(String value) {
+            addCriterion("groupUserIds <=", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsLike(String value) {
+            addCriterion("groupUserIds like", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsNotLike(String value) {
+            addCriterion("groupUserIds not like", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsIn(List<String> values) {
+            addCriterion("groupUserIds in", values, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsNotIn(List<String> values) {
+            addCriterion("groupUserIds not in", values, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsBetween(String value1, String value2) {
+            addCriterion("groupUserIds between", value1, value2, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsNotBetween(String value1, String value2) {
+            addCriterion("groupUserIds not between", value1, value2, "groupUserIds");
             return (Criteria) this;
         }
 
@@ -1803,6 +1933,11 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andGroupUserIdsLikeInsensitive(String value) {
+            addCriterion("upper(groupUserIds) like", value.toUpperCase(), "groupUserIds");
+            return (Criteria) this;
+        }
+
         public Criteria andUserMobileLikeInsensitive(String value) {
             addCriterion("upper(userMobile) like", value.toUpperCase(), "userMobile");
             return (Criteria) this;
@@ -1903,6 +2038,46 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andParentIdEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("parentId =", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdNotEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("parentId <>", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdGreaterThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("parentId >", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdGreaterThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("parentId >=", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdLessThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("parentId <", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdLessThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("parentId <=", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("parentId in", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdNotInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("parentId not in", value, "parentId");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdEqualToIgnoreNull(Long value) {
             addCriterionIgnoreNull("userId =", value, "userId");
             return (Criteria) this;
@@ -1990,6 +2165,56 @@ public class OrderExample {
 
         public Criteria andUserNameNotInIgnoreNull(List<String> value) {
             addCriterionIgnoreNull("userName not in", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("groupUserIds =", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("groupUserIds <>", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("groupUserIds >", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("groupUserIds >=", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("groupUserIds <", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("groupUserIds <=", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("groupUserIds like", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("groupUserIds not like", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("groupUserIds in", value, "groupUserIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupUserIdsNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("groupUserIds not in", value, "groupUserIds");
             return (Criteria) this;
         }
 
@@ -2958,6 +3183,11 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andGroupUserIdsLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(groupUserIds) like", value.toUpperCase(), "groupUserIds");
+            return (Criteria) this;
+        }
+
         public Criteria andUserMobileLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(userMobile) like", value.toUpperCase(), "userMobile");
             return (Criteria) this;
@@ -3016,6 +3246,11 @@ public class OrderExample {
             return this;
         }
 
+        public Criteria andParentIdLikeInsensitive(String value) {
+            addCriterion("upper(parentId) like", value.toUpperCase(), "parentId");
+            return this;
+        }
+
         public Criteria andUserIdLikeInsensitive(String value) {
             addCriterion("upper(userId) like", value.toUpperCase(), "userId");
             return this;
@@ -3023,6 +3258,11 @@ public class OrderExample {
 
         public Criteria andUserNameLikeInsensitive(String value) {
             addCriterion("upper(userName) like", value.toUpperCase(), "userName");
+            return this;
+        }
+
+        public Criteria andGroupUserIdsLikeInsensitive(String value) {
+            addCriterion("upper(groupUserIds) like", value.toUpperCase(), "groupUserIds");
             return this;
         }
 
