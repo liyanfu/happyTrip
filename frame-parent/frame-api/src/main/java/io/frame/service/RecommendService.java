@@ -70,6 +70,6 @@ public interface RecommendService {
 	 * @param userId
 	 * @param object
 	 */
-	void upsert(Long userId, BigDecimal money);
+	void upsert(Long userId, Integer num, BigDecimal money);
 
 }

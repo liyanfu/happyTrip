@@ -252,7 +252,7 @@ public class OrderServiceImpl implements OrderService {
 			this.recordReport(userId, order.getBuyMoney());
 
 			// 写入推荐表信息 ,算入父级的团队业绩中..
-			recommendService.upsert(user.getParentId(), order.getBuyMoney());
+			recommendService.upsert(user.getParentId(), null, order.getBuyMoney());
 		} else {
 			// 其他线下支付获取收款二维码
 			qrCode = configService.getConfigByKey(RechargeKey.RECHARGE_QRCODE_KEY.getValue());

@@ -3,6 +3,7 @@ package io.frame.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +30,8 @@ public class ApiIndexController {
 	ProductTypeService productTypeService;
 
 	@Login
-	@ApiOperation(notes = "{msg:消息提示,code:状态码,productTypeList:[{productTypeId:商品类别ID,productTypeName:商品类别名称}]}", value = "获取顶部Tab标签页(商品类别)")
+	@GetMapping("getTopTabList")
+	@ApiOperation(notes = "{msg:消息提示,code:状态码,productTypeList:[{productTypeId:商品类别ID,productTypeName:商品类别名称}]}", value = "获取顶部Tab标签页")
 	public R getTopTabList() {
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("productTypeList", productTypeService.getProductTypeList());

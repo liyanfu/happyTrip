@@ -130,7 +130,7 @@ public class RecommendServiceImpl implements RecommendService {
 
 	@SysLog("更新推荐")
 	@Override
-	public void upsert(Long userId, BigDecimal money) {
+	public void upsert(Long userId, Integer num, BigDecimal money) {
 		RecommendExample example = new RecommendExample();
 		RecommendExample.Criteria cr = example.createCriteria();
 		cr.andUserIdEqualTo(userId);
@@ -147,13 +147,13 @@ public class RecommendServiceImpl implements RecommendService {
 			recommend.setGroupUserIds(user.getGroupUserIds());
 			recommend.setCreateTime(date);
 			recommend.setCreateUser(user.getUserName());
-			recommend.setRecommendNumber(1);
+			recommend.setRecommendNumber(num);
 			recommend.setTeamAchievement(money);
 			recommendMapper.insertSelective(recommend);
 		} else {
 			// 修改
 			// 重置信息
-			recommend.setRecommendNumber(1);
+			recommend.setRecommendNumber(num);
 			recommend.setTeamAchievement(money);
 			recommendMapper.updateByPrimaryKeySelectiveSync(recommend);
 		}

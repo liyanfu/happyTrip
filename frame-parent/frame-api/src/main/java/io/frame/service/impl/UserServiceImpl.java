@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService {
 			// 新增用户钱包
 			walletService.createWallet(user.getUserId(), user.getUserName());
 			// 更新父级推荐表中记录
-			recommendService.upsert(parentUser.getUserId(), null);
+			recommendService.upsert(parentUser.getUserId(), 1, null);
 			// 创建token 并标记为登录
 			// token = tokenService.createToken(user.getUserId());
 		} catch (Exception e) {
