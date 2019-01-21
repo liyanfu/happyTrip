@@ -2,6 +2,7 @@
 package io.frame.modules.happytrip.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,14 +17,19 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 
 import io.frame.common.enums.Constant;
+import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.exception.ErrorCode;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.PageUtils;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Recharge;
 import io.frame.dao.entity.RechargeExample;
+import io.frame.dao.entity.SysUser;
+import io.frame.dao.entity.WalletChange;
 import io.frame.dao.mapper.RechargeMapper;
 import io.frame.modules.happytrip.service.RechargeService;
+import io.frame.modules.happytrip.service.WalletService;
+import io.frame.modules.sys.shiro.ShiroUtils;
 
 /**
  * 充值
@@ -38,6 +44,9 @@ public class RechargeServiceImpl implements RechargeService {
 
 	@Autowired
 	RechargeMapper rechargeMapper;
+
+	@Autowired
+	WalletService walletService;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -74,6 +83,58 @@ public class RechargeServiceImpl implements RechargeService {
 		} catch (Exception e) {
 			logger.error(ErrorCode.GET_INFO_FAILED, e);
 			throw new RRException(ErrorCode.GET_INFO_FAILED);
+		}
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Recharge getInfoById(Long rechargeId) {
+		return rechargeMapper.selectByPrimaryKey(rechargeId);
+	}
+
+	@Override
+	public void update(Recharge recharge) {
+		SysUser sysUser = ShiroUtils.getUserEntity();
+		recharge.setUpdateUser(sysUser.getUserName());
+		recharge.setUpdateTime(new Date());
+
+		Recharge newRecharge = rechargeMapper.selectByPrimaryKey(recharge.getRechargeId());
+		// 判断订单状态，
+		if (newRecharge.getStatus() == Constant.Status.ONE.getValue()) {
+			throw new RRException(ErrorCode.STATUS_IS_COMPLETE);
+		}
+		try {
+			rechargeMapper.updateByPrimaryKeySelective(recharge);
+
+			// 如果是把状态改为已完成,则给用户加钱,更新账变,刷新报表.
+			if (recharge.getStatus() == Constant.Status.ONE.getValue()) {
+				WalletChange walletChange = new WalletChange();
+				walletChange.setUserId(newRecharge.getUserId());
+				walletChange.setOperatorMoney(newRecharge.getRechargeMoney());
+				walletChange.setRelationId(newRecharge.getRechargeId());
+				walletChange.setRemark(recharge.getFrontRemark());
+				walletService.recharge(walletChange, ChangeType.RECHARGE_IN_KEY);
+			}
+
+		} catch (Exception e) {
+			logger.error(ErrorCode.OPERATE_FAILED, e);
+			throw new RRException(ErrorCode.OPERATE_FAILED);
+		}
+
+	}
+
+	@Override
+	public void delete(Long rechargeId) {
+		Recharge newRecharge = rechargeMapper.selectByPrimaryKey(rechargeId);
+		// 判断状态，
+		if (newRecharge.getStatus() == Constant.Status.ONE.getValue()) {
+			throw new RRException(ErrorCode.THIS_DATA_IS_COMPLETE);
+		}
+		try {
+			rechargeMapper.deleteByPrimaryKey(rechargeId);
+		} catch (Exception e) {
+			logger.error(ErrorCode.OPERATE_FAILED, e);
+			throw new RRException(ErrorCode.OPERATE_FAILED);
 		}
 	}
 

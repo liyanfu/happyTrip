@@ -78,20 +78,22 @@ public class WalletChangeServiceImpl implements WalletChangeService {
 
 	@SysLog("创建帐变")
 	@Override
-	public void createWalletChange(Long userId, BigDecimal changeMoney, String remark, ChangeType changeType) {
+	public void createWalletChange(Long userId, BigDecimal changeMoney, WalletChange walletChange,
+			ChangeType changeType) {
 		SysUser sysUser = ShiroUtils.getUserEntity();
-		Wallet wallet = walletService.getInfoById(userId);
+		Wallet wallet = walletService.getInfoByUserId(userId);
 		User user = userService.getInfoById(userId);
-		WalletChange walletChange = new WalletChange();
-		walletChange.setUserId(userId);
-		walletChange.setUserName(user.getUserName());
-		walletChange.setBalance(wallet.getBalance());
-		walletChange.setOperatorMoney(changeMoney);
-		walletChange.setOperatorType(changeType.getValue());
-		walletChange.setOperatorName(changeType.getName());
-		walletChange.setCreateTime(new Date());
-		walletChange.setCreateUser(sysUser.getUserName());
-		walletChange.setRemark(remark);
+		WalletChange newWalletChange = new WalletChange();
+		newWalletChange.setUserId(userId);
+		newWalletChange.setUserName(user.getUserName());
+		newWalletChange.setBalance(wallet.getBalance());
+		newWalletChange.setOperatorMoney(changeMoney);
+		newWalletChange.setOperatorType(changeType.getValue());
+		newWalletChange.setOperatorName(changeType.getName());
+		newWalletChange.setCreateTime(new Date());
+		newWalletChange.setCreateUser(sysUser.getUserName());
+		newWalletChange.setRemark(walletChange.getRemark());
+		newWalletChange.setRelationId(walletChange.getRelationId());
 		try {
 			walletChangeMapper.insertSelective(walletChange);
 		} catch (Exception e) {

@@ -29,4 +29,26 @@ public interface WithdrawService {
 	 */
 	BigDecimal getWithdrawTotalMoneyById(Long userId);
 
+	/**
+	 * 提现信息
+	 * 
+	 * @param withdrawId
+	 * @return
+	 */
+	Withdraw getInfoById(Long withdrawId);
+
+	/**
+	 * 修改提现
+	 * 
+	 * @param withdraw
+	 */
+	void update(Withdraw withdraw);
+
+	/**
+	 * 删除提现
+	 * 
+	 * @param withdrawId
+	 */
+	void delete(Long withdrawId);
+
 }

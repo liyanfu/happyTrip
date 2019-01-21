@@ -25,8 +25,10 @@ public interface WalletChangeService {
 	 * 创建帐变
 	 * 
 	 * @param userId
-	 * @param changeMoney
+	 * @param changeMoney 账变金额
+	 * @param balance     钱包剩余金额
+	 * @param remark
 	 * @param changeType
 	 */
-	void createWalletChange(Long userId, BigDecimal changeMoney, String remark, ChangeType changeType);
+	void createWalletChange(Long userId, BigDecimal changeMoney, WalletChange walletChange, ChangeType changeType);
 }

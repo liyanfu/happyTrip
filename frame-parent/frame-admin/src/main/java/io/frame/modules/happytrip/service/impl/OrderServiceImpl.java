@@ -23,8 +23,12 @@ import io.frame.common.utils.PageUtils;
 import io.frame.dao.entity.Order;
 import io.frame.dao.entity.OrderExample;
 import io.frame.dao.entity.SysUser;
+import io.frame.dao.entity.WalletChange;
 import io.frame.dao.mapper.OrderMapper;
 import io.frame.modules.happytrip.service.OrderService;
+import io.frame.modules.happytrip.service.RecommendService;
+import io.frame.modules.happytrip.service.ReportService;
+import io.frame.modules.happytrip.service.WalletService;
 import io.frame.modules.sys.service.SysConfigService;
 import io.frame.modules.sys.shiro.ShiroUtils;
 
@@ -44,6 +48,15 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	SysConfigService sysConfigService;
+
+	@Autowired
+	ReportService reportService;
+
+	@Autowired
+	RecommendService recommendService;
+
+	@Autowired
+	WalletService walletService;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -134,18 +147,31 @@ public class OrderServiceImpl implements OrderService {
 		order.setUpdateTime(new Date());
 
 		// 判断订单状态，
-		if (order.getStatus() != OrderStatus.ONE.getValue()) {
+		if (order.getStatus() != OrderStatus.ONE.getValue() && order.getStatus() != OrderStatus.THREE.getValue()) {
 			throw new RRException(ErrorCode.ONLY_UPDATE_ONE_ORDER_STATUS);
 		}
 
 		Order newOrder = orderMapper.selectByPrimaryKey(order.getOrderId());
 		// 判断订单状态，
-		if (newOrder.getStatus() != OrderStatus.ZERO.getValue()) {
+		if (newOrder.getStatus() != OrderStatus.ZERO.getValue()
+				&& newOrder.getStatus() != OrderStatus.THREE.getValue()) {
 			throw new RRException(ErrorCode.ONLY_UPDATE_ZERO_ORDER_STATUS);
 		}
 
 		try {
 			orderMapper.updateByPrimaryKeySelective(order);
+
+			// 如果是把状态改为收益中,则刷新报表.因为待支付的订单并未事先扣款
+			if (order.getStatus() == Constant.Status.ONE.getValue()) {
+				// 扣款
+				WalletChange walletChange = new WalletChange();
+				walletChange.setUserId(newOrder.getUserId());
+				walletChange.setOperatorMoney(order.getBuyMoney());
+				walletChange.setRelationId(newOrder.getOrderId());
+				walletService.orderSubtract(walletChange);
+				// 刷新推荐父级团队业绩
+				recommendService.upsert(newOrder.getParentId(), newOrder.getBuyMoney());
+			}
 		} catch (Exception e) {
 			logger.error(ErrorCode.OPERATE_FAILED, e);
 			throw new RRException(ErrorCode.OPERATE_FAILED);

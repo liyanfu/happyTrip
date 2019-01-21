@@ -2,21 +2,22 @@ $(function () {
 	//表格参数
 	tableOption.cols = [[
         {type:'checkbox'},
-        {field:'rechargeId', 		width:100, 	title: '充值ID'},
+        {field:'withdrawId', 		width:100, 	title: '提现ID'},
         {field:'userName', 			width:120, 	title: '用户名称' },
         {field:'userMobile', 		width:120, 	title: '登录账号' },
-        {field:'rechargeMoney', 	width:120, 		title: '充值金额',sort: true},
-        {field:'rechargeFee', 		minWidth:100,   title: '充值手续费', sort: true},
-        {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet:formatterRechargeStatus},
+        {field:'withdrawMoney', 	width:120, 		title: '提现金额',sort: true},
+        {field:'withdrawFee', 		minWidth:100,   title: '提现手续费', sort: true},
+        {field:'withdrawRealMoney', 		minWidth:100,   title: '实际提现金额', sort: true},
+        {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet:formatterWithdrawStatus},
         {field:'alipayName', 		minWidth:100,   title: '支付宝名称'},
         {field:'alipayMobile', 		minWidth:100,   title: '支付宝账号'},
-        {field:'rechargeCode', 		minWidth:100,   title: '充值凭证吗'},
+        {field:'frontRemark', 		minWidth:100,   title: '备注'},
         {field:'createTime', 		minWidth:100,   title: '创建时间',templet:function(d){
         	return formatterTime(d.createTime);
         }},
         {title: '操作', width:120, templet:'#barTpl',fixed:"right",align:"center"}
     ]];
-	tableOption.url = baseURL + 'ht/recharge/list';
+	tableOption.url = baseURL + 'ht/withdraw/list';
 	//初始化表格
     gridTable = layui.table.render(tableOption);
 
@@ -61,8 +62,8 @@ $(function () {
 	  		   return false;
    	  });
    	  
-   	form.on('select(selectRechargeStatus)', function(data){
-		  vm.recharge.status = data.value;
+   	form.on('select(selectWithdrawStatus)', function(data){
+		  vm.withdraw.status = data.value;
 		   return false;
 	  });
    	  
@@ -74,7 +75,7 @@ $(function () {
     
 
     layui.form.on('submit(saveOrUpdate)', function(data){
-        vm.updateStatus(vm.recharge.rechargeId,vm.recharge.status);
+        vm.updateStatus(vm.withdraw.withdrawId,vm.withdraw.status);
         return false;
     });
 
@@ -85,9 +86,9 @@ $(function () {
             data = obj.data;
         	vm.copyBean(obj.data);
     	if(layEvent === 'edit'){//编辑
-            vm.update(data.rechargeId);
+            vm.update(data.withdrawId);
         }else if(layEvent === 'del'){//删除
-            vm.del(data.rechargeId);
+            vm.del(data.withdrawId);
         }
     	
     });
@@ -97,14 +98,16 @@ $(function () {
 
 
 //格式化状态
-var formatterRechargeStatus = function(d){
+var formatterWithdrawStatus = function(d){
 	var text = '<span class="label label-success">其他</span>';
 	if(d.status==0){
-		text = '<span class="label label-danger">待支付</span>';
+		text = '<span class="label label-danger">待审核</span>';
 	}else if(d.status==1){
 		text = '<span class="label label-disabled">已完成</span>';
 	}else if(d.status==2){
 		text = '<span class="label label-warm">异常</span>';
+	}else if(d.status==3){
+		text = '<span class="label label-warm">已取消</span>';
 	}
 	return text;
 	
@@ -116,15 +119,14 @@ var vm = new Vue({
         q:{						//查询条件
         	beginTime: null,
             endTime: null,
-            rechargeCode:null,
-        	rechargeId:null,
+        	withdrawId:null,
         	userName: null,
         	userMobile: null,
         	alipayMobile:null,
         	status:null
         },
 		showSelectForm:false,	//查看form表单
-        recharge:{}				//对象
+        withdraw:{}				//对象
     },
     updated: function(){
         layui.form.render();
@@ -139,7 +141,7 @@ var vm = new Vue({
 
             var ids = [];
             $.each(list, function(index, item) {
-                ids.push(item.rechargeId);
+                ids.push(item.withdrawId);
             });
             return ids;
         },
@@ -149,24 +151,24 @@ var vm = new Vue({
                 alert("请选择一条记录");
                 return ;
             }
-            var rechargeId =null;
+            var withdrawId =null;
             $.each(list, function(index, item) {
-            	rechargeId =  item.rechargeId;
+            	withdrawId =  item.withdrawId;
             });
-            return rechargeId;
+            return withdrawId;
         },
         query: function () {
             vm.reload();
         },
-        select: function(rechargeId){
-        	if(rechargeId == null || isNaN(rechargeId)){
-        		rechargeId = vm.selectedRow();
+        select: function(withdrawId){
+        	if(withdrawId == null || isNaN(withdrawId)){
+        		withdrawId = vm.selectedRow();
         	}
         	
-        	if(rechargeId == null){
+        	if(withdrawId == null){
         		return ;
         	}
-        	vm.getrecharge(rechargeId);
+        	vm.getWithdraw(withdrawId);
     	
     	  var index = layer.open({
               title: "查看",
@@ -182,7 +184,7 @@ var vm = new Vue({
       	layer.full(index);
         },
         add: function () {
-        	vm.recharge ={};
+        	vm.withdraw ={};
             var index = layer.open({
                 title: "新增",
                 type: 1,
@@ -195,8 +197,8 @@ var vm = new Vue({
             vm.addForm = true;
             layer.full(index);
         },
-        update: function (rechargeId) {
-            vm.getRecharge(rechargeId);
+        update: function (withdrawId) {
+            vm.getWithdraw(withdrawId);
             var index = layer.open({
                 title: "编辑",
                 type: 1,
@@ -209,18 +211,18 @@ var vm = new Vue({
             vm.showSelectForm = true;
             layer.full(index);
         },
-        del: function (rechargeId) {
-        	if(rechargeId == null || isNaN(rechargeId)){
-        		rechargeId = vm.selectedRow();
+        del: function (withdrawId) {
+        	if(withdrawId == null || isNaN(withdrawId)){
+        		withdrawId = vm.selectedRow();
         	}
-        	if(rechargeId == null){
+        	if(withdrawId == null){
         		return ;
         	}
             confirm('确定要删除选中的记录？', function(){
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "ht/recharge/delete",
-                    data: {rechargeId:rechargeId},
+                    url: baseURL + "ht/withdraw/delete",
+                    data: {withdrawId:withdrawId},
                     success: function(r){
                         if(r.code === 0){
                             alert('操作成功', function(){
@@ -233,11 +235,11 @@ var vm = new Vue({
                 });
             });
         },
-        updateStatus: function (rechargeId, status) {
+        updateStatus: function (withdrawId, status) {
             $.ajax({
                 type: "POST",
-                url: baseURL + "ht/recharge/status",
-                data: {rechargeId: rechargeId, status: status},
+                url: baseURL + "ht/withdraw/status",
+                data: {withdrawId: withdrawId, status: status},
                 success: function(r){
                     if(r.code == 0){
                         layer.alert('操作成功', function(index){
@@ -252,14 +254,14 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function () {
-            var url = vm.recharge.rechargeId == null ? "ht/recharge/save" : "ht/recharge/update";
+            var url = vm.withdraw.withdrawId == null ? "ht/withdraw/save" : "ht/withdraw/update";
             //编辑时间格式报错.
-           vm.recharge.createTime = null;
+           vm.withdraw.createTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
                 contentType: "application/json",
-                data: JSON.stringify(vm.recharge),
+                data: JSON.stringify(vm.withdraw),
                 success: function(r){
                     if(r.code === 0){
                         layer.alert('操作成功', function(){
@@ -272,15 +274,15 @@ var vm = new Vue({
                 }
             });
         },
-        getRecharge: function(rechargeId){
-            $.get(baseURL + "ht/recharge/info/"+rechargeId, function(r){
-                vm.copyBean(r.recharge);
+        getWithdraw: function(withdrawId){
+            $.get(baseURL + "ht/withdraw/info/"+withdrawId, function(r){
+                vm.copyBean(r.withdraw);
             });
         },
-        copyBean:  function(recharge){
-        	vm.recharge = recharge;
-        	//vm.recharge.createTime = formatterTime(recharge.createTime);
-        	//vm.recharge.updateTime = formatterTime(recharge.updateTime);
+        copyBean:  function(withdraw){
+        	vm.withdraw = withdraw;
+        	vm.withdraw.createTime = formatterTime(withdraw.createTime);
+        	vm.withdraw.updateTime = formatterTime(withdraw.updateTime);
         },
         reload: function (event) {
             layui.table.reload('gridid', {

@@ -68,6 +68,18 @@ public class ErrorCode {
 	public static String ONLY_UPDATE_ONE_ORDER_STATUS = "只能将待支付订单修改为收益中 ";
 
 	/** 订单正在收益中 无法删除 */
-	public static String ORDER_IS_OPEN = " 订单正在收益中无法删除 ";
+	public static String ORDER_IS_OPEN = "订单正在收益中无法删除 ";
+
+	/** 状态已是已完成,无需重复操作 */
+	public static String STATUS_IS_COMPLETE = "状态已完成,无需重复操作";
+
+	/** 状态已是待支付,无需重复操作 */
+	public static String STATUS_IS_WAIT = "状态已是待支付,无需重复操作";
+
+	/** 此数据状态已完成，无法删除 */
+	public static String THIS_DATA_IS_COMPLETE = "此数据状态已完成,无法删除 ";
+
+	/** 只能修改待审核状态的订单 */
+	public static String ONLY_UPDATE_ZERO_WITHDRAW_STATUS = "只能修改待审核状态的订单";
 
 }

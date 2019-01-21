@@ -1,5 +1,6 @@
 package io.frame.modules.happytrip.service;
 
+import io.frame.common.enums.Constant.ChangeType;
 import io.frame.dao.entity.Wallet;
 import io.frame.dao.entity.WalletChange;
 
@@ -9,6 +10,7 @@ import io.frame.dao.entity.WalletChange;
  * @author fury
  *
  */
+
 public interface WalletService {
 
 	/**
@@ -17,7 +19,15 @@ public interface WalletService {
 	 * @param userId
 	 * @return
 	 */
-	Wallet getInfoById(Long userId);
+	Wallet getInfoByUserId(Long userId);
+
+	/**
+	 * 获取钱包
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	Wallet getInfoById(Long walletId);
 
 	/**
 	 * 新增用户钱包
@@ -40,5 +50,27 @@ public interface WalletService {
 	 * @param walletChange
 	 */
 	void subtract(WalletChange walletChange);
+
+	/**
+	 * 购买订单扣款
+	 * 
+	 * @param walletChange
+	 */
+	void orderSubtract(WalletChange walletChange);
+
+	/**
+	 * 充值入账
+	 * 
+	 * @param walletChange
+	 */
+	void recharge(WalletChange walletChange, ChangeType changeType);
+
+	/**
+	 * 提现回退
+	 * 
+	 * @param walletChange
+	 * @param withdrawOutBackKey
+	 */
+	void subtractBack(WalletChange walletChange, ChangeType changeType);
 
 }

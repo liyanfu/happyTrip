@@ -29,4 +29,26 @@ public interface RechargeService {
 	 */
 	BigDecimal getRechargeTotalMoneyById(Long userId);
 
+	/**
+	 * 充值信息
+	 * 
+	 * @param rechargeId
+	 * @return
+	 */
+	Recharge getInfoById(Long rechargeId);
+
+	/**
+	 * 修改充值信息
+	 * 
+	 * @param recharge
+	 */
+	void update(Recharge recharge);
+
+	/**
+	 * 删除充值订单
+	 * 
+	 * @param rechargeId
+	 */
+	void delete(Long rechargeId);
+
 }
