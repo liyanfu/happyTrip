@@ -20,6 +20,7 @@ import io.frame.common.enums.Constant;
 import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.exception.ErrorCode;
 import io.frame.common.exception.RRException;
+import io.frame.common.utils.DateUtils;
 import io.frame.common.utils.PageUtils;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Recharge;
@@ -55,9 +56,47 @@ public class RechargeServiceImpl implements RechargeService {
 
 			RechargeExample example = new RechargeExample();
 			RechargeExample.Criteria cr = example.createCriteria();
-			cr.andUserNameEqualToIgnoreNull(recharge.getUserName());
+
+			Date beginDate = recharge.getBeginTime();
+			Date endDate = recharge.getEndTime();
+			// 当天0点
+			if (beginDate == null) {
+				beginDate = DateUtils.parse(new Date(), "yyyy-MM-dd");
+			}
+
+			// 明天0点
+			if (endDate == null) {
+				endDate = DateUtils.addDateDays(DateUtils.parse(new Date(), "yyyy-MM-dd"), 1);
+			}
+
+			if (beginDate == endDate) {
+				endDate = DateUtils.addDateDays(DateUtils.parse(new Date(), "yyyy-MM-dd"), 1);
+			}
+
+			if (recharge.getRechargeId() != null) {
+				cr.andRechargeIdEqualToIgnoreNull(recharge.getRechargeId());
+			}
+			if (!StringUtils.isEmpty(recharge.getUserName())) {
+				cr.andUserNameLikeIgnoreNull(recharge.getUserName() + "%");
+			}
+
+			if (!StringUtils.isEmpty(recharge.getAlipayMobile())) {
+				cr.andAlipayMobileLikeIgnoreNull(recharge.getAlipayMobile() + "%");
+			}
+
+			if (!StringUtils.isEmpty(recharge.getUserMobile())) {
+				cr.andUserMobileLikeIgnoreNull(recharge.getUserMobile() + "%");
+			}
+
+			if (!StringUtils.isEmpty(recharge.getRechargeCode())) {
+				cr.andRechargeCodeLikeIgnoreNull(recharge.getRechargeCode() + "%");
+			}
+
 			cr.andStatusEqualToIgnoreNull(recharge.getStatus());
-			example.or().andStatusEqualTo(Constant.Status.ONE.getValue());
+
+			cr.andCreateTimeGreaterThanOrEqualToIgnoreNull(beginDate);
+			cr.andCreateTimeLessThanIgnoreNull(endDate);
+
 			PageHelper.startPage(recharge.getPageNumber(), recharge.getPageSize());
 			example.setOrderByClause(
 					StringUtils.isEmpty(recharge.getSortName()) ? SqlTools.orderByDescField(Recharge.FD_CREATETIME)
@@ -103,6 +142,12 @@ public class RechargeServiceImpl implements RechargeService {
 		if (newRecharge.getStatus() == Constant.Status.ONE.getValue()) {
 			throw new RRException(ErrorCode.STATUS_IS_COMPLETE);
 		}
+
+		if (recharge.getStatus() == Constant.Status.ZERO.getValue()
+				&& newRecharge.getStatus() == Constant.Status.ZERO.getValue()) {
+			throw new RRException(ErrorCode.RECHARGE_STATUS_IS_WAIT);
+		}
+
 		try {
 			rechargeMapper.updateByPrimaryKeySelective(recharge);
 

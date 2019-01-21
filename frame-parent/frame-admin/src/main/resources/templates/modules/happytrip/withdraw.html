@@ -125,13 +125,6 @@
 			</div>
 		</div>
 		
-		<div class="layui-form-item">
-			<label class="layui-form-label">备注</label>
-			<div class="layui-input-block"> 
-				<input type="number"  v-model="withdraw.frontRemark"   readonly="readonly"  class="layui-input layui-bg-gray">
-			</div>
-		</div>
-		
 		
 		<div class="layui-form-item">
 			<label class="layui-form-label">创建时间</label>
@@ -160,6 +153,13 @@
 			<label class="layui-form-label">修改者</label>
 			<div class="layui-input-block"> 
 				<input type="text"  v-model="withdraw.updateUser"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block"> 
+				<input type="text" lay-verify="required" v-model="withdraw.frontRemark"   class="layui-input">
 			</div>
 		</div>
 		

@@ -180,7 +180,7 @@ public class WalletServiceImpl implements WalletService {
 		}
 
 		// 获取用户账户信息
-		Wallet wallet = this.getInfoById(userId);
+		Wallet wallet = this.getInfoByUserId(userId);
 		Wallet updateWallet = new Wallet();
 		updateWallet.setWalletId(wallet.getWalletId());
 		updateWallet.setUserId(userId);
@@ -204,7 +204,7 @@ public class WalletServiceImpl implements WalletService {
 			walletChangeService.createWalletChange(userId, changeMoney.negate(), walletChange,
 					ChangeType.PURCHASE_CAR_SPACE_KEY);
 			// 刷新报表
-			reportService.upsert(userId, changeMoney, BigDecimal.ZERO, ChangeType.MANUAL_DEDUCTION_KEY);
+			reportService.upsert(userId, changeMoney, BigDecimal.ZERO, ChangeType.PURCHASE_CAR_SPACE_KEY);
 		} catch (Exception e) {
 			logger.error(ErrorCode.OPERATE_FAILED, e);
 			throw new RRException(ErrorCode.OPERATE_FAILED);

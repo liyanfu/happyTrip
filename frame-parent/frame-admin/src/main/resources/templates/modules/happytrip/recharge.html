@@ -121,14 +121,6 @@
 		</div>
 		
 		<div class="layui-form-item">
-			<label class="layui-form-label">备注</label>
-			<div class="layui-input-block"> 
-				<input type="number"  v-model="recharge.frontRemark"   readonly="readonly"  class="layui-input layui-bg-gray">
-			</div>
-		</div>
-		
-		
-		<div class="layui-form-item">
 			<label class="layui-form-label">创建时间</label>
 			<div class="layui-input-block"> 
 				<input type="text"  v-model="recharge.createTime"  readonly="readonly"  class="layui-input layui-bg-gray">
@@ -155,6 +147,13 @@
 			<label class="layui-form-label">修改者</label>
 			<div class="layui-input-block"> 
 				<input type="text"  v-model="recharge.updateUser"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block"> 
+				<input type="text" lay-verify="required" v-model="recharge.frontRemark"   class="layui-input">
 			</div>
 		</div>
 		

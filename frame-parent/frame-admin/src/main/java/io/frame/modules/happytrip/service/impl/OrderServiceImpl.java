@@ -158,24 +158,20 @@ public class OrderServiceImpl implements OrderService {
 			throw new RRException(ErrorCode.ONLY_UPDATE_ZERO_ORDER_STATUS);
 		}
 
-		try {
-			orderMapper.updateByPrimaryKeySelective(order);
+		orderMapper.updateByPrimaryKeySelective(order);
 
-			// 如果是把状态改为收益中,则刷新报表.因为待支付的订单并未事先扣款
-			if (order.getStatus() == Constant.Status.ONE.getValue()) {
-				// 扣款
-				WalletChange walletChange = new WalletChange();
-				walletChange.setUserId(newOrder.getUserId());
-				walletChange.setOperatorMoney(order.getBuyMoney());
-				walletChange.setRelationId(newOrder.getOrderId());
-				walletService.orderSubtract(walletChange);
-				// 刷新推荐父级团队业绩
-				recommendService.upsert(newOrder.getParentId(), newOrder.getBuyMoney());
-			}
-		} catch (Exception e) {
-			logger.error(ErrorCode.OPERATE_FAILED, e);
-			throw new RRException(ErrorCode.OPERATE_FAILED);
+		// 如果是把状态改为收益中,则刷新报表.因为待支付的订单并未事先扣款
+		if (order.getStatus() == Constant.Status.ONE.getValue()) {
+			// 扣款
+			WalletChange walletChange = new WalletChange();
+			walletChange.setUserId(newOrder.getUserId());
+			walletChange.setOperatorMoney(newOrder.getBuyMoney());
+			walletChange.setRelationId(newOrder.getOrderId());
+			walletService.orderSubtract(walletChange);
+			// 刷新推荐父级团队业绩
+			recommendService.upsert(newOrder.getParentId(), null, newOrder.getBuyMoney());
 		}
+
 	}
 
 	@Override

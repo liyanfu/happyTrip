@@ -95,7 +95,7 @@ public class WalletChangeServiceImpl implements WalletChangeService {
 		newWalletChange.setRemark(walletChange.getRemark());
 		newWalletChange.setRelationId(walletChange.getRelationId());
 		try {
-			walletChangeMapper.insertSelective(walletChange);
+			walletChangeMapper.insertSelective(newWalletChange);
 		} catch (Exception e) {
 			logger.error(ErrorCode.OPERATE_FAILED, e);
 			throw new RRException(ErrorCode.OPERATE_FAILED);

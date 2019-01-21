@@ -129,7 +129,7 @@ public class ReportServiceImpl implements ReportService {
 			updateReport.setUpdateTime(date);
 			updateReport.setUpdateUser(sysUser == null ? "系统" : sysUser.getUserName());
 			// 更新操作者和时间
-			reportMapper.updateByPrimaryKey(updateReport);
+			reportMapper.updateByPrimaryKeySelective(updateReport);
 		}
 
 	}

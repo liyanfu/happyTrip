@@ -2,57 +2,48 @@ $(function () {
 	//表格参数
 	tableOption.cols = [[
         {type:'checkbox'},
-        {field:'rechargeId', 		width:100, 	title: '充值ID'},
-        {field:'userName', 			width:120, 	title: '用户名称' },
-        {field:'userMobile', 		width:120, 	title: '登录账号' },
-        {field:'rechargeMoney', 	width:120, 		title: '充值金额',sort: true},
-        {field:'rechargeFee', 		minWidth:100,   title: '充值手续费', sort: true},
-        {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet:formatterRechargeStatus},
-        {field:'alipayName', 		minWidth:100,   title: '支付宝名称'},
-        {field:'alipayMobile', 		minWidth:100,   title: '支付宝账号'},
-        {field:'rechargeCode', 		minWidth:100,   title: '充值凭证吗'},
+        {field:'welfareId', 			width:100, 	title: '福利ID'},
+        {field:'welfareName', 			width:100, 	title: '福利名称'},
+        {field:'welfareValue', 			width:120, 	title: '参数值' },
+        {field:'bonusPool', 			width:120, 	title: '奖金池'},
+        {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet: '#statusTpl'},
+        {field:'remark', 		minWidth:160,   title: '备注',templet:function(d){
+        	return "<div title='"+d.remark+"'><span class='label'>"+d.remark+"</span></div>";
+        }},
         {field:'createTime', 		minWidth:100,   title: '创建时间',templet:function(d){
         	return formatterTime(d.createTime);
         }},
         {title: '操作', width:120, templet:'#barTpl',fixed:"right",align:"center"}
     ]];
-	tableOption.url = baseURL + 'ht/recharge/list';
+	tableOption.url = baseURL + 'ht/welfare/list';
 	//初始化表格
     gridTable = layui.table.render(tableOption);
+    
+    
+    //状态
+    layui.form.on('switch(status)', function(data){
+        var index = layer.msg('修改中，请稍候',{icon: 16,time:false});
+        var status = 0;
+        if(data.elem.checked){
+            status = 1;
+        }
+        vm.updateStatus(data.value, status);
 
-    
-    layui.laydate.render({
-        elem: '#beginTime',
-        type: 'date',
-        value:new Date(),
-        isInitValue:true,
-        show: true,
-        done: function(value, date, endDate){
-            vm.q.beginTime = new Date(value+" 00:00:00");
-        },
-        ready: function(beginDate){
-        	 vm.q.beginTime = new Date(beginDate.year+"-"+beginDate.month+"-"+beginDate.date+" 00:00:00");
-        }
+        layer.close(index);
+        return false;
     });
     
-    layui.laydate.render({
-        elem: '#endTime',
-        type: 'date',
-        value:new Date((new Date).setDate((new Date()).getDate()+1)),
-        isInitValue:true,
-        show: true,
-        done: function(value, date, endDate){
-            vm.q.endTime = new Date(value+" 00:00:00");
-        },
-        ready: function(endDate){
-        	 vm.q.endTime = new Date(endDate.year+"-"+endDate.month+"-"+endDate.date+" 00:00:00");
-            if(!vm.flag){
-            	$('#layui-laydate2').hide();
-            }
-            vm.flag= true;
-        }
-    });
     
+    //状态
+    layui.form.on('switch(formStatus)', function(data){
+        var status = 0;
+        if(data.elem.checked){
+            status = 1;
+        }
+        console.info('status-----',status);
+        vm.welfare.status = status;
+        return false;
+    });
  
     layui.use('form', function(){
    	  var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
@@ -61,20 +52,33 @@ $(function () {
 	  		   return false;
    	  });
    	  
-   	form.on('select(selectRechargeStatus)', function(data){
-		  vm.recharge.status = data.value;
+   	 form.on('select(selectWelfareStatus)', function(data){
+		  vm.q.welfareKey = data.value;
 		   return false;
-	  });
-   	  
+   	 });
+   	
+   	 
+   	 form.on('select(formSelectWelfareStatus)', function(data){
+	  		  vm.welfare.welfareKey = data.value;
+	  		  if(data.value=='GLOBAL_BONUS_KEY'){
+	  			vm.welfare.remark = "每日直推X人";
+	  		  }
+	  		  if(data.value=='TEAM_LEADERSHIP_AWARD_KEY'){
+	  			vm.welfare.remark = "当日直推X人,当日业绩达X";
+	  		  }
+	  		  if(data.value=='SPECIAL_CONTRIBUTION_AWARD_KEY'){
+	  			vm.welfare.remark = "累计直推有效会员X人,团队人数X,累计团队业绩X";
+	  		  }
+	  		  $("#remark").val(vm.welfare.remark);
+	  		 return false;
+  	  });
+   	
    	  form.render();
   });
   
-    
-    
-    
 
     layui.form.on('submit(saveOrUpdate)', function(data){
-        vm.updateStatus(vm.recharge.rechargeId,vm.recharge.status);
+        vm.saveOrUpdate();
         return false;
     });
 
@@ -85,46 +89,34 @@ $(function () {
             data = obj.data;
         	vm.copyBean(obj.data);
     	if(layEvent === 'edit'){//编辑
-            vm.update(data.rechargeId);
+            vm.update(data.welfareId);
         }else if(layEvent === 'del'){//删除
-            vm.del(data.rechargeId);
+            vm.del(data.welfareId);
         }
     	
     });
-    
+ 	  
+ 	 vm.getWelfareList();
 });
 
 
 
-//格式化状态
-var formatterRechargeStatus = function(d){
-	var text = '<span class="label label-success">其他</span>';
-	if(d.status==0){
-		text = '<span class="label label-danger">待支付</span>';
-	}else if(d.status==1){
-		text = '<span class="label label-disabled">已完成</span>';
-	}else if(d.status==2){
-		text = '<span class="label label-warm">异常</span>';
-	}
-	return text;
-	
-};
 
 var vm = new Vue({
     el:'#rrapp',
     data:{
         q:{						//查询条件
-        	beginTime: null,
-            endTime: null,
-            rechargeCode:null,
-        	rechargeId:null,
-        	userName: null,
-        	userMobile: null,
-        	alipayMobile:null,
+        	welfareId:null,
+        	welfareKey: null,
+        	welfareName:null,
         	status:null
         },
+        remark :null,
+        addForm:false,
 		showSelectForm:false,	//查看form表单
-        recharge:{}				//对象
+        welfare:{},				//订单对象
+        welfareList:{}		//产品类型集合
+        
     },
     updated: function(){
         layui.form.render();
@@ -139,7 +131,7 @@ var vm = new Vue({
 
             var ids = [];
             $.each(list, function(index, item) {
-                ids.push(item.rechargeId);
+                ids.push(item.welfareId);
             });
             return ids;
         },
@@ -149,24 +141,24 @@ var vm = new Vue({
                 alert("请选择一条记录");
                 return ;
             }
-            var rechargeId =null;
+            var welfareId =null;
             $.each(list, function(index, item) {
-            	rechargeId =  item.rechargeId;
+            	welfareId =  item.welfareId;
             });
-            return rechargeId;
+            return welfareId;
         },
         query: function () {
             vm.reload();
         },
-        select: function(rechargeId){
-        	if(rechargeId == null || isNaN(rechargeId)){
-        		rechargeId = vm.selectedRow();
+        select: function(welfareId){
+        	if(welfareId == null || isNaN(welfareId)){
+        		welfareId = vm.selectedRow();
         	}
         	
-        	if(rechargeId == null){
+        	if(welfareId == null){
         		return ;
         	}
-        	vm.getrecharge(rechargeId);
+        	vm.getwelfare(welfareId);
     	
     	  var index = layer.open({
               title: "查看",
@@ -182,7 +174,7 @@ var vm = new Vue({
       	layer.full(index);
         },
         add: function () {
-        	vm.recharge ={};
+        	vm.welfare ={};
             var index = layer.open({
                 title: "新增",
                 type: 1,
@@ -193,34 +185,36 @@ var vm = new Vue({
                 }
             });
             vm.addForm = true;
+            $('#welfareListSelect').removeAttr('disabled');
             layer.full(index);
         },
-        update: function (rechargeId) {
-            vm.getRecharge(rechargeId);
+        update: function (welfareId) {
+            vm.getwelfare(welfareId);
             var index = layer.open({
                 title: "编辑",
                 type: 1,
-                content: $("#selectForm"),
+                content: $("#addForm"),
                 end: function(){
-                    vm.showSelectForm = false;
+                    vm.addForm = false;
                     layer.closeAll();
                 }
             });
-            vm.showSelectForm = true;
+            vm.addForm = true;
+            $('#welfareListSelect').attr('disabled','true');
             layer.full(index);
         },
-        del: function (rechargeId) {
-        	if(rechargeId == null || isNaN(rechargeId)){
-        		rechargeId = vm.selectedRow();
+        del: function (welfareId) {
+        	if(welfareId == null || isNaN(welfareId)){
+        		welfareId = vm.selectedRow();
         	}
-        	if(rechargeId == null){
+        	if(welfareId == null){
         		return ;
         	}
             confirm('确定要删除选中的记录？', function(){
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "ht/recharge/delete",
-                    data: {rechargeId:rechargeId},
+                    url: baseURL + "ht/welfare/delete",
+                    data: {welfareId:welfareId},
                     success: function(r){
                         if(r.code === 0){
                             alert('操作成功', function(){
@@ -233,11 +227,11 @@ var vm = new Vue({
                 });
             });
         },
-        updateStatus: function (rechargeId, status) {
+        updateStatus: function (welfareId, status) {
             $.ajax({
                 type: "POST",
-                url: baseURL + "ht/recharge/status",
-                data: {rechargeId: rechargeId, status: status},
+                url: baseURL + "ht/welfare/status",
+                data: {welfareId: welfareId, status: status},
                 success: function(r){
                     if(r.code == 0){
                         layer.alert('操作成功', function(index){
@@ -252,14 +246,15 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function () {
-            var url = vm.recharge.rechargeId == null ? "ht/recharge/save" : "ht/recharge/update";
+            var url = vm.welfare.welfareId == null ? "ht/welfare/save" : "ht/welfare/update";
             //编辑时间格式报错.
-           vm.recharge.createTime = null;
+           vm.welfare.createTime = null;
+           vm.welfare.updateTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
                 contentType: "application/json",
-                data: JSON.stringify(vm.recharge),
+                data: JSON.stringify(vm.welfare),
                 success: function(r){
                     if(r.code === 0){
                         layer.alert('操作成功', function(){
@@ -272,15 +267,24 @@ var vm = new Vue({
                 }
             });
         },
-        getRecharge: function(rechargeId){
-            $.get(baseURL + "ht/recharge/info/"+rechargeId, function(r){
-                vm.copyBean(r.recharge);
+        getwelfare: function(welfareId){
+            $.get(baseURL + "ht/welfare/info/"+welfareId, function(r){
+                vm.copyBean(r.welfare);
             });
         },
-        copyBean:  function(recharge){
-        	vm.recharge = recharge;
-        	vm.recharge.createTime = formatterTime(recharge.createTime);
-        	vm.recharge.updateTime = formatterTime(recharge.updateTime);
+        getWelfareList: function(){
+            $.get(baseURL + "ht/welfare/getWelfareList/", function(r){
+            	if(r.code!=0){
+            		alert(r.msg);
+            		return false;
+            	}
+                vm.welfareList = r.list;
+            });
+        },
+        copyBean:  function(welfare){
+        	vm.welfare = welfare;
+        	vm.welfare.createTime = formatterTime(welfare.createTime);
+        	vm.welfare.updateTime = formatterTime(welfare.updateTime);
         },
         reload: function (event) {
             layui.table.reload('gridid', {

@@ -154,7 +154,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 		if (withdraw.getStatus() == Constant.Status.ZERO.getValue()
 				&& newWithdraw.getStatus() == Constant.Status.ZERO.getValue()) {
-			throw new RRException(ErrorCode.STATUS_IS_WAIT);
+			throw new RRException(ErrorCode.WITHDRAW_STATUS_IS_WAIT);
 		}
 
 		try {

@@ -56,7 +56,7 @@ public class RecommendServiceImpl implements RecommendService {
 
 	@SysLog("更新推荐")
 	@Override
-	public void upsert(Long userId, BigDecimal money) {
+	public void upsert(Long userId, Integer num, BigDecimal money) {
 		SysUser sysUser = ShiroUtils.getUserEntity();
 		RecommendExample example = new RecommendExample();
 		RecommendExample.Criteria cr = example.createCriteria();
@@ -74,13 +74,13 @@ public class RecommendServiceImpl implements RecommendService {
 			recommend.setGroupUserIds(user.getGroupUserIds());
 			recommend.setCreateTime(date);
 			recommend.setCreateUser(sysUser.getUserName());
-			recommend.setRecommendNumber(1);
+			recommend.setRecommendNumber(num);
 			recommend.setTeamAchievement(money);
 			recommendMapper.insertSelective(recommend);
 		} else {
 			// 修改
 			// 重置信息
-			recommend.setRecommendNumber(1);
+			recommend.setRecommendNumber(num);
 			recommend.setTeamAchievement(money);
 			recommendMapper.updateByPrimaryKeySelectiveSync(recommend);
 
@@ -89,7 +89,7 @@ public class RecommendServiceImpl implements RecommendService {
 			updateRecommend.setUpdateTime(date);
 			updateRecommend.setUpdateUser(sysUser.getUserName());
 			// 更新操作者和时间
-			recommendMapper.updateByPrimaryKey(updateRecommend);
+			recommendMapper.updateByPrimaryKeySelective(updateRecommend);
 
 		}
 

@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
 
 			if (parentUser != null) {
 				// 更新父级推荐表中记录
-				recommendService.upsert(parentUser.getUserId(), null);
+				recommendService.upsert(parentUser.getUserId(), 1, null);
 			}
 
 		} catch (Exception e) {
