@@ -328,6 +328,76 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserNameIsNull() {
+            addCriterion("userName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameIsNotNull() {
+            addCriterion("userName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameEqualTo(String value) {
+            addCriterion("userName =", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotEqualTo(String value) {
+            addCriterion("userName <>", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameGreaterThan(String value) {
+            addCriterion("userName >", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameGreaterThanOrEqualTo(String value) {
+            addCriterion("userName >=", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLessThan(String value) {
+            addCriterion("userName <", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLessThanOrEqualTo(String value) {
+            addCriterion("userName <=", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLike(String value) {
+            addCriterion("userName like", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotLike(String value) {
+            addCriterion("userName not like", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameIn(List<String> values) {
+            addCriterion("userName in", values, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotIn(List<String> values) {
+            addCriterion("userName not in", values, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameBetween(String value1, String value2) {
+            addCriterion("userName between", value1, value2, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotBetween(String value1, String value2) {
+            addCriterion("userName not between", value1, value2, "userName");
+            return (Criteria) this;
+        }
+
         public Criteria andUserMobileIsNull() {
             addCriterion("userMobile is null");
             return (Criteria) this;
@@ -1088,6 +1158,66 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andAlreadyProfitMoneyIsNull() {
+            addCriterion("alreadyProfitMoney is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyIsNotNull() {
+            addCriterion("alreadyProfitMoney is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyEqualTo(BigDecimal value) {
+            addCriterion("alreadyProfitMoney =", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyNotEqualTo(BigDecimal value) {
+            addCriterion("alreadyProfitMoney <>", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyGreaterThan(BigDecimal value) {
+            addCriterion("alreadyProfitMoney >", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("alreadyProfitMoney >=", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyLessThan(BigDecimal value) {
+            addCriterion("alreadyProfitMoney <", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("alreadyProfitMoney <=", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyIn(List<BigDecimal> values) {
+            addCriterion("alreadyProfitMoney in", values, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyNotIn(List<BigDecimal> values) {
+            addCriterion("alreadyProfitMoney not in", values, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("alreadyProfitMoney between", value1, value2, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("alreadyProfitMoney not between", value1, value2, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
         public Criteria andStartRebateTimeIsNull() {
             addCriterion("startRebateTime is null");
             return (Criteria) this;
@@ -1668,6 +1798,11 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserNameLikeInsensitive(String value) {
+            addCriterion("upper(userName) like", value.toUpperCase(), "userName");
+            return (Criteria) this;
+        }
+
         public Criteria andUserMobileLikeInsensitive(String value) {
             addCriterion("upper(userMobile) like", value.toUpperCase(), "userMobile");
             return (Criteria) this;
@@ -1805,6 +1940,56 @@ public class OrderExample {
 
         public Criteria andUserIdNotInIgnoreNull(List<Long> value) {
             addCriterionIgnoreNull("userId not in", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName =", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName <>", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName >", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName >=", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName <", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName <=", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName like", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName not like", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("userName in", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("userName not in", value, "userName");
             return (Criteria) this;
         }
 
@@ -2328,6 +2513,46 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andAlreadyProfitMoneyEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("alreadyProfitMoney =", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyNotEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("alreadyProfitMoney <>", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyGreaterThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("alreadyProfitMoney >", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyGreaterThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("alreadyProfitMoney >=", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyLessThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("alreadyProfitMoney <", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyLessThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("alreadyProfitMoney <=", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("alreadyProfitMoney in", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyProfitMoneyNotInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("alreadyProfitMoney not in", value, "alreadyProfitMoney");
+            return (Criteria) this;
+        }
+
         public Criteria andStartRebateTimeEqualToIgnoreNull(Integer value) {
             addCriterionIgnoreNull("startRebateTime =", value, "startRebateTime");
             return (Criteria) this;
@@ -2728,6 +2953,11 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserNameLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(userName) like", value.toUpperCase(), "userName");
+            return (Criteria) this;
+        }
+
         public Criteria andUserMobileLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(userMobile) like", value.toUpperCase(), "userMobile");
             return (Criteria) this;
@@ -2791,6 +3021,11 @@ public class OrderExample {
             return this;
         }
 
+        public Criteria andUserNameLikeInsensitive(String value) {
+            addCriterion("upper(userName) like", value.toUpperCase(), "userName");
+            return this;
+        }
+
         public Criteria andUserMobileLikeInsensitive(String value) {
             addCriterion("upper(userMobile) like", value.toUpperCase(), "userMobile");
             return this;
@@ -2848,6 +3083,11 @@ public class OrderExample {
 
         public Criteria andProfitMoneyLikeInsensitive(String value) {
             addCriterion("upper(profitMoney) like", value.toUpperCase(), "profitMoney");
+            return this;
+        }
+
+        public Criteria andAlreadyProfitMoneyLikeInsensitive(String value) {
+            addCriterion("upper(alreadyProfitMoney) like", value.toUpperCase(), "alreadyProfitMoney");
             return this;
         }
 
