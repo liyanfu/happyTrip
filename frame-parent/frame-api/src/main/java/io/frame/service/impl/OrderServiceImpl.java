@@ -206,6 +206,7 @@ public class OrderServiceImpl implements OrderService {
 		// 生成订单
 		Order order = new Order();
 		order.setUserId(userId);
+		order.setUserName(user.getUserName());
 		order.setUserMobile(user.getUserMobile());
 		order.setBuyQuantity(1);// 默认1
 		order.setBuyMoney(product.getSaleMoney());
