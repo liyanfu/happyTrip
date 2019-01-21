@@ -39,8 +39,6 @@ public class Constant {
 	 * 配置信息表键
 	 */
 	public enum ConfigEnum {
-		/** 送给新创建的用户的银币数量 */
-		NEW_CREATE_USER_GIVE_SILVERCOINS("NEW_CREATE_USER_GIVE_SILVERCOINS"), //
 		/** 云储存配置信息 */
 		CLOUD_STORAGE_CONFIG_KEY("CLOUD_STORAGE_CONFIG_KEY");//
 
@@ -204,7 +202,9 @@ public class Constant {
 		/** 1 已完成 */
 		ONE("已完成", 1),
 		/** 2异常 */
-		TWO("提现异常", 2);
+		TWO("提现异常", 2),
+		/** 已取消 */
+		THREE("已取消", 3);
 		private String name;
 		private Integer value;
 
@@ -441,6 +441,43 @@ public class Constant {
 			for (SystemKey systemKey : list) {
 				if (systemKey.value.equals(value)) {
 					return systemKey.name;
+				}
+			}
+			return null;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
+	 * 福利Key
+	 */
+	public enum WelfareKey {
+		/** 全球分红奖 */
+		GLOBAL_BONUS_KEY("全球分红", "GLOBAL_BONUS_KEY"),
+		/** 领导团队奖 */
+		TEAM_LEADERSHIP_AWARD_KEY("领导团队奖", "TEAM_LEADERSHIP_AWARD_KEY"),
+		/** 特别贡献奖 */
+		SPECIAL_CONTRIBUTION_AWARD_KEY("特别贡献奖", "SPECIAL_CONTRIBUTION_AWARD_KEY");
+		private String name;
+		private String value;
+
+		WelfareKey(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(String value) {
+			WelfareKey[] list = WelfareKey.values();
+			for (WelfareKey welfareKey : list) {
+				if (welfareKey.value.equals(value)) {
+					return welfareKey.name;
 				}
 			}
 			return null;
