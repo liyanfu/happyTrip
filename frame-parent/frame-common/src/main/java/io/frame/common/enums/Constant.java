@@ -84,7 +84,11 @@ public class Constant {
 		/** 0 */
 		ZERO(0),
 		/** 1 */
-		ONE(1);
+		ONE(1),
+		/** 2 */
+		TWO(2),
+		/** 3 */
+		THREE(3);
 		private Integer value;
 
 		Status(Integer value) {
@@ -252,8 +256,13 @@ public class Constant {
 		/** 人工充值 */
 		ARTIFICIAL_RECHARGE_KEY("人工充值", "ARTIFICIAL_RECHARGE_KEY"),
 		/** 人工扣款 */
-		MANUAL_DEDUCTION_KEY("人工扣款", "MANUAL_DEDUCTION_KEY");
-
+		MANUAL_DEDUCTION_KEY("人工扣款", "MANUAL_DEDUCTION_KEY"),
+		/** 提现手续费 */
+		WITHDRAW_OUT_FEE_KEY("提现手续费", "WITHDRAW_OUT_FEE_KEY"),
+		/** 提现回退 */
+		WITHDRAW_OUT_BACK_KEY("提现回退", "WITHDRAW_OUT_BACK_KEY"),
+		/** 提现回退手续费 */
+		WITHDRAW_OUT_BACK_FEE_KEY("提现回退手续费", "WITHDRAW_OUT_BACK_FEE_KEY");
 		private String name;
 		private String value;
 
