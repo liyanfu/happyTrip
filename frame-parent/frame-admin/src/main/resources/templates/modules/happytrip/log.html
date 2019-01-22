@@ -12,13 +12,7 @@
 				<div class="layui-input-inline">
 					<input type="text" class="layui-input searchVal" v-model="q.userName" @keyup.enter="query" placeholder="用户名" />
 				</div>
-				<a class="layui-btn search_btn" @click="query">查询</a>
-				<a class="layui-btn search_btn" @click="exports">导出</a>
-			</div>
-			
-			<div style="margin-top: 8px"></div>
-			
-			<div class="layui-block">
+				
 				<div class="layui-inline">
 				      <select lay-filter="selectStatus"	>
 				        <option value="">来源</option>
@@ -26,8 +20,12 @@
 				        <option value="1">后台</option>
 				      </select>
 				</div>
-				
+				<a class="layui-btn search_btn" @click="query">查询</a>
+				<a class="layui-btn search_btn" @click="exports">导出</a>
 			</div>
+			
+			<div style="margin-top: 8px"></div>
+			
 		</form>
 	</blockquote>
 	<table class="layui-hide" id="grid" lay-filter="grid"></table>

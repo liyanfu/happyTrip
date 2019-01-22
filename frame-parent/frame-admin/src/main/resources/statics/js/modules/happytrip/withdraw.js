@@ -256,7 +256,8 @@ var vm = new Vue({
         saveOrUpdate: function () {
             var url = vm.withdraw.withdrawId == null ? "ht/withdraw/save" : "ht/withdraw/update";
             //编辑时间格式报错.
-           vm.withdraw.createTime = null;
+            vm.withdraw.createTime = null;
+        	vm.withdraw.updateTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,

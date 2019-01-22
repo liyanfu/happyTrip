@@ -3,16 +3,28 @@ package io.frame.modules.happytrip.service.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
+
 import io.frame.common.annotation.SysLog;
 import io.frame.common.enums.Constant.ChangeType;
+import io.frame.common.enums.Constant.Sort;
+import io.frame.common.exception.ErrorCode;
+import io.frame.common.exception.RRException;
 import io.frame.common.utils.DateUtils;
+import io.frame.common.utils.PageUtils;
+import io.frame.common.utils.SqlTools;
+import io.frame.dao.entity.Order;
 import io.frame.dao.entity.Report;
 import io.frame.dao.entity.ReportExample;
 import io.frame.dao.entity.SysUser;
@@ -132,6 +144,150 @@ public class ReportServiceImpl implements ReportService {
 			reportMapper.updateByPrimaryKeySelective(updateReport);
 		}
 
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public PageUtils<Report> queryPage(Report report) {
+		ReportExample example = this.getReportExample(report, 1);
+		try {
+			Page<Report> page = (Page<Report>) reportMapper.selectByExample(example);
+
+			// 插入一条统计全部的金额
+			page.add(this.totals(report));
+
+			return new PageUtils<Report>(page);
+		} catch (Exception e) {
+			logger.error(ErrorCode.GET_INFO_FAILED, e);
+			throw new RRException(ErrorCode.GET_INFO_FAILED);
+		}
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Report getInfoById(Long reportId) {
+		return reportMapper.selectByPrimaryKey(reportId);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Report totals(Report report) {
+		ReportExample example = getReportExample(report, 2);
+		List<String> showField = Lists.newArrayList();
+		showField.add(SqlTools.sumField(Report.FD_ORDERMONEY));
+		showField.add(SqlTools.sumField(Report.FD_RECHARGEMONEY));
+		showField.add(SqlTools.sumField(Report.FD_RECHARGEFEE));
+		showField.add(SqlTools.sumField(Report.FD_WITHDRAWMONEY));
+		showField.add(SqlTools.sumField(Report.FD_WITHDRAWFEE));
+		showField.add(SqlTools.sumField(Report.FD_CARPROFITMONEY));
+		showField.add(SqlTools.sumField(Report.FD_PEOPLEWELFAREMONEY));
+		showField.add(SqlTools.sumField(Report.FD_GLOBALBONUSMONEY));
+		showField.add(SqlTools.sumField(Report.FD_TEAMLEADERMONEY));
+		showField.add(SqlTools.sumField(Report.FD_SPECIALCONTRIBUTIONMONEY));
+		Report newRetort = reportMapper.selectOneByExampleShowField(showField, example);
+		if (newRetort != null) {
+			newRetort.setReportId(0L);
+			newRetort.setUserName("合计:");
+		}
+		return newRetort;
+	}
+
+	@Override
+	public void delete(Long reportId) {
+		try {
+			reportMapper.deleteByPrimaryKey(reportId);
+		} catch (Exception e) {
+
+		}
+
+	}
+
+	/**
+	 * 拼接条件
+	 * 
+	 * @return
+	 */
+	private ReportExample getReportExample(Report report, Integer type) {
+		ReportExample example = new ReportExample();
+		ReportExample.Criteria cr = example.createCriteria();
+		Date beginDate = report.getBeginTime();
+		Date endDate = report.getEndTime();
+		// 当天0点
+		if (beginDate == null) {
+			beginDate = DateUtils.parse(new Date(), "yyyy-MM-dd");
+		}
+
+		// 明天0点
+		if (endDate == null) {
+			endDate = DateUtils.addDateDays(DateUtils.parse(new Date(), "yyyy-MM-dd"), 1);
+		}
+
+		if (beginDate == endDate) {
+			endDate = DateUtils.addDateDays(DateUtils.parse(new Date(), "yyyy-MM-dd"), 1);
+		}
+
+		if (!StringUtils.isEmpty(report.getUserName())) {
+			cr.andUserNameLikeIgnoreNull(report.getUserName() + "%");
+		}
+
+		if (!StringUtils.isEmpty(report.getUserMobile())) {
+			cr.andUserMobileLikeIgnoreNull(report.getUserMobile() + "%");
+		}
+
+		// 查询我的直属下级时使用
+		if (report.getUserId() != null) {
+			cr.andParentIdEqualTo(report.getUserId());
+			cr.andUserIdNotEqualTo(report.getUserId());
+		}
+		// 查询我的团队时使用
+		if (!StringUtils.isEmpty(report.getGroupUserIds())) {
+			cr.andGroupUserIdsLikeIgnoreNull(report.getGroupUserIds() + "%");
+		}
+
+		cr.andCreateTimeGreaterThanOrEqualToIgnoreNull(beginDate);
+		cr.andCreateTimeLessThanIgnoreNull(endDate);
+
+		if (type == 1) {// 普通查询才需要分页，和排序
+			PageHelper.startPage(report.getPageNumber(), report.getPageSize());
+			example.setOrderByClause(Order.FD_CREATETIME + Sort.DESC.getValue());
+		}
+
+		return example;
+	}
+
+	@Override
+	public PageUtils<Report> lookMyTeam(Report report) {
+
+		ReportExample example = this.getReportExample(report, 1);
+		try {
+			Page<Report> page = new Page<Report>();
+			List<Report> list = reportMapper.selectByExample(example);
+			// 插入一条统计全部的金额
+			list.add(this.totals(report));
+			page.addAll(list);
+			return new PageUtils<Report>(page);
+		} catch (Exception e) {
+			logger.error(ErrorCode.GET_INFO_FAILED, e);
+			throw new RRException(ErrorCode.GET_INFO_FAILED);
+		}
+
+	}
+
+	@Override
+	public PageUtils<Report> lookUnder(Report report) {
+
+		ReportExample example = this.getReportExample(report, 1);
+		try {
+			Page<Report> page = new Page<Report>();
+			List<Report> list = reportMapper.selectByExample(example);
+			// 插入一条统计全部的金额
+			list.add(this.totals(report));
+			page.addAll(list);
+			return new PageUtils<Report>(page);
+		} catch (Exception e) {
+			logger.error(ErrorCode.GET_INFO_FAILED, e);
+			throw new RRException(ErrorCode.GET_INFO_FAILED);
+		}
 	}
 
 }

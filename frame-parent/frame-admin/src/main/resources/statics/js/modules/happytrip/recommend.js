@@ -2,53 +2,59 @@ $(function () {
 	//表格参数
 	tableOption.cols = [[
         {type:'checkbox'},
-        {field:'productTypeId', 			width:100, 	title: '类型ID'},
-        {field:'productTypeName', 			width:120, 	title: '类型名称' },
-        {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet: '#statusTpl'},
+        {field:'recommendId', 			width:100, 	title: '推荐ID'},
         {field:'createTime', 		minWidth:100,   title: '创建时间',templet:function(d){
-        	return formatterTime(d.createTime);
+        	return formatterDate(d.createTime);
         }},
-        {field:'createUser', 		minWidth:100,   title: '创建者'},
+        {field:'userName', 			width:120, 	title: '用户名称' },
+        {field:'recommendNumber', 			width:120, 	title: '今日推荐人数' },
+        {field:'teamAchievement', 			width:120, 	title: '今日团队业绩' },
         {field:'updateTime', 		minWidth:100,   title: '修改时间',templet:function(d){
         	return formatterTime(d.updateTime);
         }},
         {field:'updateUser', 		minWidth:100,   title: '修改者'},
         {title: '操作', width:120, templet:'#barTpl',fixed:"right",align:"center"}
     ]];
-	tableOption.url = baseURL + 'ht/productType/list';
+	tableOption.url = baseURL + 'ht/recommend/list';
 	//初始化表格
     gridTable = layui.table.render(tableOption);
+   
 
-    //状态
-    layui.form.on('switch(status)', function(data){
-        var index = layer.msg('修改中，请稍候',{icon: 16,time:false});
-        var status = 0;
-        if(data.elem.checked){
-            status = 1;
+    
+    layui.laydate.render({
+        elem: '#beginTime',
+        type: 'date',
+        value:new Date(),
+        isInitValue:true,
+        show: true,
+        done: function(value, date, endDate){
+            vm.q.beginTime = new Date(value+" 00:00:00");
+        },
+        ready: function(beginDate){
+        	 vm.q.beginTime = new Date(beginDate.year+"-"+beginDate.month+"-"+beginDate.date+" 00:00:00");
         }
-        vm.updateStatus(data.value, status);
-
-        layer.close(index);
-        return false;
     });
     
-    layui.use('form', function(){
-   	  var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
-   	  form.on('select(selectStatus)', function(data){
-	  		  vm.q.status = data.value;
-	  		   return false;
-   	  });
-   	  form.render();
-  });
-  
-
-    layui.form.on('submit(saveOrUpdate)', function(data){
-        if(data.field.status == 'on'){
-            vm.productType.status = 1;
-        }else{
-            vm.productType.status = 0;
+    layui.laydate.render({
+        elem: '#endTime',
+        type: 'date',
+        value:new Date((new Date).setDate((new Date()).getDate()+1)),
+        isInitValue:true,
+        show: true,
+        done: function(value, date, endDate){
+            vm.q.endTime = new Date(value+" 00:00:00");
+        },
+        ready: function(endDate){
+        	 vm.q.endTime = new Date(endDate.year+"-"+endDate.month+"-"+endDate.date+" 00:00:00");
+            if(!vm.flag){
+            	$('#layui-laydate2').hide();
+            }
+            vm.flag= true;
         }
-      
+    });
+    
+    
+    layui.form.on('submit(saveOrUpdate)', function(data){
         vm.saveOrUpdate();
         return false;
     });
@@ -60,9 +66,9 @@ $(function () {
             data = obj.data;
         	vm.copyBean(obj.data);
     	if(layEvent === 'edit'){//编辑
-            vm.update(data.productTypeId);
+            vm.update(data.recommendId);
         }else if(layEvent === 'del'){//删除
-            vm.del(data.productTypeId);
+            vm.del(data.recommendId);
         }
     	
     });
@@ -74,13 +80,14 @@ var vm = new Vue({
     el:'#rrapp',
     data:{
         q:{						//查询条件
-        	productTypeName: null,
-        	status:null
+        	userName: null,
+        	beginTime: null,
+            endTime: null
         },
         addForm:false,			//新增form
         showForm: false,		//编辑form表单
 		showSelectForm:false,	//查看form表单
-        productType:{}			//用户对象
+        recommend:{}			//用户对象
     },
     updated: function(){
         layui.form.render();
@@ -95,7 +102,7 @@ var vm = new Vue({
 
             var ids = [];
             $.each(list, function(index, item) {
-                ids.push(item.productTypeId);
+                ids.push(item.recommendId);
             });
             return ids;
         },
@@ -105,24 +112,24 @@ var vm = new Vue({
                 alert("请选择一条记录");
                 return ;
             }
-            var productTypeId =null;
+            var recommendId =null;
             $.each(list, function(index, item) {
-            	productTypeId =  item.productTypeId;
+            	recommendId =  item.recommendId;
             });
-            return productTypeId;
+            return recommendId;
         },
         query: function () {
             vm.reload();
         },
-        select: function(productTypeId){
-        	if(productTypeId == null || isNaN(productTypeId)){
-        		productTypeId = vm.selectedRow();
+        select: function(recommendId){
+        	if(recommendId == null || isNaN(recommendId)){
+        		recommendId = vm.selectedRow();
         	}
         	
-        	if(productTypeId == null){
+        	if(recommendId == null){
         		return ;
         	}
-        	vm.getproductType(productTypeId);
+        	vm.getrecommend(recommendId);
     	
     	  var index = layer.open({
               title: "查看",
@@ -138,7 +145,7 @@ var vm = new Vue({
       	layer.full(index);
         },
         add: function () {
-        	vm.productType ={};
+        	vm.recommend ={};
             var index = layer.open({
                 title: "新增",
                 type: 1,
@@ -151,8 +158,8 @@ var vm = new Vue({
             vm.addForm = true;
             layer.full(index);
         },
-        update: function (productTypeId) {
-            vm.getproductType(productTypeId);
+        update: function (recommendId) {
+            vm.getrecommend(recommendId);
             var index = layer.open({
                 title: "编辑",
                 type: 1,
@@ -165,18 +172,18 @@ var vm = new Vue({
             vm.addForm = true;
             layer.full(index);
         },
-        del: function (productTypeId) {
-        	if(productTypeId == null || isNaN(productTypeId)){
-        		productTypeId = vm.selectedRow();
+        del: function (recommendId) {
+        	if(recommendId == null || isNaN(recommendId)){
+        		recommendId = vm.selectedRow();
         	}
-        	if(productTypeId == null){
+        	if(recommendId == null){
         		return ;
         	}
             confirm('确定要删除选中的记录？', function(){
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "ht/productType/delete",
-                    data: {productTypeId:productTypeId},
+                    url: baseURL + "ht/recommend/delete",
+                    data: {recommendId:recommendId},
                     success: function(r){
                         if(r.code === 0){
                             alert('操作成功', function(){
@@ -189,33 +196,16 @@ var vm = new Vue({
                 });
             });
         },
-        updateStatus: function (productTypeId, status) {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "ht/productType/status",
-                data: {productTypeId: productTypeId, status: status},
-                success: function(r){
-                    if(r.code == 0){
-                        layer.alert('操作成功', function(index){
-                            layer.close(index);
-                            vm.reload();
-                        });
-                    }else{
-                        layer.alert(r.msg);
-                    }
-                }
-            });
-        },
         saveOrUpdate: function () {
-            var url = vm.productType.productTypeId == null ? "ht/productType/save" : "ht/productType/update";
+            var url = vm.recommend.recommendId == null ? "ht/recommend/save" : "ht/recommend/update";
             //编辑时间格式报错.
-           vm.productType.createTime = null;
-       	   vm.productType.updateTime = null;
+            vm.recommend.createTime = null;
+        	vm.recommend.updateTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
                 contentType: "application/json",
-                data: JSON.stringify(vm.productType),
+                data: JSON.stringify(vm.recommend),
                 success: function(r){
                     if(r.code === 0){
                         layer.alert('操作成功', function(){
@@ -228,15 +218,15 @@ var vm = new Vue({
                 }
             });
         },
-        getproductType: function(productTypeId){
-            $.get(baseURL + "ht/productType/info/"+productTypeId, function(r){
-                vm.copyBean(r.productType);
+        getrecommend: function(recommendId){
+            $.get(baseURL + "ht/recommend/info/"+recommendId, function(r){
+                vm.copyBean(r.recommend);
             });
         },
-        copyBean:  function(productType){
-        	vm.productType = productType;
-        	vm.productType.createTime = formatterTime(productType.createTime);
-        	vm.productType.updateTime = formatterTime(productType.updateTime);
+        copyBean:  function(recommend){
+        	vm.recommend = recommend;
+        	vm.recommend.createTime = formatterTime(recommend.createTime);
+        	vm.recommend.updateTime = formatterTime(recommend.updateTime);
         },
         reload: function (event) {
             layui.table.reload('gridid', {

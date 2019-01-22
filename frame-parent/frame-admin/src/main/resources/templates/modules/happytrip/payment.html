@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>支付接口</title>
+<#include "/header.html">
+</head>
+<body class="ren-body">
+<div id="rrapp" v-cloak>
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div class="layui-inline">
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input searchVal" v-model="q.paymentName" placeholder="请输入类型名称" />
+				</div>
+				<div class="layui-inline">
+				      <select lay-filter="selectStatus"	>
+				        <option value="">状态</option>
+				        <option value="0">禁用</option>
+				        <option value="1">启用</option>
+				      </select>
+				</div>
+				<a class="layui-btn search_btn" @click="query">查询</a>
+			</div>
+			<!-- 
+			<#if shiro.hasPermission("ht:payment:save")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-bg-blue" @click="add">新增</a>
+				</div>
+			</#if>
+			 -->
+			<#if shiro.hasPermission("ht:payment:select")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-btn-warm" @click="select">查看</a>
+				</div>
+			</#if>
+			
+			<div style="margin-top: 8px"></div>
+			
+		</form>
+	</blockquote>
+	
+	<!-- 表格 -->
+	<table class="layui-hide" id="grid" lay-filter="grid"></table>
+
+
+	<!-- 新增表单  -->
+	<form v-show="addForm" class="layui-form ren-form" id="addForm">
+		
+	
+		<div class="layui-form-item">
+			<label class="layui-form-label">类型名称</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="payment.paymentName" lay-verify="required" class="layui-input ">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">显示顺序</label>
+			<div class="layui-input-block">
+				<input type="number"  v-model="payment.sort" lay-verify="required"  class="layui-input ">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+				<input type="checkbox" v-model="payment.status" name="status"  lay-skin="switch" lay-text="启用|禁用">
+			</div>
+		</div>
+	
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveOrUpdate">确定</button>
+			</div>
+		</div>
+		
+	</form>
+
+	
+	
+	<!-- 查看表单  -->
+	<form v-show="showSelectForm" class="layui-form ren-form" id="selectForm">
+	
+		<div class="layui-form-item">
+			<label class="layui-form-label">类型名称</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="payment.paymentName" readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">显示顺序</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="payment.sort" readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">创建时间</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="payment.createTime"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">创建者</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="payment.createUser"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">修改时间</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="payment.updateTime"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">修改者</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="payment.updateUser"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+				<input type="checkbox" v-model="payment.status" name="status" disabled lay-skin="switch" lay-text="启用|禁用">
+			</div>
+		</div>
+	</form>
+	
+</div>
+
+
+<!--操作-->
+<script type="text/html" id="barTpl">
+	<#if shiro.hasPermission("ht:payment:update")>
+	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	</#if>
+	<#if shiro.hasPermission("ht:payment:delete")>
+	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	</#if>
+</script>
+
+<script type="text/html" id="statusTpl">
+	<input type="checkbox" name="status" lay-filter="status" value="{{d.paymentId}}" lay-skin="switch" lay-text="启用|禁用" {{d.status == 1 ? 'checked' : ''}}>
+</script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/payment.js?_${.now?long}"></script>
+</body>
+</html>

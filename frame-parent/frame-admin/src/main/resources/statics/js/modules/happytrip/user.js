@@ -275,7 +275,8 @@ var vm = new Vue({
         saveOrUpdate: function () {
             var url = vm.user.userId == null ? "ht/user/save" : "ht/user/update";
             //修改报错.
-           vm.user.createTime = null;
+            vm.user.createTime = null;
+            vm.user.lastLoginTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,

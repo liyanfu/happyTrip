@@ -10,6 +10,7 @@ var tableOption = {
         cols: [],
         page: true,
         loading: true,
+        totalRow: false,
         limits: [10, 50, 100, 200],
         limit: 10,
         request: {

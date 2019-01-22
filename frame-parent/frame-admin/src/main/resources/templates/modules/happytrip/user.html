@@ -14,11 +14,19 @@
 				</div>
 				<a class="layui-btn search_btn" @click="query">查询</a>
 			</div>
+			<!-- 
 			<#if shiro.hasPermission("ht:user:save")>
 				<div class="layui-inline">
 					<a class="layui-btn layui-bg-blue" @click="add">新增</a>
 				</div>
 			</#if>
+			 -->
+			 <#if shiro.hasPermission("ht:user:save")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-bg-blue" @click="addnderling">新增下级</a>
+				</div>
+			</#if>
+			
 			<#if shiro.hasPermission("ht:user:select")>
 				<div class="layui-inline">
 					<a class="layui-btn layui-btn-warm" @click="select">查看</a>
@@ -39,12 +47,6 @@
 			<#if shiro.hasPermission("ht:user:resetpass")>
 				<div class="layui-inline">
 					<a class="layui-btn layui-btn-danger" @click="resetpass">重置密码</a>
-				</div>
-			</#if>
-			
-			<#if shiro.hasPermission("ht:user:resetpass")>
-				<div class="layui-inline">
-					<a class="layui-btn layui-bg-blue" @click="addnderling">新增下级</a>
 				</div>
 			</#if>
 			

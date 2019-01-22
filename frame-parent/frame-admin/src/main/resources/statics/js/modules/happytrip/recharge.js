@@ -254,7 +254,8 @@ var vm = new Vue({
         saveOrUpdate: function () {
             var url = vm.recharge.rechargeId == null ? "ht/recharge/save" : "ht/recharge/update";
             //编辑时间格式报错.
-           vm.recharge.createTime = null;
+            vm.recharge.createTime = null;
+        	vm.recharge.updateTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,

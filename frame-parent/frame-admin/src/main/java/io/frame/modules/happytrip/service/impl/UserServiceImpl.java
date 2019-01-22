@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
 			user.setParentId(parentUser == null ? user.getUserId() : parentUser.getUserId());
 			user.setGroupUserIds(parentUser == null ? user.getUserId() + ","
 					: parentUser.getGroupUserIds() + user.getUserId() + ",");
-			userMapper.updateByPrimaryKey(user);
+			userMapper.updateByPrimaryKeySelective(user);
 			// 新增用户钱包
 			walletService.createWallet(user.getUserId(), sysUser.getUserName());
 

@@ -2,9 +2,10 @@ $(function () {
 	//表格参数
 	tableOption.cols = [[
         {type:'checkbox'},
-        {field:'productTypeId', 			width:100, 	title: '类型ID'},
-        {field:'productTypeName', 			width:120, 	title: '类型名称' },
+        {field:'paymentId', 			width:100, 	title: '支付ID'},
+        {field:'paymentName', 			width:120, 	title: '支付名称' },
         {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet: '#statusTpl'},
+        {field:'sort', 			width:120, 	title: '排序' },
         {field:'createTime', 		minWidth:100,   title: '创建时间',templet:function(d){
         	return formatterTime(d.createTime);
         }},
@@ -15,7 +16,7 @@ $(function () {
         {field:'updateUser', 		minWidth:100,   title: '修改者'},
         {title: '操作', width:120, templet:'#barTpl',fixed:"right",align:"center"}
     ]];
-	tableOption.url = baseURL + 'ht/productType/list';
+	tableOption.url = baseURL + 'ht/payment/list';
 	//初始化表格
     gridTable = layui.table.render(tableOption);
 
@@ -44,9 +45,9 @@ $(function () {
 
     layui.form.on('submit(saveOrUpdate)', function(data){
         if(data.field.status == 'on'){
-            vm.productType.status = 1;
+            vm.payment.status = 1;
         }else{
-            vm.productType.status = 0;
+            vm.payment.status = 0;
         }
       
         vm.saveOrUpdate();
@@ -60,9 +61,9 @@ $(function () {
             data = obj.data;
         	vm.copyBean(obj.data);
     	if(layEvent === 'edit'){//编辑
-            vm.update(data.productTypeId);
+            vm.update(data.paymentId);
         }else if(layEvent === 'del'){//删除
-            vm.del(data.productTypeId);
+            vm.del(data.paymentId);
         }
     	
     });
@@ -74,13 +75,13 @@ var vm = new Vue({
     el:'#rrapp',
     data:{
         q:{						//查询条件
-        	productTypeName: null,
+        	paymentName: null,
         	status:null
         },
         addForm:false,			//新增form
         showForm: false,		//编辑form表单
 		showSelectForm:false,	//查看form表单
-        productType:{}			//用户对象
+        payment:{}			//用户对象
     },
     updated: function(){
         layui.form.render();
@@ -95,7 +96,7 @@ var vm = new Vue({
 
             var ids = [];
             $.each(list, function(index, item) {
-                ids.push(item.productTypeId);
+                ids.push(item.paymentId);
             });
             return ids;
         },
@@ -105,24 +106,24 @@ var vm = new Vue({
                 alert("请选择一条记录");
                 return ;
             }
-            var productTypeId =null;
+            var paymentId =null;
             $.each(list, function(index, item) {
-            	productTypeId =  item.productTypeId;
+            	paymentId =  item.paymentId;
             });
-            return productTypeId;
+            return paymentId;
         },
         query: function () {
             vm.reload();
         },
-        select: function(productTypeId){
-        	if(productTypeId == null || isNaN(productTypeId)){
-        		productTypeId = vm.selectedRow();
+        select: function(paymentId){
+        	if(paymentId == null || isNaN(paymentId)){
+        		paymentId = vm.selectedRow();
         	}
         	
-        	if(productTypeId == null){
+        	if(paymentId == null){
         		return ;
         	}
-        	vm.getproductType(productTypeId);
+        	vm.getpayment(paymentId);
     	
     	  var index = layer.open({
               title: "查看",
@@ -138,7 +139,7 @@ var vm = new Vue({
       	layer.full(index);
         },
         add: function () {
-        	vm.productType ={};
+        	vm.payment ={};
             var index = layer.open({
                 title: "新增",
                 type: 1,
@@ -151,8 +152,8 @@ var vm = new Vue({
             vm.addForm = true;
             layer.full(index);
         },
-        update: function (productTypeId) {
-            vm.getproductType(productTypeId);
+        update: function (paymentId) {
+            vm.getpayment(paymentId);
             var index = layer.open({
                 title: "编辑",
                 type: 1,
@@ -165,18 +166,18 @@ var vm = new Vue({
             vm.addForm = true;
             layer.full(index);
         },
-        del: function (productTypeId) {
-        	if(productTypeId == null || isNaN(productTypeId)){
-        		productTypeId = vm.selectedRow();
+        del: function (paymentId) {
+        	if(paymentId == null || isNaN(paymentId)){
+        		paymentId = vm.selectedRow();
         	}
-        	if(productTypeId == null){
+        	if(paymentId == null){
         		return ;
         	}
             confirm('确定要删除选中的记录？', function(){
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "ht/productType/delete",
-                    data: {productTypeId:productTypeId},
+                    url: baseURL + "ht/payment/delete",
+                    data: {paymentId:paymentId},
                     success: function(r){
                         if(r.code === 0){
                             alert('操作成功', function(){
@@ -189,11 +190,11 @@ var vm = new Vue({
                 });
             });
         },
-        updateStatus: function (productTypeId, status) {
+        updateStatus: function (paymentId, status) {
             $.ajax({
                 type: "POST",
-                url: baseURL + "ht/productType/status",
-                data: {productTypeId: productTypeId, status: status},
+                url: baseURL + "ht/payment/status",
+                data: {paymentId: paymentId, status: status},
                 success: function(r){
                     if(r.code == 0){
                         layer.alert('操作成功', function(index){
@@ -207,15 +208,15 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function () {
-            var url = vm.productType.productTypeId == null ? "ht/productType/save" : "ht/productType/update";
+            var url = vm.payment.paymentId == null ? "ht/payment/save" : "ht/payment/update";
             //编辑时间格式报错.
-           vm.productType.createTime = null;
-       	   vm.productType.updateTime = null;
+            vm.payment.createTime = null;
+        	vm.payment.updateTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
                 contentType: "application/json",
-                data: JSON.stringify(vm.productType),
+                data: JSON.stringify(vm.payment),
                 success: function(r){
                     if(r.code === 0){
                         layer.alert('操作成功', function(){
@@ -228,15 +229,15 @@ var vm = new Vue({
                 }
             });
         },
-        getproductType: function(productTypeId){
-            $.get(baseURL + "ht/productType/info/"+productTypeId, function(r){
-                vm.copyBean(r.productType);
+        getpayment: function(paymentId){
+            $.get(baseURL + "ht/payment/info/"+paymentId, function(r){
+                vm.copyBean(r.payment);
             });
         },
-        copyBean:  function(productType){
-        	vm.productType = productType;
-        	vm.productType.createTime = formatterTime(productType.createTime);
-        	vm.productType.updateTime = formatterTime(productType.updateTime);
+        copyBean:  function(payment){
+        	vm.payment = payment;
+        	vm.payment.createTime = formatterTime(payment.createTime);
+        	vm.payment.updateTime = formatterTime(payment.updateTime);
         },
         reload: function (event) {
             layui.table.reload('gridid', {

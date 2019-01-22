@@ -20,24 +20,27 @@
 				<div class="layui-input-inline">
 					<input type="text" lay-verify="date" id="endTime"  class="layui-input" placeholder="结束日期">
 				</div>
-				
-				<div class="layui-inline" style="width: 182px">
-				 	<select  lay-filter="selectChangeType">
-					 	<option value="">帐变类型</option>
-					  	<option v-for="walletChangeType in walletChangeTypelist" :value="walletChangeType.operatorType" >{{walletChangeType.operatorName}}</option>
-				      </select>
-				</div>
-				<a class="layui-btn search_btn" @click="query">查询</a>
+				<a class="layui-btn search_btn" @click="query">普通查询</a>
 			</div>
 			
 			<div style="margin-top: 8px"></div>
 			
+			<#if shiro.hasPermission("ht:report:info")>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-normal" @click="lookUnder">查看直属下级</a>
+			</div>
+			</#if>
+			<#if shiro.hasPermission("ht:report:info")>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-normal" @click="lookMyTeam">查看我的团队</a>
+			</div>
+			</#if>
 		</form>
 	</blockquote>
 	<table class="layui-hide" id="grid" lay-filter="grid"></table>
 </div>
 
 
-<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/walletChange.js?_${.now?long}"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/report.js?_${.now?long}"></script>
 </body>
 </html>
