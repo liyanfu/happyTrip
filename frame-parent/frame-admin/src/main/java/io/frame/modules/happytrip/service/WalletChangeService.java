@@ -1,6 +1,7 @@
 package io.frame.modules.happytrip.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.utils.PageUtils;
@@ -13,6 +14,14 @@ import io.frame.dao.entity.WalletChange;
  *
  */
 public interface WalletChangeService {
+
+	/**
+	 * 获取所有账变类型
+	 * 
+	 * @return
+	 */
+	List<WalletChange> getWalletChangeTypelist();
+
 	/**
 	 * 用户钱包帐变集合
 	 * 
@@ -31,4 +40,5 @@ public interface WalletChangeService {
 	 * @param changeType
 	 */
 	void createWalletChange(Long userId, BigDecimal changeMoney, WalletChange walletChange, ChangeType changeType);
+
 }

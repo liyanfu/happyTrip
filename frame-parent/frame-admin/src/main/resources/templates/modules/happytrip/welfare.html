@@ -158,6 +158,6 @@
 <script type="text/html" id="statusTpl">
 	<input type="checkbox" name="status" lay-filter="status" value="{{d.welfareId}}" lay-skin="switch" lay-text="启用|禁用" {{d.status == 1 ? 'checked' : ''}}>
 </script>
-<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/welfare.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/welfare.js?_${.now?long}"></script>
 </body>
 </html>

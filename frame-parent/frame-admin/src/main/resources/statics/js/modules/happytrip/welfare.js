@@ -40,7 +40,6 @@ $(function () {
         if(data.elem.checked){
             status = 1;
         }
-        console.info('status-----',status);
         vm.welfare.status = status;
         return false;
     });

@@ -1,26 +1,32 @@
 
 package io.frame.modules.sys.service.impl;
 
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
 
-import io.frame.common.enums.Constant.Sort;
+import io.frame.common.enums.Constant;
 import io.frame.common.exception.ErrorCode;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.PageUtils;
+import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Config;
 import io.frame.dao.entity.ConfigExample;
+import io.frame.dao.entity.SysUser;
 import io.frame.dao.mapper.ConfigMapper;
 import io.frame.modules.sys.redis.SysConfigRedis;
 import io.frame.modules.sys.service.SysConfigService;
+import io.frame.modules.sys.shiro.ShiroUtils;
 
 @Transactional
 @Service("sysConfigService")
@@ -38,15 +44,30 @@ public class SysConfigServiceImpl implements SysConfigService {
 	public PageUtils<Config> queryPage(Config config) {
 		ConfigExample example = new ConfigExample();
 		example.or().andConfigKeyEqualToIgnoreNull(config.getConfigKey())
-				.andConfigStatusEqualToIgnoreNull(config.getConfigStatus());
-		example.setOrderByClause(Config.FD_CREATETIME + Sort.DESC.getValue());
+				.andConfigStatusEqualToIgnoreNull(config.getConfigStatus())
+				.andConfigTypeEqualToIgnoreNull(config.getConfigType());
+		example.setOrderByClause(SqlTools.orderByDescField(Config.FD_CREATETIME));
 		PageHelper.startPage(config.getPageNumber(), config.getPageSize());
 		Page<Config> page = (Page<Config>) configMapper.selectByExample(example);
+		if (!CollectionUtils.isEmpty(page)) {
+			String value = this.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			for (Config bean : page) {
+				if (bean.getConfigKey().equals("SYSTEM_CUSTOMER_SERVICE_IMG_KEY")
+						|| bean.getConfigKey().equals("RECHARGE_QRCODE_KEY")) {
+					if (!StringUtils.isEmpty(bean.getConfigVal())) {
+						bean.setConfigVal(value + Constant.readImg + bean.getConfigVal());
+					}
+				}
+			}
+		}
 		return new PageUtils<Config>(page);
 	}
 
 	@Override
 	public void save(Config config) {
+		SysUser user = ShiroUtils.getUserEntity();
+		config.setCreateTime(new Date());
+		config.setCreateUser(user.getUserName());
 		try {
 			configMapper.insertSelective(config);
 			sysConfigRedis.saveOrUpdate(config);
@@ -60,6 +81,34 @@ public class SysConfigServiceImpl implements SysConfigService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void update(Config config) {
+		SysUser user = ShiroUtils.getUserEntity();
+		config.setUpdateTime(new Date());
+		config.setUpdateUser(user.getUserName());
+		// 客服二维码 ,收款二维码
+		if (config.getConfigKey().equals("SYSTEM_CUSTOMER_SERVICE_IMG_KEY")
+				|| config.getConfigKey().equals("RECHARGE_QRCODE_KEY")) {
+			if (!StringUtils.isEmpty(config.getConfigVal()) && config.getConfigVal().contains("http")) {
+				config.setConfigVal(null);
+			}
+			if ("".equals(config.getConfigVal())) {
+				config.setConfigVal(null);
+			}
+		}
+		try {
+			configMapper.updateByPrimaryKeySelective(config);
+			sysConfigRedis.saveOrUpdate(config);
+		} catch (Exception e) {
+			logger.error(ErrorCode.OPERATE_FAILED, e);
+			throw new RRException(ErrorCode.OPERATE_FAILED);
+		}
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void status(Config config) {
+		SysUser user = ShiroUtils.getUserEntity();
+		config.setUpdateTime(new Date());
+		config.setUpdateUser(user.getUserName());
 		try {
 			configMapper.updateByPrimaryKeySelective(config);
 			sysConfigRedis.saveOrUpdate(config);
@@ -134,7 +183,16 @@ public class SysConfigServiceImpl implements SysConfigService {
 	public Config getConfigById(Long id) {
 		ConfigExample example = new ConfigExample();
 		example.or().andConfigIdEqualTo(id);
-		return configMapper.selectOneByExample(example);
+		Config config = configMapper.selectOneByExample(example);
 
+		String value = this.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+		if (config.getConfigKey().equals("SYSTEM_CUSTOMER_SERVICE_IMG_KEY")
+				|| config.getConfigKey().equals("RECHARGE_QRCODE_KEY")) {
+			if (!StringUtils.isEmpty(config.getConfigVal())) {
+				config.setConfigVal(value + Constant.readImg + config.getConfigVal());
+			}
+
+		}
+		return config;
 	}
 }

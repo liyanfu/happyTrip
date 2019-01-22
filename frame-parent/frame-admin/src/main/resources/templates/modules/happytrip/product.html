@@ -317,6 +317,6 @@
 <script type="text/html" id="statusTpl">
 	<input type="checkbox" name="status" lay-filter="status" value="{{d.productId}}" lay-skin="switch" lay-text="上架|下架" {{d.status == 1 ? 'checked' : ''}}>
 </script>
-<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/product.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/product.js?_${.now?long}"></script>
 </body>
 </html>

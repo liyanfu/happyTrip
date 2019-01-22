@@ -1,6 +1,8 @@
 
 package io.frame.modules.sys.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,7 @@ import io.frame.common.exception.ErrorCode;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.PageUtils;
 import io.frame.common.utils.R;
+import io.frame.common.xss.XssHttpServletRequestWrapper;
 import io.frame.dao.entity.Config;
 import io.frame.modules.sys.service.SysConfigService;
 
@@ -70,6 +73,25 @@ public class SysConfigController extends AbstractController {
 	}
 
 	/**
+	 * 修改公司介绍
+	 */
+	@SysLog("修改公司介绍")
+	@RequestMapping("/updateCompany")
+	@RequiresPermissions("sys:config:update")
+	public R updateCompany(HttpServletRequest request) {
+		HttpServletRequest orgRequest = XssHttpServletRequestWrapper.getOrgRequest(request);
+		String configId = orgRequest.getParameter("configId");
+		String configKey = orgRequest.getParameter("configKey");
+		String configVal = orgRequest.getParameter("configVal");
+		Config config = new Config();
+		config.setConfigId(Long.parseLong(configId));
+		config.setConfigKey(configKey);
+		config.setConfigVal(configVal);
+		sysConfigService.update(config);
+		return R.ok();
+	}
+
+	/**
 	 * 删除配置
 	 */
 	@SysLog("删除配置")
@@ -94,7 +116,7 @@ public class SysConfigController extends AbstractController {
 		Config config = new Config();
 		config.setConfigId(configId);
 		config.setConfigStatus(status);
-		sysConfigService.update(config);
+		sysConfigService.status(config);
 
 		return R.ok();
 	}

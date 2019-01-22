@@ -128,6 +128,37 @@ public class SysOssController {
 	}
 
 	/**
+	 * 富文本上传文件
+	 */
+	@RequestMapping("/uploadFull")
+	@RequiresPermissions("sys:oss:all")
+	public R uploadFull(@RequestParam("file") MultipartFile file) throws Exception {
+		if (file.isEmpty()) {
+			throw new RRException("上传文件不能为空");
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		String path = "/home/images/";
+		if (file.getSize() != 0) {
+			// 上传文件到本地
+			String url = FileUtils.uploadFileToLocal(file, path);
+			// 保存文件信息
+			SysOss sysOss = new SysOss();
+			sysOss.setUrl(url);
+			sysOss.setCreateTime(new Date());
+			sysOssService.insert(sysOss);
+
+			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			map.put("src", value + Constant.readImg + url);// 显示路径
+			map.put("alt", url);// 存库如今
+			map.put("showPath", value + Constant.readImg + url);// 存库如今
+			map.put("title", url);// 存库如今
+			return R.ok().put("data", map);
+		}
+		return R.error(ErrorCode.UPLOAD_ERROR);
+	}
+
+	/**
 	 * 删除
 	 */
 	@RequestMapping("/delete")

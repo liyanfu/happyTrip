@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>充值参数</title>
+<#include "/header.html">
+
+</head>
+<body class="ren-body">
+<div id="rrapp" v-cloak>
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div class="layui-inline">
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input searchVal" v-model="q.configKey" @keyup.enter="query" placeholder="请输入参数名" />
+				</div>
+				<a class="layui-btn search_btn" @click="query">查询</a>
+			</div>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-normal" @click="add">新增</a>
+			</div>
+			<!-- 
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-danger layui-btn-normal delBatch">批量删除</a>
+			</div>
+			 -->
+		</form>
+	</blockquote>
+	<table class="layui-hide" id="grid" lay-filter="grid"></table>
+
+	<!-- 表单 -->
+	<form v-show="showForm" class="layui-form ren-form" id="editForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">参数名</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.configKey" autocomplete="off" readonly="readonly" class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">参数值</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.configVal" autocomplete="off" placeholder="参数值" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.remark" autocomplete="off" placeholder="备注" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveOrUpdate">确定</button>
+			</div>
+		</div>
+	</form>
+	
+	
+		
+	
+	<!-- 上传图片表单 -->
+	<form v-show="showImgForm" class="layui-form ren-form" id="showImgForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">参数名</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.configKey" autocomplete="off" readonly="readonly" class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">二维码图片</label>
+			<div class="layui-input-block"> 
+				<button type="button" class="layui-btn" id="uploadImg">上传图片</button>
+				  <div class="layui-upload-list">
+				    <img class="layui-upload-img" :src="config.configVal"  id="looklocalImg" width="200" height="200">
+				    <p id="uploadText"></p>
+				  </div>
+				<input type="hidden" id="imgurl"  class="layui-input ">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.remark" autocomplete="off" placeholder="备注" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveOrUpdateImg">确定</button>
+			</div>
+		</div>
+	</form>
+	
+	
+	
+	<!-- 公司介绍表单 -->
+	<form v-show="showCompanyForm" class="layui-form ren-form" id="showCompanyForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">参数名</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.configKey" autocomplete="off" readonly="readonly" class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">内容</label>
+			<div class="layui-input-block">
+				<textarea id="content" v-model="config.configVal"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.remark" autocomplete="off" placeholder="备注" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveOrUpdateCompany">确定</button>
+			</div>
+		</div>
+	</form>
+	
+</div>
+
+<!--操作-->
+<script type="text/html" id="barTpl">
+	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	<!-- 
+	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	-->
+
+</script>
+<script type="text/html" id="statusTpl">
+	<input type="checkbox" name="configStatus" lay-filter="configStatus" value="{{d.configId}}" lay-skin="switch" lay-text="启用|禁用" {{d.configStatus == 1 ? 'checked' : ''}}>
+</script>
+<script src="${request.contextPath}/statics/js/modules/sys/config.js?_${.now?long}"></script>
+<script src="${request.contextPath}/statics/js/md5.js?_${.now?long}"></script>
+</body>
+</html>

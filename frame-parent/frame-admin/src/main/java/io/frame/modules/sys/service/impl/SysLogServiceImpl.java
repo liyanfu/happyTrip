@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
-import io.frame.common.enums.Constant.Sort;
 import io.frame.common.exception.ErrorCode;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.PageUtils;
+import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Log;
 import io.frame.dao.entity.LogExample;
 import io.frame.dao.mapper.LogMapper;
@@ -32,7 +32,7 @@ public class SysLogServiceImpl implements SysLogService {
 
 		LogExample example = new LogExample();
 		example.or().andUserNameEqualToIgnoreNull(log.getUserName()).andSourcesEqualTo(log.getSources());
-		example.setOrderByClause(Log.FD_CREATETIME + Sort.DESC.getValue());
+		example.setOrderByClause(SqlTools.orderByDescField(log.FD_CREATETIME));
 		PageHelper.startPage(log.getPageNumber(), log.getPageSize());
 		Page<Log> page = (Page<Log>) logMapper.selectByExample(example);
 		return new PageUtils<Log>(page);

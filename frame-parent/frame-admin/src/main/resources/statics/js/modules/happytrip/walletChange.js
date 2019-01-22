@@ -1,20 +1,16 @@
 $(function () {
 	//表格参数
 	tableOption.cols = [[
-        {field:'changeId',      minWidth:120,  title: '帐变ID',   align:'center'},
-        {field:'userName',      minWidth:120,  title: '用户名称',  align:'center',templet:function(d){
-        	return d.map.userName;
+        {field:'historyId',      minWidth:120,  title: '帐变ID',   align:'center'},
+        {field:'userName',      minWidth:120,  title: '用户名称',  align:'center'},
+        {field:'operatorName',    minWidth:120,   title: '帐变类型',   align:'center'},
+        {field:'createTime', 	minWidth:160,  title: '帐变时间',  align:'center', templet:function(d){
+        	return formatterTime(d.createTime);
         }},
-        {field:'changeTime', 	minWidth:160,  title: '帐变时间',  align:'center',templet:function(d){
-        	return formatterTime(d.changeTime);
-        }},
-        {field:'coinType',    	minWidth:120,   title: '货币类型',   align:'center',templet: '<div>{{d.coinType==0?"金币":"银币"}}</div>'},
-        {field:'changeMoney',   minWidth:120,   title: '帐变金额',   align:'center'},
-        {field:'accountBalance',minWidth:120,   title: '剩余金额',   align:'center'},
-        {field:'changeType',    minWidth:120,   title: '帐变类型',   align:'center',templet:function(d){
-        	return d.map.changeType;
-        }},
-        {field:'remark',    minWidth:120,   title: '备注信息',   align:'center'}
+        {field:'operatorMoney',   minWidth:120,   title: '帐变金额',   align:'center'},
+        {field:'balance',minWidth:120,   title: '剩余金额',   align:'center'},
+        {field:'remark',    minWidth:120,   title: '备注信息',   align:'center'},
+        {field:'createUser',    minWidth:120,   title: '创建者',   align:'center'}
     ]];
 	tableOption.url = baseURL + 'ht/walletChange/list';
 	//初始化表格
@@ -38,7 +34,7 @@ $(function () {
     layui.laydate.render({
         elem: '#endTime',
         type: 'date',
-        value:new Date(),
+        value:new Date((new Date).setDate((new Date()).getDate()+1)),
         isInitValue:true,
         show: true,
         done: function(value, date, endDate){
@@ -56,35 +52,27 @@ $(function () {
     layui.use('form', function(){
    	  var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
    	  
-   	  form.on('select(selectCoinType)', function(data){
-		  vm.q.coinType = data.value;
+   	  form.on('select(selectChangeType)', function(data){
+		  vm.q.operatorType = data.value;
 		  return false;
    	  });
    	  
-   	 form.on('select(selectChangeType)', function(data){
-		  vm.q.changeType = data.value;
-		  return false;
-  	  });
-  	  
-   	  
    	  form.render();
   });
-
+    vm.getTypelist();
 });
-
-
 
 var vm = new Vue({
     el:'#rrapp',
     data:{
         q:{
-        	queryUserName: null,
-        	coinType:null,
-        	changeType:null,
+        	userName: null,
+        	operatorType:null,
         	beginTime:null,
         	endTime:null
         },
-        flag:false		
+        flag:false,
+        walletChangeTypelist:{}
     },
     updated: function(){
         layui.form.render();
@@ -92,6 +80,15 @@ var vm = new Vue({
     methods: {
         query: function () {
             vm.reload();
+        },
+        getTypelist: function(){
+            $.get(baseURL + "ht/walletChange/getWalletChangeTypelist/", function(r){
+            	if(r.code!=0){
+            		alert(r.msg);
+            		return false;
+            	}
+                vm.walletChangeTypelist = r.list;
+            });
         },
         reload: function (event) {
             layui.table.reload('gridid', {
