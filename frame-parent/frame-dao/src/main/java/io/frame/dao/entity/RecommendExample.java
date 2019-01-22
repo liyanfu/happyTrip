@@ -3,6 +3,7 @@ package io.frame.dao.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class RecommendExample {
@@ -208,6 +209,32 @@ public class RecommendExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
+        }
+
         public Criteria andRecommendIdIsNull() {
             addCriterion("recommendId is null");
             return (Criteria) this;
@@ -325,6 +352,76 @@ public class RecommendExample {
 
         public Criteria andUserIdNotBetween(Long value1, Long value2) {
             addCriterion("userId not between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameIsNull() {
+            addCriterion("userName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameIsNotNull() {
+            addCriterion("userName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameEqualTo(String value) {
+            addCriterion("userName =", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotEqualTo(String value) {
+            addCriterion("userName <>", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameGreaterThan(String value) {
+            addCriterion("userName >", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameGreaterThanOrEqualTo(String value) {
+            addCriterion("userName >=", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLessThan(String value) {
+            addCriterion("userName <", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLessThanOrEqualTo(String value) {
+            addCriterion("userName <=", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLike(String value) {
+            addCriterion("userName like", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotLike(String value) {
+            addCriterion("userName not like", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameIn(List<String> values) {
+            addCriterion("userName in", values, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotIn(List<String> values) {
+            addCriterion("userName not in", values, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameBetween(String value1, String value2) {
+            addCriterion("userName between", value1, value2, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotBetween(String value1, String value2) {
+            addCriterion("userName not between", value1, value2, "userName");
             return (Criteria) this;
         }
 
@@ -589,52 +686,52 @@ public class RecommendExample {
         }
 
         public Criteria andCreateTimeEqualTo(Date value) {
-            addCriterion("createTime =", value, "createTime");
+            addCriterionForJDBCDate("createTime =", value, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeNotEqualTo(Date value) {
-            addCriterion("createTime <>", value, "createTime");
+            addCriterionForJDBCDate("createTime <>", value, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeGreaterThan(Date value) {
-            addCriterion("createTime >", value, "createTime");
+            addCriterionForJDBCDate("createTime >", value, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("createTime >=", value, "createTime");
+            addCriterionForJDBCDate("createTime >=", value, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeLessThan(Date value) {
-            addCriterion("createTime <", value, "createTime");
+            addCriterionForJDBCDate("createTime <", value, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
-            addCriterion("createTime <=", value, "createTime");
+            addCriterionForJDBCDate("createTime <=", value, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeIn(List<Date> values) {
-            addCriterion("createTime in", values, "createTime");
+            addCriterionForJDBCDate("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeNotIn(List<Date> values) {
-            addCriterion("createTime not in", values, "createTime");
+            addCriterionForJDBCDate("createTime not in", values, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeBetween(Date value1, Date value2) {
-            addCriterion("createTime between", value1, value2, "createTime");
+            addCriterionForJDBCDate("createTime between", value1, value2, "createTime");
             return (Criteria) this;
         }
 
         public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
-            addCriterion("createTime not between", value1, value2, "createTime");
+            addCriterionForJDBCDate("createTime not between", value1, value2, "createTime");
             return (Criteria) this;
         }
 
@@ -838,6 +935,11 @@ public class RecommendExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserNameLikeInsensitive(String value) {
+            addCriterion("upper(userName) like", value.toUpperCase(), "userName");
+            return (Criteria) this;
+        }
+
         public Criteria andGroupUserIdsLikeInsensitive(String value) {
             addCriterion("upper(groupUserIds) like", value.toUpperCase(), "groupUserIds");
             return (Criteria) this;
@@ -950,6 +1052,56 @@ public class RecommendExample {
 
         public Criteria andUserIdNotInIgnoreNull(List<Long> value) {
             addCriterionIgnoreNull("userId not in", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName =", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName <>", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName >", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName >=", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName <", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName <=", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName like", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("userName not like", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("userName in", value, "userName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserNameNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("userName not in", value, "userName");
             return (Criteria) this;
         }
 
@@ -1303,6 +1455,11 @@ public class RecommendExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserNameLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(userName) like", value.toUpperCase(), "userName");
+            return (Criteria) this;
+        }
+
         public Criteria andGroupUserIdsLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(groupUserIds) like", value.toUpperCase(), "groupUserIds");
             return (Criteria) this;
@@ -1338,6 +1495,11 @@ public class RecommendExample {
 
         public Criteria andUserIdLikeInsensitive(String value) {
             addCriterion("upper(userId) like", value.toUpperCase(), "userId");
+            return this;
+        }
+
+        public Criteria andUserNameLikeInsensitive(String value) {
+            addCriterion("upper(userName) like", value.toUpperCase(), "userName");
             return this;
         }
 

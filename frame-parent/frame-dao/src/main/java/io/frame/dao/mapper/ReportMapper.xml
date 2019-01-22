@@ -23,7 +23,7 @@
     <result column="globalBonusMoney" jdbcType="DECIMAL" property="globalBonusMoney" />
     <result column="teamLeaderMoney" jdbcType="DECIMAL" property="teamLeaderMoney" />
     <result column="specialContributionMoney" jdbcType="DECIMAL" property="specialContributionMoney" />
-    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="createTime" jdbcType="DATE" property="createTime" />
     <result column="createUser" jdbcType="VARCHAR" property="createUser" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="updateUser" jdbcType="VARCHAR" property="updateUser" />
@@ -202,7 +202,7 @@
       #{rechargeFee,jdbcType=DECIMAL}, #{withdrawMoney,jdbcType=DECIMAL}, #{withdrawFee,jdbcType=DECIMAL}, 
       #{carProfitMoney,jdbcType=DECIMAL}, #{peopleWelfareMoney,jdbcType=DECIMAL}, #{globalBonusMoney,jdbcType=DECIMAL}, 
       #{teamLeaderMoney,jdbcType=DECIMAL}, #{specialContributionMoney,jdbcType=DECIMAL}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=DATE}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="io.frame.dao.entity.Report">
@@ -329,7 +329,7 @@
         #{specialContributionMoney,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=DATE},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
@@ -411,7 +411,7 @@
         specialContributionMoney = #{record.specialContributionMoney,jdbcType=DECIMAL},
       </if>
       <if test="record.createTime != null">
-        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+        createTime = #{record.createTime,jdbcType=DATE},
       </if>
       <if test="record.createUser != null">
         createUser = #{record.createUser,jdbcType=VARCHAR},
@@ -450,7 +450,7 @@
       globalBonusMoney = #{record.globalBonusMoney,jdbcType=DECIMAL},
       teamLeaderMoney = #{record.teamLeaderMoney,jdbcType=DECIMAL},
       specialContributionMoney = #{record.specialContributionMoney,jdbcType=DECIMAL},
-      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      createTime = #{record.createTime,jdbcType=DATE},
       createUser = #{record.createUser,jdbcType=VARCHAR},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
       updateUser = #{record.updateUser,jdbcType=VARCHAR}
@@ -559,7 +559,7 @@
         specialContributionMoney = #{specialContributionMoney,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null">
-        createTime = #{createTime,jdbcType=TIMESTAMP},
+        createTime = #{createTime,jdbcType=DATE},
       </if>
       <if test="createUser != null">
         createUser = #{createUser,jdbcType=VARCHAR},
@@ -595,7 +595,7 @@
       globalBonusMoney = #{globalBonusMoney,jdbcType=DECIMAL},
       teamLeaderMoney = #{teamLeaderMoney,jdbcType=DECIMAL},
       specialContributionMoney = #{specialContributionMoney,jdbcType=DECIMAL},
-      createTime = #{createTime,jdbcType=TIMESTAMP},
+      createTime = #{createTime,jdbcType=DATE},
       createUser = #{createUser,jdbcType=VARCHAR},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR}
@@ -662,7 +662,7 @@
         #{item.rechargeFee,jdbcType=DECIMAL}, #{item.withdrawMoney,jdbcType=DECIMAL}, #{item.withdrawFee,jdbcType=DECIMAL}, 
         #{item.carProfitMoney,jdbcType=DECIMAL}, #{item.peopleWelfareMoney,jdbcType=DECIMAL}, 
         #{item.globalBonusMoney,jdbcType=DECIMAL}, #{item.teamLeaderMoney,jdbcType=DECIMAL}, 
-        #{item.specialContributionMoney,jdbcType=DECIMAL}, #{item.createTime,jdbcType=TIMESTAMP}, 
+        #{item.specialContributionMoney,jdbcType=DECIMAL}, #{item.createTime,jdbcType=DATE}, 
         #{item.createUser,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR}
         )
     </foreach>
@@ -733,7 +733,7 @@
           #{item.specialContributionMoney,jdbcType=DECIMAL}
         </if>
         <if test="'createTime' == column">
-          #{item.createTime,jdbcType=TIMESTAMP}
+          #{item.createTime,jdbcType=DATE}
         </if>
         <if test="'createUser' == column">
           #{item.createUser,jdbcType=VARCHAR}
@@ -799,7 +799,7 @@
       #{rechargeFee,jdbcType=DECIMAL}, #{withdrawMoney,jdbcType=DECIMAL}, #{withdrawFee,jdbcType=DECIMAL}, 
       #{carProfitMoney,jdbcType=DECIMAL}, #{peopleWelfareMoney,jdbcType=DECIMAL}, #{globalBonusMoney,jdbcType=DECIMAL}, 
       #{teamLeaderMoney,jdbcType=DECIMAL}, #{specialContributionMoney,jdbcType=DECIMAL}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=DATE}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR})
     on duplicate key update 
     reportId =  #{reportId,jdbcType=BIGINT},
@@ -819,7 +819,7 @@
     globalBonusMoney = (case when globalBonusMoney is null then #{globalBonusMoney,jdbcType=DECIMAL} else globalBonusMoney + #{globalBonusMoney,jdbcType=DECIMAL} end ),
     teamLeaderMoney = (case when teamLeaderMoney is null then #{teamLeaderMoney,jdbcType=DECIMAL} else teamLeaderMoney + #{teamLeaderMoney,jdbcType=DECIMAL} end ),
     specialContributionMoney = (case when specialContributionMoney is null then #{specialContributionMoney,jdbcType=DECIMAL} else specialContributionMoney + #{specialContributionMoney,jdbcType=DECIMAL} end ),
-    createTime =  #{createTime,jdbcType=TIMESTAMP},
+    createTime =  #{createTime,jdbcType=DATE},
     createUser =  #{createUser,jdbcType=VARCHAR},
     updateTime =  #{updateTime,jdbcType=TIMESTAMP},
     updateUser =  #{updateUser,jdbcType=VARCHAR}
@@ -949,7 +949,7 @@
         #{specialContributionMoney,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=DATE},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
@@ -1015,7 +1015,7 @@
         specialContributionMoney = (case when specialContributionMoney is null then #{specialContributionMoney,jdbcType=DECIMAL} else specialContributionMoney + #{specialContributionMoney,jdbcType=DECIMAL} end ),
       </if>
       <if test="createTime != null">
-        createTime =  #{createTime,jdbcType=TIMESTAMP},
+        createTime =  #{createTime,jdbcType=DATE},
       </if>
       <if test="createUser != null">
         createUser =  #{createUser,jdbcType=VARCHAR},
