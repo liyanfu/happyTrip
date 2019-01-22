@@ -143,6 +143,7 @@ public class RecommendServiceImpl implements RecommendService {
 			User user = userService.getUserById(userId);
 			recommend = new Recommend();
 			recommend.setUserId(userId);
+			recommend.setUserName(user.getUserName());
 			recommend.setParentId(user.getParentId());
 			recommend.setGroupUserIds(user.getGroupUserIds());
 			recommend.setCreateTime(date);

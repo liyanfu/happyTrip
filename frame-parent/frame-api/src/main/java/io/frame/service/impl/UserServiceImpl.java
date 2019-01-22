@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
 			userMapper.insertSelective(user);
 			// 修改用户组ID
 			user.setGroupUserIds(parentUser.getGroupUserIds() + user.getUserId() + ",");
-			userMapper.updateByPrimaryKey(user);
+			userMapper.updateByPrimaryKeySelective(user);
 			// 放session里,日志SysLog那用
 			SessionUtils.setCurrentUser(HttpContextUtils.getHttpServletRequest(), user);
 			// 新增用户钱包
