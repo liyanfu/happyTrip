@@ -184,8 +184,8 @@ public class OrderServiceImpl implements OrderService {
 		if (wallet.getBalance().compareTo(product.getSaleMoney()) == -1) {
 			throw new RRException(ErrorCode.GOLDCOIN_IS_NOT_ENOUGH);
 		}
-		// 校验库存剩余数量
-		if (product.getSaleQuantity() <= 0) {
+		// 校验库存剩余数量 售卖数量-已卖数量
+		if (product.getSaleQuantity() - product.getSaleVolumes() == 0) {
 			throw new RRException(ErrorCode.INSUFFICIENT_STOCK);
 		}
 
@@ -256,13 +256,13 @@ public class OrderServiceImpl implements OrderService {
 		} else {
 			// 其他线下支付获取收款二维码
 			qrCode = configService.getConfigByKey(RechargeKey.RECHARGE_QRCODE_KEY.getValue());
+			// 返回收款二维码图片，和随机码
+			map.put("qrCode", qrCode);
+			map.put("randomCode", order.getRandomCode());
 		}
 
 		// 减库存
 		productService.reduceStock(productId, order.getBuyQuantity());
-		// 返回收款二维码图片，和随机码
-		map.put("qrCode", qrCode);
-		map.put("randomCode", order.getRandomCode());
 		map.put("orderId", order.getOrderId());
 		return map;
 

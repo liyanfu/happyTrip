@@ -78,7 +78,6 @@ public class ProductServiceImpl implements ProductService {
 	public void reduceStock(Long productId, Integer quantityNum) {
 		Product product = new Product();
 		product.setProductId(productId);
-		product.setSaleQuantity(-quantityNum); // 卖出库存-1
 		product.setSaleVolumes(1); // 已卖出 +1
 		productMapper.updateByPrimaryKeySelectiveSync(product);
 
