@@ -29,7 +29,7 @@ public class ScheduleJobLogController extends AbstractController {
 	 * 定时任务日志列表
 	 */
 	@RequestMapping("/list")
-	@RequiresPermissions("sys:schedule:log")
+	@RequiresPermissions("sys:schedulelog:list")
 	public PageUtils<ScheduleJobLog> list(ScheduleJobLog scheduleJobLog) {
 		return scheduleJobLogService.queryPage(scheduleJobLog);
 	}
@@ -38,6 +38,7 @@ public class ScheduleJobLogController extends AbstractController {
 	 * 定时任务日志信息
 	 */
 	@RequestMapping("/info/{logId}")
+	@RequiresPermissions("sys:schedulelog:info")
 	public R info(@PathVariable("logId") Long logId) {
 		return R.ok().put("log", scheduleJobLogService.selectById(logId));
 	}

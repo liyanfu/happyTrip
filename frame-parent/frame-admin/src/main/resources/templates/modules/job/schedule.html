@@ -14,28 +14,17 @@
 				</div>
 				<a class="layui-btn search_btn" @click="query">查询</a>
 			</div>
-			
+			<!-- 
 			<#if shiro.hasPermission("sys:schedule:save")>
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-normal" @click="add">新增</a>
 			</div>
 			</#if>
-			
+			 -->
+			 
 			<#if shiro.hasPermission("sys:schedule:update")>
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-normal" @click="update">修改</a>
-			</div>
-			</#if>
-			
-			<#if shiro.hasPermission("sys:schedule:delete")>
-			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal" @click="del">删除</a>
-			</div>
-			</#if>
-			
-			<#if shiro.hasPermission("sys:schedule:pause")>
-			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal" @click="pause">暂停</a>
 			</div>
 			</#if>
 			
@@ -45,18 +34,24 @@
 			</div>
 			</#if>
 			
+			<#if shiro.hasPermission("sys:schedule:pause")>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-warm" @click="pause">暂停</a>
+			</div>
+			</#if>
+			
+			<#if shiro.hasPermission("sys:schedule:delete")>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-danger" @click="del">删除</a>
+			</div>
+			</#if>
+			<!-- 
 			<#if shiro.hasPermission("sys:schedule:run")>
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-normal" @click="runOnce">立即执行</a>
 			</div>
 			</#if>
-			
-			<#if shiro.hasPermission("sys:schedule:log")>
-			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal" @click="add">日志列表</a>
-			</div>
-			</#if>
-			
+			 -->
 			<!-- 
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-danger layui-btn-normal delBatch">批量删除</a>
@@ -67,47 +62,51 @@
 	<table class="layui-hide" id="grid" lay-filter="grid"></table>
 	
 	
+	<form v-show="showForm" class="layui-form ren-form" id="showForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">bean名称</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="schedule.beanName"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
 	
-	<div v-show="showForm" class="panel panel-default">
-		<div class="panel-heading">{{title}}</div>
-		<form class="form-horizontal">
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">bean名称</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="schedule.beanName" placeholder="spring bean名称，如：testTask"/>
-			    </div>
+	
+		<div class="layui-form-item">
+			<label class="layui-form-label">方法名称</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="schedule.methodName"  readonly="readonly"  class="layui-input layui-bg-gray">
 			</div>
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">方法名称</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="schedule.methodName" placeholder="方法名称"/>
-			    </div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">方法名称</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="schedule.params"  readonly="readonly"  class="layui-input layui-bg-gray">
 			</div>
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">参数</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="schedule.params" placeholder="参数"/>
-			    </div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">cron表达式</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="schedule.cronExpression"  placeholder="定时任务启动时间 如：0 0 12 * * ?"  class="layui-input">
 			</div>
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">cron表达式</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="schedule.cronExpression" placeholder="如：0 0 12 * * ?"/>
-			    </div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<input type="text"  v-model="schedule.remark"   class="layui-input">
 			</div>
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">备注</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="schedule.remark" placeholder="备注"/>
-			    </div>
+		</div>
+	
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveOrUpdate">确定</button>
 			</div>
-			<div class="form-group">
-				<div class="col-sm-2 control-label"></div> 
-				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
-				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
-			</div>
+		</div>
+		
 		</form>
-	</div>
 </div>
 
 <!--操作-->
@@ -115,9 +114,7 @@
 	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 </script>
-<script type="text/html" id="statusTpl">
-	<input type="checkbox" name="status" lay-filter="status" value="{{d.configId}}" lay-skin="switch" lay-text="启用|禁用" {{d.status == 1 ? 'checked' : ''}}>
-</script>
+
 <script src="${request.contextPath}/statics/js/modules/job/schedule.js?_${.now?long}"></script>
 </body>
 </html>

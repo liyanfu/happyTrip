@@ -72,6 +72,16 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void update(ScheduleJob scheduleJob) {
+
+//		ScheduleJob newScheduleJob = scheduleJobMapper.selectByPrimaryKey(scheduleJob.getJobId());
+//		newScheduleJob.setStatus(scheduleJob.getStatus());
+//		if (StringUtils.isNotEmpty(scheduleJob.getRemark())) {
+//			newScheduleJob.setRemark(scheduleJob.getRemark());
+//		}
+//		if (StringUtils.isNotEmpty(scheduleJob.getCronExpression())) {
+//			newScheduleJob.setCronExpression(scheduleJob.getCronExpression());
+//		}
+
 		ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
 		scheduleJobMapper.updateByPrimaryKeySelective(scheduleJob);
 	}
@@ -134,6 +144,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 		ScheduleJobExample example = new ScheduleJobExample();
 		ScheduleJobExample.Criteria cr = example.createCriteria();
 		cr.andStatusEqualToIgnoreNull(scheduleJob.getStatus());
+		cr.andBeanNameEqualToIgnoreNull(scheduleJob.getBeanName());
 		example.setOrderByClause(SqlTools.orderByDescField(scheduleJob.FD_CREATETIME));
 		PageHelper.startPage(scheduleJob.getPageNumber(), scheduleJob.getPageSize());
 		Page<ScheduleJob> page = (Page<ScheduleJob>) scheduleJobMapper.selectByExample(example);

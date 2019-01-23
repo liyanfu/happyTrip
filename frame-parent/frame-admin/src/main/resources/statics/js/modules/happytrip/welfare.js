@@ -6,6 +6,7 @@ $(function () {
         {field:'welfareName', 			width:100, 	title: '福利名称'},
         {field:'welfareValue', 			width:120, 	title: '参数值' },
         {field:'bonusPool', 			width:120, 	title: '奖金池'},
+        {field:'percent', 			width:120, 	title: '平分总业绩的百分比'},
         {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet: '#statusTpl'},
         {field:'remark', 		minWidth:160,   title: '备注',templet:function(d){
         	return "<div title='"+d.remark+"'><span class='label'>"+d.remark+"</span></div>";

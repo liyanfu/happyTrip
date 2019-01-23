@@ -9,26 +9,27 @@ $(function () {
         {field:'params', minWidth:100, title: '参数'},
         {field:'cronExpression', minWidth:100, title: 'cron表达式'},
         {field:'remark', minWidth:100, title: '备注'},
-        {field:'status', width:100, align:'center', title: '状态',templet: '#statusTpl'},
+        {field:'status', width:100, align:'center', title: '状态',templet: function(d){
+        	return d.status === 0 ? 
+					'<span class="label label-success">正常</span>' :
+					'<span class="label label-danger ">暂停</span>';
+        }},
         {title: '操作', width:120, templet:'#barTpl',fixed:"right",align:"center"}
     ]];
 	tableOption.url =  baseURL + 'sys/schedule/list';
 	//初始化表格
     gridTable = layui.table.render(tableOption);
-
-    //状态
-    layui.form.on('switch(status)', function(data){
-        var index = layer.msg('修改中，请稍候',{icon: 16,time:false});
-        var status = 0;
-        if(data.elem.checked){
-            status = 1;
-        }
-        vm.updateStatus(data.value, status);
-
-        layer.close(index);
+    
+    layui.use('form', function(){
+     	  var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+     	  form.on('select(selectStatus)', function(data){
+  	  		  vm.q.status = data.value;
+  	  		   return false;
+     	  });
+     	  form.render();
     });
     
-    layui.form.on('submit(saveOrUpdate)', function(){
+    layui.form.on('submit(saveOrUpdate)', function(data){
         vm.saveOrUpdate();
         return false;
     });
@@ -48,10 +49,11 @@ $(function () {
     layui.table.on('tool(grid)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
+        vm.copyBean(obj.data);
         if(layEvent === 'edit'){
-            vm.update(data.configId);
+            vm.update(data.jobId);
         } else if(layEvent === 'del'){
-            var ids = [data.configId];
+            var ids = [data.jobId];
             vm.del(ids);
         }
     });
@@ -65,27 +67,66 @@ var vm = new Vue({
 			beanName: null
 		},
 		showForm: false,
-		title: null,
 		schedule: {}
 	},
 	methods: {
+		selectedRows: function () {
+            var list = layui.table.checkStatus('gridid').data;
+            if(list.length == 0){
+                alert("请选择一条记录");
+                return ;
+            }
+
+            var ids = [];
+            $.each(list, function(index, item) {
+                ids.push(item.jobId);
+            });
+            return ids;
+        },
+        selectedRow: function () {
+            var list = layui.table.checkStatus('gridid').data;
+            if(list.length == 0 || list.length > 1){
+                alert("请选择一条记录");
+                return ;
+            }
+            var jobId =null;
+            $.each(list, function(index, item) {
+            	jobId =  item.jobId;
+            });
+            return jobId;
+        },
 		query: function () {
 			vm.reload();
 		},
+		copyBean:  function(schedule){
+        	vm.schedule = schedule;
+        },
 		add: function(){
 			vm.showForm = true;
-			vm.title = "新增";
 			vm.schedule = {};
 		},
-		update: function () {
-			var jobId = getSelectedRow();
+		update: function (jobId) {
+			if(jobId == null || isNaN(jobId)){
+				jobId = vm.selectedRow();
+        	}
 			if(jobId == null){
 				return ;
 			}
-			
+			vm.getSchedule(jobId);
+            var index = layer.open({
+                title: "编辑",
+                type: 1,
+                content: $("#showForm"),
+                end: function(){
+                    vm.showForm = false;
+                    layer.closeAll();
+                }
+            });
+            vm.showForm = true;
+            layer.full(index);
+		},
+		getSchedule:function(jobId){
 			$.get(baseURL + "sys/schedule/info/"+jobId, function(r){
-				vm.showForm = true;
-                vm.title = "修改";
 				vm.schedule = r.schedule;
 			});
 		},
@@ -99,6 +140,7 @@ var vm = new Vue({
 			    success: function(r){
 			    	if(r.code === 0){
 						alert('操作成功', function(index){
+							layer.closeAll();
 							vm.reload();
 						});
 					}else{
@@ -124,12 +166,13 @@ var vm = new Vue({
                 }
             });
         },
-		del: function (event) {
-			var jobIds = getSelectedRows();
+		del: function (jobIds) {
+			if(jobIds == null || isNaN(jobIds)){
+				jobIds = vm.selectedRows();
+        	}
 			if(jobIds == null){
 				return ;
 			}
-			
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",
@@ -149,7 +192,7 @@ var vm = new Vue({
 			});
 		},
 		pause: function (event) {
-			var jobIds = getSelectedRows();
+			var jobIds = vm.selectedRows();
 			if(jobIds == null){
 				return ;
 			}
@@ -173,7 +216,7 @@ var vm = new Vue({
 			});
 		},
 		resume: function (event) {
-			var jobIds = getSelectedRows();
+			var jobIds = vm.selectedRows();
 			if(jobIds == null){
 				return ;
 			}
@@ -197,7 +240,7 @@ var vm = new Vue({
 			});
 		},
 		runOnce: function (event) {
-			var jobIds = getSelectedRows();
+			var jobIds = vm.selectedRows();
 			if(jobIds == null){
 				return ;
 			}
@@ -222,11 +265,12 @@ var vm = new Vue({
 		},
 		reload: function (event) {
 			vm.showForm = false;
-			var page = $("#jqGrid").jqGrid('getGridParam','page');
-			$("#jqGrid").jqGrid('setGridParam',{ 
-                postData:{'beanName': vm.q.beanName},
-                page:page 
-            }).trigger("reloadGrid");
+			layui.table.reload('gridid', {
+	                page: {
+	                    curr: 1
+	                },
+	                where: vm.q
+	        });
 		}
 	}
 });

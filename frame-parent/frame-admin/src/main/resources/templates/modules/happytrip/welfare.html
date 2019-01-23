@@ -73,10 +73,16 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">奖金池</label>
 			<div class="layui-input-block">
-				<input type="number"  v-model="welfare.bonusPool"  placeholder="为空时,取订单总金额" class="layui-input">
+				<input type="number"  v-model="welfare.bonusPool"  placeholder="为空时,取当日订单总业绩" class="layui-input">
 			</div>
 		</div>
 		
+		<div class="layui-form-item">
+			<label class="layui-form-label">平分总业绩的百分比</label>
+			<div class="layui-input-block">
+				<input type="number"  v-model="welfare.percent" lay-verify="required"  placeholder="输入为0.01,即为1%" class="layui-input">
+			</div>
+		</div>
 		
 		<div class="layui-form-item">
 			<label class="layui-form-label">备注</label>
@@ -123,6 +129,13 @@
 			<label class="layui-form-label">奖金池</label>
 			<div class="layui-input-block">
 				<input type="text"  v-model="welfare.bonusPool"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">平分总业绩的百分比</label>
+			<div class="layui-input-block">
+				<input type="number"  v-model="welfare.percent"  readonly="readonly"  class="layui-input layui-bg-gray">
 			</div>
 		</div>
 		
