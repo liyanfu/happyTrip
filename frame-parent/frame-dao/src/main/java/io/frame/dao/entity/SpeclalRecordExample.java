@@ -268,6 +268,66 @@ public class SpeclalRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserIdIsNull() {
+            addCriterion("userId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("userId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdEqualTo(Long value) {
+            addCriterion("userId =", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotEqualTo(Long value) {
+            addCriterion("userId <>", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThan(Long value) {
+            addCriterion("userId >", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("userId >=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThan(Long value) {
+            addCriterion("userId <", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThanOrEqualTo(Long value) {
+            addCriterion("userId <=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIn(List<Long> values) {
+            addCriterion("userId in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotIn(List<Long> values) {
+            addCriterion("userId not in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdBetween(Long value1, Long value2) {
+            addCriterion("userId between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotBetween(Long value1, Long value2) {
+            addCriterion("userId not between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
         public Criteria andUserNameIsNull() {
             addCriterion("userName is null");
             return (Criteria) this;
@@ -1228,6 +1288,46 @@ public class SpeclalRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserIdEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("userId =", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("userId <>", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("userId >", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("userId >=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThanIgnoreNull(Long value) {
+            addCriterionIgnoreNull("userId <", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThanOrEqualToIgnoreNull(Long value) {
+            addCriterionIgnoreNull("userId <=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("userId in", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotInIgnoreNull(List<Long> value) {
+            addCriterionIgnoreNull("userId not in", value, "userId");
+            return (Criteria) this;
+        }
+
         public Criteria andUserNameEqualToIgnoreNull(String value) {
             addCriterionIgnoreNull("userName =", value, "userName");
             return (Criteria) this;
@@ -1863,6 +1963,11 @@ public class SpeclalRecordExample {
 
         public Criteria andIdLikeInsensitive(String value) {
             addCriterion("upper(id) like", value.toUpperCase(), "id");
+            return this;
+        }
+
+        public Criteria andUserIdLikeInsensitive(String value) {
+            addCriterion("upper(userId) like", value.toUpperCase(), "userId");
             return this;
         }
 
