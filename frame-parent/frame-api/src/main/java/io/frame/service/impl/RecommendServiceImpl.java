@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 import io.frame.annotation.SysLog;
-import io.frame.common.utils.DateUtils;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.custom.mapper.CustomeRecommendMapper;
 import io.frame.dao.entity.Recommend;
@@ -56,8 +55,7 @@ public class RecommendServiceImpl implements RecommendService {
 		// 为真查询今日，为假查询所有
 		if (isTodayFlag) {
 			Date date = new Date();
-			cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-			cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+			cr.andCreateTimeEqualTo(date);
 		}
 
 		Recommend recomend = recommendMapper.selectOneByExampleShowField(showField, example);
@@ -76,8 +74,7 @@ public class RecommendServiceImpl implements RecommendService {
 		// 为真查询今日,为假查询所有
 		if (isTodayFlag) {
 			Date date = new Date();
-			cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-			cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+			cr.andCreateTimeEqualTo(date);
 		}
 
 		Recommend recomend = recommendMapper.selectOneByExampleShowField(showField, example);
@@ -103,8 +100,7 @@ public class RecommendServiceImpl implements RecommendService {
 		RecommendExample.Criteria cr = example.createCriteria();
 		cr.andRecommendNumberGreaterThan(recommendNum);
 		Date date = new Date();
-		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		cr.andCreateTimeEqualTo(date);
 		return recommendMapper.countByExample(example);
 	}
 
@@ -116,8 +112,7 @@ public class RecommendServiceImpl implements RecommendService {
 		cr.andRecommendNumberGreaterThan(recommendNum);
 		cr.andTeamAchievementGreaterThan(achievement);
 		Date date = new Date();
-		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		cr.andCreateTimeEqualTo(date);
 		return recommendMapper.countByExample(example);
 	}
 
@@ -135,8 +130,7 @@ public class RecommendServiceImpl implements RecommendService {
 		RecommendExample.Criteria cr = example.createCriteria();
 		cr.andUserIdEqualTo(userId);
 		Date date = new Date();
-		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		cr.andCreateTimeEqualTo(date);
 		Recommend recommend = recommendMapper.selectOneByExample(example);
 		if (recommend == null) {
 			// 新增

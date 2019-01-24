@@ -24,7 +24,6 @@ import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.enums.Constant.OrderStatus;
 import io.frame.common.enums.Constant.RechargeKey;
 import io.frame.common.exception.RRException;
-import io.frame.common.utils.DateUtils;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Order;
 import io.frame.dao.entity.OrderExample;
@@ -282,8 +281,7 @@ public class OrderServiceImpl implements OrderService {
 		ReportExample.Criteria cr = example.createCriteria();
 		cr.andUserIdEqualTo(userId);
 		Date date = new Date();
-		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		cr.andCreateTimeEqualTo(date);
 		Report report = reportMapper.selectOneByExample(example);
 		if (report == null) {
 			// 新建

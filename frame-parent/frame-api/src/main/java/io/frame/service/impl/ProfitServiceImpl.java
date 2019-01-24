@@ -18,7 +18,6 @@ import com.google.common.collect.Maps;
 
 import io.frame.common.enums.Constant;
 import io.frame.common.enums.Constant.ChangeType;
-import io.frame.common.utils.DateUtils;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Report;
 import io.frame.dao.entity.ReportExample;
@@ -173,8 +172,7 @@ public class ProfitServiceImpl implements ProfitService {
 		ReportExample example = new ReportExample();
 		ReportExample.Criteria cr = example.createCriteria();
 		Date date = new Date();
-		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		cr.andCreateTimeEqualTo(date);
 		List<String> showField = Lists.newArrayList();
 		showField.add(SqlTools.sumField(Report.FD_ORDERMONEY));
 		Report peport = reportMapper.selectOneByExampleShowField(showField, example);
