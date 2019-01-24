@@ -8,6 +8,10 @@ package io.frame.common.utils;
  */
 public class SqlTools {
 
+	public static String countField(String field) {
+		return String.format("COUNT(%s) as %s", field, field);
+	}
+
 	public static String sumField(String field) {
 		return String.format("SUM(%s) as %s", field, field);
 	}
