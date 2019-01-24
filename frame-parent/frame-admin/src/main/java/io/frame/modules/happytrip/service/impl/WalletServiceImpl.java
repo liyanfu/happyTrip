@@ -290,8 +290,13 @@ public class WalletServiceImpl implements WalletService {
 
 	@Override
 	public void addWallet(WalletChange walletChange, ChangeType changeType) {
+		SysUser sysUser = null;
+		try {
+			sysUser = ShiroUtils.getUserEntity();
+		} catch (Exception e) {
+			logger.debug("取不到登录账号信息");
+		}
 
-		SysUser sysUser = ShiroUtils.getUserEntity();
 		Long userId = walletChange.getUserId();
 		BigDecimal changeMoney = walletChange.getOperatorMoney();
 		if (changeMoney.compareTo(BigDecimal.ZERO) < 0) {

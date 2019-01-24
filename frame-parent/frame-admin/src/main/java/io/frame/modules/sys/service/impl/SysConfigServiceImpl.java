@@ -203,10 +203,10 @@ public class SysConfigServiceImpl implements SysConfigService {
 		if (config.getConfigId() != null) {
 			cr.andConfigIdEqualTo(config.getConfigId());
 		}
-		if (StringUtils.isEmpty(config.getConfigKey())) {
+		if (!StringUtils.isEmpty(config.getConfigKey())) {
 			cr.andConfigKeyEqualTo(config.getConfigKey());
 		}
-		if (StringUtils.isEmpty(config.getConfigType())) {
+		if (!StringUtils.isEmpty(config.getConfigType())) {
 			cr.andConfigTypeEqualTo(config.getConfigType());
 		}
 		if (config.getConfigStatus() != null) {

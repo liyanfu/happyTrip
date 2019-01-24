@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 
 import io.frame.common.enums.Constant;
 import io.frame.common.enums.Constant.ChangeType;
+import io.frame.common.exception.RRException;
 import io.frame.dao.entity.Config;
 import io.frame.dao.entity.Order;
 import io.frame.dao.entity.OrderExample;
@@ -45,7 +46,7 @@ public class OrderDailyTask {
 		try {
 
 			// 判断是否开启每天返利开关
-			if (!this.getSwitch()) {
+			if (this.getSwitch()) {
 				logger.info("开关没开启");
 				return;
 			}
@@ -88,6 +89,7 @@ public class OrderDailyTask {
 			}
 		} catch (Exception e) {
 			logger.error("共享汽车每天返利定时任务--------------------------异常");
+			throw new RRException("共享汽车每天返利定时任务异常", e);
 		}
 
 		logger.info("共享汽车每天返利定时任务--------------------------结束");
@@ -103,27 +105,25 @@ public class OrderDailyTask {
 		config.setConfigKey(Constant.WelfareSwitch.WELFARE_SWITCH_DAILY_KEY.getValue());
 		config.setConfigStatus(Constant.Status.ONE.getValue());
 		Config newConfig = sysConfigService.getInfo(config);
-		if (newConfig != null && "1".equals(newConfig.getConfigVal())) {
-			return false;
+		if (newConfig == null || "0".equals(newConfig.getConfigVal())) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	private boolean compareDate(Integer runDay, Date currentDate, Date createDate) {
+
+		long betweenDays = (long) ((currentDate.getTime() - createDate.getTime()) / (1000 * 60 * 60 * 24));
+		// 判断当前订单购买时间是否已经超过一天,至少需要超过一天.
+		if (betweenDays <= 0) {
+			return false;
+		}
 		// ==-1或者空 不限制
 		if (runDay == -1 || runDay == null) {
 			return true;
 		}
-		long betweenDays = (long) ((currentDate.getTime() - createDate.getTime()) / (1000 * 60 * 60 * 24));
 		// 购买时间大于等于当前时间，计算返利
 		return betweenDays >= runDay;
-	}
-
-	public static void main(String[] args) {
-
-		Integer a = 10;
-		Integer b = 1;
-		System.out.println(a - (b + 1));
 	}
 
 	/**

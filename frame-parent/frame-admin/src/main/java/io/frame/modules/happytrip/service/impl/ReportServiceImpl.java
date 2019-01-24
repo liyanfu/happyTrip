@@ -16,7 +16,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 
-import io.frame.common.annotation.SysLog;
 import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.enums.Constant.Sort;
 import io.frame.common.exception.ErrorCode;
@@ -51,18 +50,21 @@ public class ReportServiceImpl implements ReportService {
 	@Autowired
 	UserService userService;
 
-	@SysLog("更新报表")
 	@Override
 	public void upsert(Long userId, BigDecimal money, BigDecimal moneyFee, ChangeType changeType) {
-		SysUser sysUser = ShiroUtils.getUserEntity();
+		SysUser sysUser = null;
+		try {
+			sysUser = ShiroUtils.getUserEntity();
+		} catch (Exception e) {
+			// 这一部是定时任务时,会取不到当前登录用户,报异常
+		}
 		User user = userService.getInfoById(userId);
 		// 查询今日报表中是否已经存在数据
 		ReportExample example = new ReportExample();
 		ReportExample.Criteria cr = example.createCriteria();
 		cr.andUserIdEqualTo(userId);
 		Date date = new Date();
-		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		cr.andCreateTimeEqualTo(date);
 		Report report = reportMapper.selectOneByExample(example);
 		boolean flag = false;
 		if (report == null) {

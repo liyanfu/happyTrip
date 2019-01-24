@@ -68,8 +68,7 @@ public class RecommendServiceImpl implements RecommendService {
 		RecommendExample.Criteria cr = example.createCriteria();
 		cr.andUserIdEqualTo(userId);
 		Date date = new Date();
-		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
-		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		cr.andCreateTimeEqualTo(date);
 		Recommend recommend = recommendMapper.selectOneByExample(example);
 		if (recommend == null) {
 			// 新增

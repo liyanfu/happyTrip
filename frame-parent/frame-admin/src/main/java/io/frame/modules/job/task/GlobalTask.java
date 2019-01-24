@@ -1,6 +1,7 @@
 package io.frame.modules.job.task;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -8,27 +9,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 
 import io.frame.common.enums.Constant;
+import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.enums.Constant.Status;
+import io.frame.common.exception.RRException;
 import io.frame.common.utils.DateUtils;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Config;
+import io.frame.dao.entity.GlobalRecord;
 import io.frame.dao.entity.Recommend;
 import io.frame.dao.entity.RecommendExample;
 import io.frame.dao.entity.Report;
 import io.frame.dao.entity.ReportExample;
 import io.frame.dao.entity.User;
 import io.frame.dao.entity.UserExample;
+import io.frame.dao.entity.WalletChange;
 import io.frame.dao.entity.Welfare;
 import io.frame.dao.entity.WelfareExample;
+import io.frame.dao.mapper.GlobalRecordMapper;
 import io.frame.dao.mapper.RecommendMapper;
 import io.frame.dao.mapper.ReportMapper;
 import io.frame.dao.mapper.UserMapper;
 import io.frame.dao.mapper.WelfareMapper;
+import io.frame.modules.happytrip.service.WalletService;
 import io.frame.modules.sys.service.SysConfigService;
 
 /**
@@ -57,49 +65,126 @@ public class GlobalTask {
 	@Autowired
 	RecommendMapper recommendMapper;
 
+	@Autowired
+	GlobalRecordMapper globalRecordMapper;
+
+	@Autowired
+	WalletService walletService;
+
+	@Transactional(readOnly = false)
 	public void run() {
 		logger.info("全球分红定时任务--------------------------启动");
 		Date currentDate = new Date();
 		try {
 
-//			// 判断是否开启每天返利开关
-//			if (!this.getSwitch()) {
-//				logger.info("开关没开启");
-//				return;
-//			}
 			// 获取昨日推荐表中的用户信息
 
 			List<Recommend> recommendList = this.getRecommendList(currentDate);
-
-			if (!CollectionUtils.isEmpty(recommendList)) {
-
-				// 获取全球分红奖励规则
-				List<Welfare> ruleList = this.getRuleList();
-
-				if (CollectionUtils.isEmpty(ruleList)) {
-					logger.info("无匹配规则...");
-					return;
-				}
-				// 获取昨日报表中的订单总业绩金额
-				BigDecimal totalsMoney = this.getOrderTotasMoney(currentDate);
-
-				for (Recommend recommend : recommendList) {
-
-					Integer recommendNum = recommend.getRecommendNumber();
-					Welfare ruleWelfare = this.getRuleWelfare(ruleList, recommendNum);
-
-					if (ruleWelfare == null) {
-						// 无匹配规则
-						continue;
-					}
-
-				}
+			if (CollectionUtils.isEmpty(recommendList)) {
+				logger.info("昨日无推荐...");
+				return;
 			}
+
+			// 获取全球分红奖励规则
+			List<Welfare> ruleList = this.getRuleList();
+			if (CollectionUtils.isEmpty(ruleList)) {
+				logger.info("无匹配规则...");
+				return;
+			}
+
+			// 获取昨日报表中的订单总业绩金额
+			BigDecimal totalsMoney = this.getOrderTotasMoney(currentDate);
+
+			// 最终入库数据
+			List<GlobalRecord> recordList = Lists.newArrayList();
+			for (Recommend recommend : recommendList) {
+				BigDecimal calcMoney = totalsMoney; // 每次重新赋值
+				Integer recommendNum = recommend.getRecommendNumber();
+				Welfare ruleWelfare = this.getRuleWelfare(ruleList, recommendNum);
+				if (ruleWelfare == null) {
+					// 无匹配规则
+					continue;
+				}
+
+				User user = userMapper.selectByPrimaryKey(recommend.getUserId());
+
+				GlobalRecord record = new GlobalRecord();
+				record.setUserId(user.getUserId());
+				record.setUserName(user.getUserName());
+				record.setUserMobile(user.getUserMobile());
+				record.setUserLevel(user.getUserLevel());
+				record.setParentId(user.getParentId());
+				record.setGroupUserIds(user.getGroupUserIds());
+				record.setCreateTime(currentDate);
+				record.setGenerateTime(DateUtils.addDateDays(currentDate, -1));// 生成时间实际是生成昨天的数据
+				record.setRecommendNum(recommendNum);
+				// 如果奖金池不为空,则使用奖金池中的金额计算
+				if (ruleWelfare.getBonusPool() != null) {
+					calcMoney = ruleWelfare.getBonusPool();
+				}
+
+				// 获取昨日达到要求总人数
+				Integer totalsPeopleNum = this.getTotalsPeopleNum(ruleWelfare, currentDate);
+
+				// 奖金池或订单总业绩*百分比/达标人数
+				record.setMoney(calcMoney.multiply(ruleWelfare.getPercent()).divide(new BigDecimal(totalsPeopleNum), 4,
+						RoundingMode.HALF_UP));
+
+				recordList.add(record);
+			}
+
+			// 判断是否开启自动派发开关
+			boolean flag = this.getSwitch();
+			Date date = new Date();
+			for (GlobalRecord globalRecord : recordList) {
+				if (globalRecord.getMoney().compareTo(BigDecimal.ZERO) <= 0) {
+					continue;
+				}
+				// 入库
+				if (flag) {
+					logger.info("开关没开启,后台手动派发...");
+					globalRecord.setIsGrant(Status.ZERO.getValue());
+				} else {
+					globalRecord.setIsGrant(Status.ONE.getValue());
+					globalRecord.setGrantTime(date);
+					globalRecord.setUpdateTime(date);
+					globalRecord.setUpdateUser("系统");
+				}
+				globalRecordMapper.insertSelective(globalRecord);
+
+				if (!flag) {// 开启自动派发，需要加钱，账变
+					// 钱包加钱 帐变 刷新报表
+					WalletChange walletChange = new WalletChange();
+					walletChange.setUserId(globalRecord.getUserId());
+					walletChange.setOperatorMoney(globalRecord.getMoney());
+					walletChange.setRemark(ChangeType.GLOBAL_BONUS_KEY.getName());
+					walletService.addWallet(walletChange, ChangeType.GLOBAL_BONUS_KEY);
+
+				}
+
+			}
+
 		} catch (Exception e) {
 			logger.error("全球分红定时任务--------------------------异常");
+			throw new RRException("全球分红定时任务异常", e);
 		}
 
 		logger.info("全球分红定时任务--------------------------结束");
+	}
+
+	/**
+	 * 获取昨日满足推荐的总人数
+	 * 
+	 * @param ruleWelfare
+	 * @param currentDate
+	 * @return
+	 */
+	private Integer getTotalsPeopleNum(Welfare ruleWelfare, Date currentDate) {
+		RecommendExample example = new RecommendExample();
+		RecommendExample.Criteria cr = example.createCriteria();
+		cr.andCreateTimeEqualTo(DateUtils.addDateDays(currentDate, -1));
+		cr.andRecommendNumberGreaterThanOrEqualTo(Integer.parseInt(ruleWelfare.getWelfareValue()));
+		return recommendMapper.countByExample(example);
 	}
 
 	/**
@@ -182,10 +267,10 @@ public class GlobalTask {
 		config.setConfigKey(Constant.WelfareSwitch.GLOBAL_BONUS_KEY.getValue());
 		config.setConfigStatus(Constant.Status.ONE.getValue());
 		Config newConfig = sysConfigService.getInfo(config);
-		if (newConfig != null && "1".equals(newConfig.getConfigVal())) {
-			return false;
+		if (newConfig == null || "0".equals(newConfig.getConfigVal())) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**

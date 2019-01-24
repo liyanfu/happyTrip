@@ -16,7 +16,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 
-import io.frame.common.annotation.SysLog;
 import io.frame.common.enums.Constant;
 import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.enums.Constant.Sort;
@@ -114,11 +113,16 @@ public class WalletChangeServiceImpl implements WalletChangeService {
 
 	}
 
-	@SysLog("创建帐变")
 	@Override
 	public void createWalletChange(Long userId, BigDecimal changeMoney, WalletChange walletChange,
 			ChangeType changeType) {
-		SysUser sysUser = ShiroUtils.getUserEntity();
+		SysUser sysUser = null;
+		try {
+			sysUser = ShiroUtils.getUserEntity();
+		} catch (Exception e) {
+			// 这一部是定时任务时,会取不到当前登录用户,报异常
+		}
+
 		Wallet wallet = walletService.getInfoByUserId(userId);
 		User user = userService.getInfoById(userId);
 		WalletChange newWalletChange = new WalletChange();
@@ -129,7 +133,7 @@ public class WalletChangeServiceImpl implements WalletChangeService {
 		newWalletChange.setOperatorType(changeType.getValue());
 		newWalletChange.setOperatorName(changeType.getName());
 		newWalletChange.setCreateTime(new Date());
-		newWalletChange.setCreateUser(sysUser.getUserName());
+		newWalletChange.setCreateUser(sysUser == null ? "系统" : sysUser.getUserName());
 		newWalletChange.setRemark(walletChange.getRemark());
 		newWalletChange.setRelationId(walletChange.getRelationId());
 		try {
