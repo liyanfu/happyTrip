@@ -344,7 +344,7 @@ public class Constant {
 		RECHARGE_FEE_KEY("充值手续费", "RECHARGE_FEE_KEY"),
 		/** 充值开关 */
 		RECHARGE_SWITCH_KEY("充值接口关闭", "RECHARGE_SWITCH_KEY"),
-		/** 充值开关 */
+		/** 充值二维码收款图片 */
 		RECHARGE_QRCODE_KEY("充值二维码收款图片", "RECHARGE_QRCODE_KEY");
 		private String name;
 		private String value;
@@ -478,6 +478,48 @@ public class Constant {
 			for (WelfareKey welfareKey : list) {
 				if (welfareKey.value.equals(value)) {
 					return welfareKey.name;
+				}
+			}
+			return null;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
+	/**
+	 * 定时任务福利派发开关
+	 */
+	public enum WelfareSwitch {
+
+		/** 汽车收益福利天返开关 */
+		WELFARE_SWITCH_DAILY_KEY("福利天返开关", "WELFARE_SWITCH_DAILY_KEY"),
+		/** 全民福利时返开关 */
+		WELFARE_SWITCH_HOUR_KEY("福利天返开关", "WELFARE_SWITCH_HOUR_KEY"),
+		/** 全球分红奖开关 */
+		GLOBAL_BONUS_KEY("全球分红开关", "GLOBAL_BONUS_KEY"),
+		/** 领导团队奖开关 */
+		TEAM_LEADERSHIP_AWARD_KEY("领导团队奖开关", "TEAM_LEADERSHIP_AWARD_KEY"),
+		/** 特别贡献奖开关 */
+		SPECIAL_CONTRIBUTION_AWARD_KEY("特别贡献奖开关", "SPECIAL_CONTRIBUTION_AWARD_KEY");
+		private String name;
+		private String value;
+
+		WelfareSwitch(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public static String getName(String value) {
+			WelfareSwitch[] list = WelfareSwitch.values();
+			for (WelfareSwitch bean : list) {
+				if (bean.value.equals(value)) {
+					return bean.name;
 				}
 			}
 			return null;
