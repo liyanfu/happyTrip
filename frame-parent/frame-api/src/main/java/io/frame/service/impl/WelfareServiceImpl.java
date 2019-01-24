@@ -41,6 +41,7 @@ public class WelfareServiceImpl implements WelfareService {
 		showField.add(Welfare.FD_WELFARENAME);
 		showField.add(Welfare.FD_WELFAREVALUE);
 		showField.add(Welfare.FD_BONUSPOOL);
+		showField.add(Welfare.FD_PERCENT);
 		showField.add(Welfare.FD_REMARK);
 		WelfareExample example = new WelfareExample();
 		example.createCriteria().andWelfareKeyEqualTo(key.getValue()).andStatusEqualTo(Constant.Status.ONE.getValue());

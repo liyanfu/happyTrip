@@ -2,6 +2,7 @@ package io.frame.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,15 @@ import com.google.common.collect.Maps;
 
 import io.frame.common.enums.Constant;
 import io.frame.common.enums.Constant.ChangeType;
+import io.frame.common.utils.DateUtils;
+import io.frame.common.utils.SqlTools;
+import io.frame.dao.entity.Report;
+import io.frame.dao.entity.ReportExample;
 import io.frame.dao.entity.WalletChange;
 import io.frame.dao.entity.Welfare;
+import io.frame.dao.mapper.ReportMapper;
 import io.frame.dao.mapper.WalletChangeMapper;
 import io.frame.entity.WelfareVo;
-import io.frame.service.OrderService;
 import io.frame.service.ProfitService;
 import io.frame.service.RecommendService;
 import io.frame.service.WalletChangeService;
@@ -46,7 +51,7 @@ public class ProfitServiceImpl implements ProfitService {
 	WelfareService welfareService;
 
 	@Autowired
-	OrderService orderService;
+	ReportMapper reportMapper;
 
 	@Autowired
 	RecommendService recommendService;
@@ -130,23 +135,26 @@ public class ProfitServiceImpl implements ProfitService {
 	private List<WelfareVo> getWelfareVo(List<Welfare> wefarelist) {
 		List<WelfareVo> welfareVoList = Lists.newArrayList();
 		if (!CollectionUtils.isEmpty(wefarelist)) {
-			// 判断奖金池是否为空,为空取所有收益中订单的价格
-			// 查询所有收益中的订单的总金额
-			BigDecimal bounsPool = orderService.getProfitOrderMoney();
+			// 判断奖金池是否为空,为空取当日订单总额
+			// 查询当日所有订单总额
+			BigDecimal bounsPool = this.getOrderMoney();
 			for (Welfare welfare : wefarelist) {
+				// 每次循环重新赋值
+				BigDecimal newBounsPool = bounsPool;
 				WelfareVo vo = new WelfareVo();
 				vo.setWelfareName(welfare.getWelfareName());
 				vo.setRemark(welfare.getRemark());
 				if (welfare.getBonusPool() != null) {
-					bounsPool = welfare.getBonusPool();
+					newBounsPool = welfare.getBonusPool();
 				}
-				vo.setBounsPool(bounsPool);
+				vo.setBounsPool(newBounsPool);
 				// 计算达标人数
 				int qualifiedCount = this.getQualifiedCount(welfare.getWelfareKey(), welfare.getWelfareValue());
 				vo.setQualifiedCount(qualifiedCount);
-				if (qualifiedCount != 0) {
-					// 计算平均分红 bounsPool/qualifiedCount
-					vo.setAverageAllot(bounsPool.divide(new BigDecimal(qualifiedCount), 2, RoundingMode.HALF_UP));
+				if (qualifiedCount != 0 && !newBounsPool.equals("0")) {
+					// 计算平均分红 总业绩*百分比/总人数 bounsPool*percent/qualifiedCount
+					vo.setAverageAllot(newBounsPool.multiply(welfare.getPercent())
+							.divide(new BigDecimal(qualifiedCount), 4, RoundingMode.HALF_UP));
 				} else {
 					vo.setAverageAllot(BigDecimal.ZERO);
 				}
@@ -154,6 +162,23 @@ public class ProfitServiceImpl implements ProfitService {
 			}
 		}
 		return welfareVoList;
+	}
+
+	/**
+	 * 获取当日报表中订单的总业绩
+	 * 
+	 * @return
+	 */
+	public BigDecimal getOrderMoney() {
+		ReportExample example = new ReportExample();
+		ReportExample.Criteria cr = example.createCriteria();
+		Date date = new Date();
+		cr.andCreateTimeGreaterThanOrEqualTo(DateUtils.getStartTime(date));
+		cr.andCreateTimeLessThan(DateUtils.getEndTime(date));
+		List<String> showField = Lists.newArrayList();
+		showField.add(SqlTools.sumField(Report.FD_ORDERMONEY));
+		Report peport = reportMapper.selectOneByExampleShowField(showField, example);
+		return peport == null ? BigDecimal.ZERO : peport.getOrderMoney();
 	}
 
 	/**

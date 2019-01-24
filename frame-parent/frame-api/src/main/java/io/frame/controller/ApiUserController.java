@@ -71,7 +71,7 @@ public class ApiUserController {
 			throw new RRException(ErrorCode.SYSTEM_REGISTER_DOMAIN_KEY_IS_NOT_EXIST);
 		}
 		try {
-			QRCodeUtils.generateQRCode(value + "/?userMobile=" + user.getUserMobile(), 200, 200, "png", response);
+			QRCodeUtils.generateQRCode(value + "/?recommendMobile=" + user.getUserMobile(), 200, 200, "png", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
