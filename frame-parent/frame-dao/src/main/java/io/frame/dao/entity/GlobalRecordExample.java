@@ -3,6 +3,7 @@ package io.frame.dao.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class GlobalRecordExample {
@@ -206,6 +207,32 @@ public class GlobalRecordExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -835,6 +862,66 @@ public class GlobalRecordExample {
 
         public Criteria andIsGrantNotBetween(Integer value1, Integer value2) {
             addCriterion("isGrant not between", value1, value2, "isGrant");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeIsNull() {
+            addCriterion("generateTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeIsNotNull() {
+            addCriterion("generateTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeEqualTo(Date value) {
+            addCriterionForJDBCDate("generateTime =", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeNotEqualTo(Date value) {
+            addCriterionForJDBCDate("generateTime <>", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeGreaterThan(Date value) {
+            addCriterionForJDBCDate("generateTime >", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("generateTime >=", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeLessThan(Date value) {
+            addCriterionForJDBCDate("generateTime <", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("generateTime <=", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeIn(List<Date> values) {
+            addCriterionForJDBCDate("generateTime in", values, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeNotIn(List<Date> values) {
+            addCriterionForJDBCDate("generateTime not in", values, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("generateTime between", value1, value2, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("generateTime not between", value1, value2, "generateTime");
             return (Criteria) this;
         }
 
@@ -1558,6 +1645,46 @@ public class GlobalRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andGenerateTimeEqualToIgnoreNull(Date value) {
+            addCriterionIgnoreNull("generateTime =", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeNotEqualToIgnoreNull(Date value) {
+            addCriterionIgnoreNull("generateTime <>", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeGreaterThanIgnoreNull(Date value) {
+            addCriterionIgnoreNull("generateTime >", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeGreaterThanOrEqualToIgnoreNull(Date value) {
+            addCriterionIgnoreNull("generateTime >=", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeLessThanIgnoreNull(Date value) {
+            addCriterionIgnoreNull("generateTime <", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeLessThanOrEqualToIgnoreNull(Date value) {
+            addCriterionIgnoreNull("generateTime <=", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeInIgnoreNull(List<Date> value) {
+            addCriterionIgnoreNull("generateTime in", value, "generateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andGenerateTimeNotInIgnoreNull(List<Date> value) {
+            addCriterionIgnoreNull("generateTime not in", value, "generateTime");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeEqualToIgnoreNull(Date value) {
             addCriterionIgnoreNull("createTime =", value, "createTime");
             return (Criteria) this;
@@ -1808,6 +1935,11 @@ public class GlobalRecordExample {
 
         public Criteria andIsGrantLikeInsensitive(String value) {
             addCriterion("upper(isGrant) like", value.toUpperCase(), "isGrant");
+            return this;
+        }
+
+        public Criteria andGenerateTimeLikeInsensitive(String value) {
+            addCriterion("upper(generateTime) like", value.toUpperCase(), "generateTime");
             return this;
         }
 
