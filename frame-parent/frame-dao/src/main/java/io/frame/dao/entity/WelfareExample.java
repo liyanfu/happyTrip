@@ -538,6 +538,66 @@ public class WelfareExample {
             return (Criteria) this;
         }
 
+        public Criteria andPercentIsNull() {
+            addCriterion("percent is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentIsNotNull() {
+            addCriterion("percent is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentEqualTo(BigDecimal value) {
+            addCriterion("percent =", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentNotEqualTo(BigDecimal value) {
+            addCriterion("percent <>", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentGreaterThan(BigDecimal value) {
+            addCriterion("percent >", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("percent >=", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentLessThan(BigDecimal value) {
+            addCriterion("percent <", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("percent <=", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentIn(List<BigDecimal> values) {
+            addCriterion("percent in", values, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentNotIn(List<BigDecimal> values) {
+            addCriterion("percent not in", values, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("percent between", value1, value2, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("percent not between", value1, value2, "percent");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
@@ -1208,6 +1268,46 @@ public class WelfareExample {
             return (Criteria) this;
         }
 
+        public Criteria andPercentEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("percent =", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentNotEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("percent <>", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentGreaterThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("percent >", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentGreaterThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("percent >=", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentLessThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("percent <", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentLessThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("percent <=", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("percent in", value, "percent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPercentNotInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("percent not in", value, "percent");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusEqualToIgnoreNull(Integer value) {
             addCriterionIgnoreNull("status =", value, "status");
             return (Criteria) this;
@@ -1543,6 +1643,11 @@ public class WelfareExample {
 
         public Criteria andBonusPoolLikeInsensitive(String value) {
             addCriterion("upper(bonusPool) like", value.toUpperCase(), "bonusPool");
+            return this;
+        }
+
+        public Criteria andPercentLikeInsensitive(String value) {
+            addCriterion("upper(percent) like", value.toUpperCase(), "percent");
             return this;
         }
 

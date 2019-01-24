@@ -69,10 +69,13 @@
 <table tableName="QRTZ_SIMPROP_TRIGGERS" domainObjectName="SIMPROPTRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="QRTZ_TRIGGERS" domainObjectName="TRIGGERS" ><property name="useActualColumnNames" value="true"/></table>
  -->
+<table tableName="b_global_record" domainObjectName="GlobalRecord" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="b_order" domainObjectName="Order" ><property name="useActualColumnNames" value="true"/><generatedKey column="orderId" sqlStatement="MySql"  identity="true" type="post"/></table>
 <table tableName="b_product" domainObjectName="Product" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="b_product_type" domainObjectName="ProductType" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="b_report" domainObjectName="Report" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="b_speclal_record" domainObjectName="SpeclalRecord" ><property name="useActualColumnNames" value="true"/></table>
+<table tableName="b_teamleader_record" domainObjectName="TeamleaderRecord" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="b_welfare" domainObjectName="Welfare" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_config" domainObjectName="Config" ><property name="useActualColumnNames" value="true"/></table>
 <table tableName="s_log" domainObjectName="Log" ><property name="useActualColumnNames" value="true"/></table>
