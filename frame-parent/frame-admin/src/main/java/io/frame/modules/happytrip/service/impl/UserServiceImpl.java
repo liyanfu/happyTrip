@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 			for (User bean : page.getResult()) {
 				Map<String, Object> map = Maps.newHashMap();
 				// 查询用户账户信息
-				Wallet wallet = walletService.getInfoById(bean.getUserId());
+				Wallet wallet = walletService.getInfoByUserId(bean.getUserId());
 				map.put("balance", wallet == null ? BigDecimal.ZERO : wallet.getBalance());
 				Recommend recommend = recommendService.getRecommendById(bean.getUserId());
 				// 今日推荐人数

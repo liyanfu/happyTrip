@@ -80,7 +80,7 @@ public class WalletServiceImpl implements WalletService {
 		}
 
 		// 获取用户账户信息
-		Wallet wallet = this.getInfoById(userId);
+		Wallet wallet = this.getInfoByUserId(userId);
 		Wallet updateWallet = new Wallet();
 		updateWallet.setWalletId(wallet.getWalletId());
 		updateWallet.setUserId(userId);
@@ -120,7 +120,7 @@ public class WalletServiceImpl implements WalletService {
 		}
 
 		// 获取用户账户信息
-		Wallet wallet = this.getInfoById(userId);
+		Wallet wallet = this.getInfoByUserId(userId);
 		Wallet updateWallet = new Wallet();
 		updateWallet.setWalletId(wallet.getWalletId());
 		updateWallet.setUserId(userId);
@@ -223,7 +223,7 @@ public class WalletServiceImpl implements WalletService {
 		}
 
 		// 获取用户账户信息
-		Wallet wallet = this.getInfoById(userId);
+		Wallet wallet = this.getInfoByUserId(userId);
 		Wallet updateWallet = new Wallet();
 		updateWallet.setWalletId(wallet.getWalletId());
 		updateWallet.setUserId(userId);
@@ -262,7 +262,7 @@ public class WalletServiceImpl implements WalletService {
 		}
 
 		// 获取用户账户信息
-		Wallet wallet = this.getInfoById(userId);
+		Wallet wallet = this.getInfoByUserId(userId);
 		Wallet updateWallet = new Wallet();
 		updateWallet.setWalletId(wallet.getWalletId());
 		updateWallet.setUserId(userId);
@@ -281,6 +281,45 @@ public class WalletServiceImpl implements WalletService {
 			// 记录帐变
 			walletChangeService.createWalletChange(userId, changeMoney, walletChange, changeType);
 
+		} catch (Exception e) {
+			logger.error(ErrorCode.OPERATE_FAILED, e);
+			throw new RRException(ErrorCode.OPERATE_FAILED);
+		}
+
+	}
+
+	@Override
+	public void addWallet(WalletChange walletChange, ChangeType changeType) {
+
+		SysUser sysUser = ShiroUtils.getUserEntity();
+		Long userId = walletChange.getUserId();
+		BigDecimal changeMoney = walletChange.getOperatorMoney();
+		if (changeMoney.compareTo(BigDecimal.ZERO) < 0) {
+			throw new RRException(ErrorCode.THE_AMOUNT_CANNOT_BE_NEGATIVE);
+		}
+
+		// 获取用户账户信息
+		Wallet wallet = this.getInfoByUserId(userId);
+		Wallet updateWallet = new Wallet();
+		updateWallet.setWalletId(wallet.getWalletId());
+		updateWallet.setUserId(userId);
+		updateWallet.setBalance(changeMoney);
+		updateWallet.setProfitMoney(changeMoney);// 收益金额
+
+		try {
+			// 账户加钱
+			walletMapper.updateByPrimaryKeySelectiveSync(updateWallet);
+			// 更新修改者
+			Wallet updateWallet2 = new Wallet();
+			Date date = new Date();
+			updateWallet2.setWalletId(wallet.getWalletId());
+			updateWallet2.setUpdateUser(sysUser == null ? "系统" : sysUser.getUserName());
+			updateWallet2.setUpdateTime(date);
+			walletMapper.updateByPrimaryKeySelective(updateWallet2);
+			// 记录帐变
+			walletChangeService.createWalletChange(userId, changeMoney, walletChange, changeType);
+			// 刷新报表
+			reportService.upsert(userId, changeMoney, BigDecimal.ZERO, changeType);
 		} catch (Exception e) {
 			logger.error(ErrorCode.OPERATE_FAILED, e);
 			throw new RRException(ErrorCode.OPERATE_FAILED);

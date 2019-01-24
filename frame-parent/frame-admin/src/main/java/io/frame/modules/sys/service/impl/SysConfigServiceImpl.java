@@ -195,4 +195,23 @@ public class SysConfigServiceImpl implements SysConfigService {
 		}
 		return config;
 	}
+
+	@Override
+	public Config getInfo(Config config) {
+		ConfigExample example = new ConfigExample();
+		ConfigExample.Criteria cr = example.createCriteria();
+		if (config.getConfigId() != null) {
+			cr.andConfigIdEqualTo(config.getConfigId());
+		}
+		if (StringUtils.isEmpty(config.getConfigKey())) {
+			cr.andConfigKeyEqualTo(config.getConfigKey());
+		}
+		if (StringUtils.isEmpty(config.getConfigType())) {
+			cr.andConfigTypeEqualTo(config.getConfigType());
+		}
+		if (config.getConfigStatus() != null) {
+			cr.andConfigStatusEqualTo(config.getConfigStatus());
+		}
+		return configMapper.selectOneByExample(example);
+	}
 }

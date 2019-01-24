@@ -45,7 +45,7 @@ public class WalletController extends AbstractController {
 	@RequiresPermissions("ht:wallet:info")
 	public R info(@PathVariable("userId") Long userId) {
 		Map<String, Object> map = Maps.newHashMap();
-		map.put("wallet", walletService.getInfoById(userId));
+		map.put("wallet", walletService.getInfoByUserId(userId));
 		// 充值总金额
 		map.put("rechargeTotalMoney", rechargeService.getRechargeTotalMoneyById(userId));
 		// 提现总金额

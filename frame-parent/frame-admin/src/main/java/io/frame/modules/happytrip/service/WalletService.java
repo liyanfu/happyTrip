@@ -73,4 +73,11 @@ public interface WalletService {
 	 */
 	void subtractBack(WalletChange walletChange, ChangeType changeType);
 
+	/**
+	 * 各种福利收益入账
+	 * 
+	 * @param walletChange
+	 */
+	void addWallet(WalletChange walletChange, ChangeType changeType);
+
 }

@@ -15,6 +15,11 @@ public interface SysConfigService {
 	PageUtils<Config> queryPage(Config config);
 
 	/**
+	 * 获取配置信息
+	 */
+	public Config getInfo(Config config);
+
+	/**
 	 * 保存配置信息
 	 */
 	public void save(Config config);
