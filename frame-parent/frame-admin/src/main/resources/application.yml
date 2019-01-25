@@ -24,7 +24,7 @@ frame:
 #mybatis
 mybatis:
   mapper-locations: classpath*:io/frame/dao/mapper/*.xml,io/frame/dao/custom/mapper/*.xml
-  type-aliases-package: io.frame.dao.entity   #实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: io.frame.dao.entity,io.frame.dao.custom.entity   #实体扫描，多个package用逗号或者分号分隔
 #分页配置
 pagehelper:
   helper-dialect: mysql

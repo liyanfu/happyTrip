@@ -2,6 +2,7 @@ package io.frame.modules.job.task;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -87,46 +88,27 @@ public class SpecialTask {
 				return;
 			}
 
+			// 获取所有用户集合
+			List<User> userList = this.getUserList();
+			if (CollectionUtils.isEmpty(userList)) {
+				logger.info("无用户数据...");
+				return;
+			}
+
 			// 获取昨日报表中的订单总业绩金额
 			BigDecimal totalsMoney = this.getOrderTotasMoney(currentDate);
 			// 最终入库数据
 			List<SpecialRecord> recordList = Lists.newArrayList();
 			for (Welfare welfare : ruleList) {
-
-				String[] rules = welfare.getWelfareValue().split(",");
-				// 直推人数要求
-				Integer recommendNum = Integer.parseInt(rules[0]);
-				// 团队人数要求
-				Integer teamNum = Integer.parseInt(rules[1]);
-				// 团队业绩要求
-				BigDecimal teamAchievement = new BigDecimal(rules[2]);
-
-				// 获取所有用户集合
-				// 获取所有用户
-				List<User> userList = this.getUserList();
-				if (CollectionUtils.isEmpty(userList)) {
-					logger.info("无用户数据...");
-					return;
-				}
-
 				// 获取达到此规则的用户
-				List<CustomeRecommendVo> recomendList = Lists.newArrayList();
-				for (User user : userList) {
-					CustomeRecommendVo recommend = this.getSatisfyUser(user.getUserId(), user.getGroupUserIds(),
-							recommendNum, teamNum, teamAchievement);
-					if (recommend != null) {
-						recomendList.add(recommend);
-					}
-				}
-
-				// 获取达到此规则的用户
+				List<CustomeRecommendVo> recomendList = this.getSatisfyUser(welfare.getWelfareValue());
 				if (CollectionUtils.isEmpty(recomendList)) {
-					logger.info("无满足条件的会员数据...");
-					return;
+					logger.info("无此规则会员数据...[{}]", welfare.toString());
+					continue;// 下一个规则
 				}
 
+				BigDecimal calcMoney = totalsMoney; // 每次重新赋值
 				for (CustomeRecommendVo recommend : recomendList) {
-					BigDecimal calcMoney = totalsMoney; // 每次重新赋值
 					User user = userMapper.selectByPrimaryKey(recommend.getUserId());
 					SpecialRecord record = new SpecialRecord();
 					record.setUserId(user.getUserId());
@@ -154,6 +136,11 @@ public class SpecialTask {
 					recordList.add(record);
 				}
 
+			}
+
+			if (CollectionUtils.isEmpty(recordList)) {
+				logger.info("无满足条件数据...");
+				return;
 			}
 
 			// 判断是否开启自动派发开关
@@ -187,7 +174,9 @@ public class SpecialTask {
 
 			}
 
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			logger.error("特别贡献奖定时任务--------------------------异常");
 			throw new RRException("特别贡献奖定时任务异常", e);
 		}
@@ -203,9 +192,57 @@ public class SpecialTask {
 	 * @param teamMoney
 	 * @return
 	 */
-	private CustomeRecommendVo getSatisfyUser(Long userId, String groupUserIds, Integer recommendNum, Integer teamNum,
-			BigDecimal teamMoney) {
-		return customeRecommendMapper.customSelectOneByExample(userId, groupUserIds, recommendNum, teamNum, teamMoney);
+	private List<CustomeRecommendVo> getSatisfyUser(String rules) {
+		String[] rule = rules.split(",");
+		// 直推人数要求
+		String[] recommendNumStr = rule[0].split("\\|");
+		// 累计直推人数最小要求
+		Integer minRecommendNum = Integer.parseInt(recommendNumStr[0]);
+		// 累计直推人数最大要求
+		Integer maxRecommendNum = Integer.parseInt(recommendNumStr[1]);
+		List<CustomeRecommendVo> list = customeRecommendMapper.customSelectRecommendNumList(minRecommendNum,
+				maxRecommendNum);
+		if (CollectionUtils.isEmpty(list)) {
+			return new ArrayList<>();
+		}
+
+		// 团队人数要求
+		String[] teamNumStr = rule[1].split("\\|");
+		// 团队人数最小要求
+		Integer minTeamNumNum = Integer.parseInt(teamNumStr[0]);
+		// 团队人数最大要求
+		Integer maxTeamNumNum = Integer.parseInt(teamNumStr[1]);
+
+		// 团队业绩要求
+		String[] teamAchievementStr = rule[2].split("\\|");
+		// 团队业绩最小要求
+		BigDecimal minTeamAchievementNum = new BigDecimal(teamAchievementStr[0]);
+		// 团队业绩最大要求
+		BigDecimal maxTeamAchievementNum = new BigDecimal(teamAchievementStr[1]);
+
+		List<CustomeRecommendVo> resultList = Lists.newArrayList();
+		// 获取团队人数要求,团队业绩要求
+		for (CustomeRecommendVo customeRecommendVo : list) {
+			CustomeRecommendVo vo = customeRecommendMapper.customSelectTeamInfo(customeRecommendVo.getGroupUserIds());
+			if (vo == null || vo.getTeamNum() == null || vo.getTeamAchievement() == null) {
+				continue;
+			}
+
+			// 判断团队人数是否达标 ,团队业绩是否达标
+			if ((vo.getTeamNum() >= minTeamNumNum && vo.getTeamNum() < maxTeamNumNum)
+					&& (vo.getTeamAchievement().compareTo(minTeamAchievementNum) >= 0
+							&& vo.getTeamAchievement().compareTo(maxTeamAchievementNum) < 0)) {
+				CustomeRecommendVo newVo = new CustomeRecommendVo();
+				newVo.setUserId(customeRecommendVo.getUserId());
+				newVo.setRecommendNum(customeRecommendVo.getRecommendNum());
+				newVo.setTeamNum(vo.getTeamNum());
+				newVo.setTeamAchievement(vo.getTeamAchievement());
+				resultList.add(newVo);
+			}
+
+		}
+
+		return resultList;
 	}
 
 	/**

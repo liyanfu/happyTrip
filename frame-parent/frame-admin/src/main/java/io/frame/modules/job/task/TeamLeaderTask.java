@@ -27,7 +27,6 @@ import io.frame.dao.entity.Report;
 import io.frame.dao.entity.ReportExample;
 import io.frame.dao.entity.TeamleaderRecord;
 import io.frame.dao.entity.User;
-import io.frame.dao.entity.UserExample;
 import io.frame.dao.entity.WalletChange;
 import io.frame.dao.entity.Welfare;
 import io.frame.dao.entity.WelfareExample;
@@ -79,60 +78,58 @@ public class TeamLeaderTask {
 
 			// 获取昨日推荐表中的用户信息
 
-			List<Recommend> recommendList = this.getRecommendList(currentDate);
-			if (CollectionUtils.isEmpty(recommendList)) {
-				logger.info("昨日无推荐...");
-				return;
-			}
-
 			// 获取团队领导奖奖励规则
 			List<Welfare> ruleList = this.getRuleList();
 			if (CollectionUtils.isEmpty(ruleList)) {
 				logger.info("无匹配规则...");
 				return;
 			}
-
 			// 获取昨日报表中的订单总业绩金额
 			BigDecimal totalsMoney = this.getOrderTotasMoney(currentDate);
-
 			// 最终入库数据
 			List<TeamleaderRecord> recordList = Lists.newArrayList();
-			for (Recommend recommend : recommendList) {
+			for (Welfare welfare : ruleList) {
+				// 获取达到此规则的用户
+				List<Recommend> recommendList = this.getSatisfyUser(welfare, currentDate);
+				if (CollectionUtils.isEmpty(recommendList)) {
+					logger.info("无此规则会员数据...[{}]", welfare.toString());
+					continue;// 下一个规则
+				}
+
 				BigDecimal calcMoney = totalsMoney; // 每次重新赋值
-				Integer recommendNum = recommend.getRecommendNumber();
-				BigDecimal achievement = recommend.getTeamAchievement();
-				Welfare ruleWelfare = this.getRuleWelfare(ruleList, recommendNum, achievement);
-				if (ruleWelfare == null) {
-					// 无匹配规则
-					continue;
+				for (Recommend recommend : recommendList) {
+					User user = userMapper.selectByPrimaryKey(recommend.getUserId());
+					TeamleaderRecord record = new TeamleaderRecord();
+					record.setUserId(user.getUserId());
+					record.setUserName(user.getUserName());
+					record.setUserMobile(user.getUserMobile());
+					record.setUserLevel(user.getUserLevel());
+					record.setParentId(user.getParentId());
+					record.setGroupUserIds(user.getGroupUserIds());
+					record.setCreateTime(currentDate);
+					record.setGenerateTime(DateUtils.addDateDays(currentDate, -1));// 生成时间实际是生成昨天的数据
+					record.setRecommendNum(recommend.getRecommendNumber());
+					record.setAchievement(recommend.getTeamAchievement());
+					// 如果奖金池不为空,则使用奖金池中的金额计算
+					if (welfare.getBonusPool() != null) {
+						calcMoney = welfare.getBonusPool();
+					}
+
+					// 获取昨日达到要求总人数
+					Integer totalsPeopleNum = recommendList.size();
+
+					// 奖金池或订单总业绩*百分比/达标人数
+					record.setMoney(calcMoney.multiply(welfare.getPercent()).divide(new BigDecimal(totalsPeopleNum), 4,
+							RoundingMode.HALF_UP));
+
+					recordList.add(record);
 				}
 
-				User user = userMapper.selectByPrimaryKey(recommend.getUserId());
+			}
 
-				TeamleaderRecord record = new TeamleaderRecord();
-				record.setUserId(user.getUserId());
-				record.setUserName(user.getUserName());
-				record.setUserMobile(user.getUserMobile());
-				record.setUserLevel(user.getUserLevel());
-				record.setParentId(user.getParentId());
-				record.setGroupUserIds(user.getGroupUserIds());
-				record.setCreateTime(currentDate);
-				record.setGenerateTime(DateUtils.addDateDays(currentDate, -1));// 生成时间实际是生成昨天的数据
-				record.setRecommendNum(recommendNum);
-				record.setAchievement(achievement);
-				// 如果奖金池不为空,则使用奖金池中的金额计算
-				if (ruleWelfare.getBonusPool() != null) {
-					calcMoney = ruleWelfare.getBonusPool();
-				}
-
-				// 获取昨日达到要求总人数
-				Integer totalsPeopleNum = this.getTotalsPeopleNum(ruleWelfare, currentDate);
-
-				// 奖金池或订单总业绩*百分比/达标人数
-				record.setMoney(calcMoney.multiply(ruleWelfare.getPercent()).divide(new BigDecimal(totalsPeopleNum), 4,
-						RoundingMode.HALF_UP));
-
-				recordList.add(record);
+			if (CollectionUtils.isEmpty(recordList)) {
+				logger.info("无满足条件数据...");
+				return;
 			}
 
 			// 判断是否开启自动派发开关
@@ -175,39 +172,38 @@ public class TeamLeaderTask {
 	}
 
 	/**
-	 * 获取昨日满足推荐的总人数
+	 * 获取昨日满足规则的用户
 	 * 
-	 * @param ruleWelfare
+	 * @param recommendNum
+	 * @param teamAchievement
 	 * @param currentDate
 	 * @return
 	 */
-	private Integer getTotalsPeopleNum(Welfare ruleWelfare, Date currentDate) {
+	private List<Recommend> getSatisfyUser(Welfare welfare, Date currentDate) {
+		String[] rule = welfare.getWelfareValue().split(",");
+		// 昨日直推要求
+		String[] recommendNumStr = rule[0].split("\\|");
+		// 昨日直推人数最小要求
+		Integer minTeamNumNum = Integer.parseInt(recommendNumStr[0]);
+		// 昨日直推人数最大要求
+		Integer maxTeamNumNum = Integer.parseInt(recommendNumStr[1]);
+
+		// 昨日直推业绩要求
+		String[] achievementStr = rule[1].split("\\|");
+		// 昨日直推业绩最小要求
+		BigDecimal minAchievementNum = new BigDecimal(achievementStr[0]);
+		// 昨日直推业绩最大要求
+		BigDecimal maxAchievementNum = new BigDecimal(achievementStr[1]);
+
 		RecommendExample example = new RecommendExample();
-		String[] rule = ruleWelfare.getWelfareValue().split(",");
 		RecommendExample.Criteria cr = example.createCriteria();
 		cr.andCreateTimeEqualTo(DateUtils.addDateDays(currentDate, -1));
-		cr.andRecommendNumberGreaterThanOrEqualTo(Integer.parseInt(rule[0]));
-		cr.andTeamAchievementGreaterThanOrEqualTo(new BigDecimal(rule[2]));
-		return recommendMapper.countByExample(example);
-	}
-
-	/**
-	 * 获取匹配规则
-	 * 
-	 * @return
-	 */
-	private Welfare getRuleWelfare(List<Welfare> ruleList, Integer recommendNum, BigDecimal achievement) {
-		Welfare ruleWelfare = null;
-		// 根据规则 计算返利
-		for (Welfare welfare : ruleList) {
-			// 解析出规则
-			String[] rule = welfare.getWelfareValue().split(",");
-			if (recommendNum >= Integer.parseInt(rule[0]) && achievement.compareTo(new BigDecimal(rule[1])) >= 0) {
-				ruleWelfare = welfare;
-			}
-		}
-
-		return ruleWelfare;
+		cr.andRecommendNumberGreaterThanOrEqualTo(minTeamNumNum);
+		cr.andRecommendNumberLessThan(maxTeamNumNum);
+		//
+		cr.andTeamAchievementGreaterThanOrEqualTo(minAchievementNum);
+		cr.andTeamAchievementLessThan(maxAchievementNum);
+		return recommendMapper.selectByExample(example);
 	}
 
 	/**
@@ -245,24 +241,6 @@ public class TeamLeaderTask {
 	}
 
 	/**
-	 * 获取用户
-	 * 
-	 * @return
-	 */
-	private List<User> getUserList() {
-		UserExample example = new UserExample();
-		example.setOrderByClause(SqlTools.orderByAscField(User.FD_USERLEVEL));
-		List<String> showField = Lists.newArrayList();
-		showField.add(User.FD_USERID);
-		showField.add(User.FD_USERNAME);
-		showField.add(User.FD_USERMOBILE);
-		showField.add(User.FD_USERLEVEL);
-		showField.add(User.FD_GROUPUSERIDS);
-		showField.add(User.FD_PARENTID);
-		return userMapper.selectByExampleShowField(showField, example);
-	}
-
-	/**
 	 * 获取配置派发开关
 	 * 
 	 * @return
@@ -276,22 +254,6 @@ public class TeamLeaderTask {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * 获取昨日推荐表中的信息
-	 * 
-	 * @return
-	 */
-	private List<Recommend> getRecommendList(Date currentDate) {
-		RecommendExample example = new RecommendExample();
-		RecommendExample.Criteria cr = example.createCriteria();
-		cr.andCreateTimeEqualTo(DateUtils.addDateDays(currentDate, -1));
-		List<String> showField = Lists.newArrayList();
-		showField.add(Recommend.FD_USERID);
-		showField.add(Recommend.FD_RECOMMENDNUMBER);
-		showField.add(Recommend.FD_TEAMACHIEVEMENT);
-		return recommendMapper.selectByExampleShowField(showField, example);
 	}
 
 }
