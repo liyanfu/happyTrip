@@ -20,11 +20,21 @@ public class CustomeRecommendVo extends BaseEntity implements Serializable {
 
 	private Long userId;
 
+	private String groupUserIds;
+
 	private Integer recommendNum;
 
 	private Integer teamNum;
 
 	private BigDecimal teamAchievement;
+
+	public String getGroupUserIds() {
+		return groupUserIds;
+	}
+
+	public void setGroupUserIds(String groupUserIds) {
+		this.groupUserIds = groupUserIds;
+	}
 
 	public Long getUserId() {
 		return userId;
