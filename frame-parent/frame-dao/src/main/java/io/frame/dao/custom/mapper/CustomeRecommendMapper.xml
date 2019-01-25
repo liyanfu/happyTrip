@@ -645,7 +645,33 @@
     </trim>
   </insert>
   
-  <!-- 自定义查询 -->
+  
+  
+  <!-- 用于后台定时任务自定义查询 -->
+  <select id="customSelectOneByExample" resultType="io.frame.dao.custom.entity.CustomeRecommendVo">
+		SELECT 
+		  userId,recommendNum,teamNum,teamAchievement
+		FROM
+		  (SELECT 
+		    u.userId AS userId,
+		    (SELECT 
+		      SUM(a.recommendNumber) 
+		    FROM
+		      u_recommend a 
+		    WHERE a.parentId = #{userId}) AS recommendNum,
+		    SUM(u.recommendNumber) AS teamNum,
+		    SUM(u.teamAchievement) AS teamAchievement 
+		  FROM
+		    u_recommend u 
+		  WHERE u.groupUserIds LIKE concat(#{groupUserIds},'%')) a 
+		WHERE a.recommendNum <![CDATA[>=]]> #{recommendNum} 
+		  AND a.teamNum <![CDATA[>=]]> #{teamNum} 
+		  AND a.teamAchievement <![CDATA[>=]]>  #{teamAchievement}
+  </select>
+  
+  
+  
+  <!-- 用于前端界面显示自定义查询 -->
   <select id="customCountByExample" resultType="int">
     	<!-- 最终结果 -->
 		SELECT COUNT(c.counts) FROM (
