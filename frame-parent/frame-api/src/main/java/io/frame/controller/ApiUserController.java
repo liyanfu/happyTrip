@@ -29,7 +29,6 @@ import io.frame.form.ForgetPassForm;
 import io.frame.form.UserPassForm;
 import io.frame.service.ConfigService;
 import io.frame.service.UserService;
-import io.frame.utils.QRCodeUtils;
 import io.frame.utils.SessionUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,12 +69,13 @@ public class ApiUserController {
 		if (StringUtils.isEmpty(value)) {
 			throw new RRException(ErrorCode.SYSTEM_REGISTER_DOMAIN_KEY_IS_NOT_EXIST);
 		}
-		try {
-			QRCodeUtils.generateQRCode(value + "/?recommendMobile=" + user.getUserMobile(), 200, 200, "png", response);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return R.ok();
+		String url = value + "/?mobile=" + user.getUserMobile();
+		// try {
+		// QRCodeUtils.generateQRCode(url, 200, 200, "png", response);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		return R.ok().put("url", url);
 	}
 
 	/**
