@@ -20,13 +20,12 @@ import io.frame.common.enums.Constant.Status;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.DateUtils;
 import io.frame.common.utils.SqlTools;
+import io.frame.dao.custom.entity.CustomeRecommendVo;
+import io.frame.dao.custom.mapper.CustomeRecommendMapper;
 import io.frame.dao.entity.Config;
-import io.frame.dao.entity.Recommend;
-import io.frame.dao.entity.RecommendExample;
 import io.frame.dao.entity.Report;
 import io.frame.dao.entity.ReportExample;
 import io.frame.dao.entity.SpecialRecord;
-import io.frame.dao.entity.TeamleaderRecord;
 import io.frame.dao.entity.User;
 import io.frame.dao.entity.UserExample;
 import io.frame.dao.entity.WalletChange;
@@ -34,7 +33,7 @@ import io.frame.dao.entity.Welfare;
 import io.frame.dao.entity.WelfareExample;
 import io.frame.dao.mapper.RecommendMapper;
 import io.frame.dao.mapper.ReportMapper;
-import io.frame.dao.mapper.TeamleaderRecordMapper;
+import io.frame.dao.mapper.SpecialRecordMapper;
 import io.frame.dao.mapper.UserMapper;
 import io.frame.dao.mapper.WelfareMapper;
 import io.frame.modules.happytrip.service.WalletService;
@@ -67,10 +66,13 @@ public class SpecialTask {
 	RecommendMapper recommendMapper;
 
 	@Autowired
-	TeamleaderRecordMapper teamleaderRecordMapper;
+	SpecialRecordMapper specialRecordMapper;
 
 	@Autowired
 	WalletService walletService;
+
+	@Autowired
+	CustomeRecommendMapper customeRecommendMapper;
 
 	@Transactional(readOnly = false)
 	public void run() {
@@ -78,78 +80,86 @@ public class SpecialTask {
 		Date currentDate = new Date();
 		try {
 
-			// 获取所有用户
-			List<User> userList = this.getUserList();
-			if (CollectionUtils.isEmpty(userList)) {
-				logger.info("无用户数据...");
-				return;
-			}
 			// 获取特别贡献奖奖励规则
 			List<Welfare> ruleList = this.getRuleList();
 			if (CollectionUtils.isEmpty(ruleList)) {
 				logger.info("无匹配规则数据...");
 				return;
 			}
+
 			// 获取昨日报表中的订单总业绩金额
 			BigDecimal totalsMoney = this.getOrderTotasMoney(currentDate);
-
 			// 最终入库数据
 			List<SpecialRecord> recordList = Lists.newArrayList();
-			for (User user : userList) {
-				BigDecimal calcMoney = totalsMoney; // 每次重新赋值
-				// 获取当前用户的累计直推人数,
-				Integer recommendNum = this.getTotalsCumulativeNum(user.getUserId());
-				if (recommendNum == 0) {
-					continue;// 不达标下一个
-				}
-				// 团队总人数,团队业绩
-				Recommend recommend = this.getTeamNumAndAchievement(user.getUserId(), user.getGroupUserIds());
-				if (recommend == null || recommend.getRecommendNumber() == 0
-						|| recommend.getTeamAchievement().compareTo(BigDecimal.ZERO) == 0) {
-					continue;// 不达标下一个
-				}
+			for (Welfare welfare : ruleList) {
 
-				// 团队总人数
-				Integer teamNum = recommend.getRecommendNumber();
-				// 团队总业绩
-				BigDecimal teamAchievement = recommend.getTeamAchievement();
-				Welfare ruleWelfare = this.getRuleWelfare(ruleList, recommendNum, teamNum, teamAchievement);
-				if (ruleWelfare == null) {
-					// 无匹配规则
-					continue;
+				String[] rules = welfare.getWelfareValue().split(",");
+				// 直推人数要求
+				Integer recommendNum = Integer.parseInt(rules[0]);
+				// 团队人数要求
+				Integer teamNum = Integer.parseInt(rules[1]);
+				// 团队业绩要求
+				BigDecimal teamAchievement = new BigDecimal(rules[2]);
+
+				// 获取所有用户集合
+				// 获取所有用户
+				List<User> userList = this.getUserList();
+				if (CollectionUtils.isEmpty(userList)) {
+					logger.info("无用户数据...");
+					return;
 				}
 
-				SpecialRecord record = new SpecialRecord();
-				record.setUserId(user.getUserId());
-				record.setUserName(user.getUserName());
-				record.setUserMobile(user.getUserMobile());
-				record.setUserLevel(user.getUserLevel());
-				record.setParentId(user.getParentId());
-				record.setGroupUserIds(user.getGroupUserIds());
-				record.setCreateTime(currentDate);
-				record.setGenerateTime(DateUtils.addDateDays(currentDate, -1));// 生成时间实际是生成昨天的数据
-				record.setRecommendNum(recommendNum);
-				record.setTeamNum(recommendNum);
-				record.setTeamAchievement(teamAchievement);
-				// 如果奖金池不为空,则使用奖金池中的金额计算
-				if (ruleWelfare.getBonusPool() != null) {
-					calcMoney = ruleWelfare.getBonusPool();
+				// 获取达到此规则的用户
+				List<CustomeRecommendVo> recomendList = Lists.newArrayList();
+				for (User user : userList) {
+					CustomeRecommendVo recommend = this.getSatisfyUser(user.getUserId(), user.getGroupUserIds(),
+							recommendNum, teamNum, teamAchievement);
+					if (recommend != null) {
+						recomendList.add(recommend);
+					}
 				}
 
-				// 获取昨日达到要求总人数
-				Integer totalsPeopleNum = this.getTotalsPeopleNum(ruleWelfare, currentDate);
+				// 获取达到此规则的用户
+				if (CollectionUtils.isEmpty(recomendList)) {
+					logger.info("无满足条件的会员数据...");
+					return;
+				}
 
-				// 奖金池或订单总业绩*百分比/达标人数
-				record.setMoney(calcMoney.multiply(ruleWelfare.getPercent()).divide(new BigDecimal(totalsPeopleNum), 4,
-						RoundingMode.HALF_UP));
+				for (CustomeRecommendVo recommend : recomendList) {
+					BigDecimal calcMoney = totalsMoney; // 每次重新赋值
+					User user = userMapper.selectByPrimaryKey(recommend.getUserId());
+					SpecialRecord record = new SpecialRecord();
+					record.setUserId(user.getUserId());
+					record.setUserName(user.getUserName());
+					record.setUserMobile(user.getUserMobile());
+					record.setUserLevel(user.getUserLevel());
+					record.setParentId(user.getParentId());
+					record.setGroupUserIds(user.getGroupUserIds());
+					record.setCreateTime(currentDate);
+					record.setGenerateTime(DateUtils.addDateDays(currentDate, -1));// 生成时间实际是生成昨天的数据
+					record.setRecommendNum(recommend.getRecommendNum());
+					record.setTeamNum(recommend.getTeamNum());
+					record.setTeamAchievement(recommend.getTeamAchievement());
+					// 如果奖金池不为空,则使用奖金池中的金额计算
+					if (welfare.getBonusPool() != null) {
+						calcMoney = welfare.getBonusPool();
+					}
 
-				recordList.add(record);
+					// 获取达标的总人数
+					Integer totalsPeopleNum = recomendList.size();
+					// 奖金池或订单总业绩*百分比/达标人数
+					record.setMoney(calcMoney.multiply(welfare.getPercent()).divide(new BigDecimal(totalsPeopleNum), 4,
+							RoundingMode.HALF_UP));
+
+					recordList.add(record);
+				}
+
 			}
 
 			// 判断是否开启自动派发开关
 			boolean flag = this.getSwitch();
 			Date date = new Date();
-			for (TeamleaderRecord record : recordList) {
+			for (SpecialRecord record : recordList) {
 				if (record.getMoney().compareTo(BigDecimal.ZERO) <= 0) {
 					continue;
 				}
@@ -163,15 +173,15 @@ public class SpecialTask {
 					record.setUpdateTime(date);
 					record.setUpdateUser("系统");
 				}
-				teamleaderRecordMapper.insertSelective(record);
+				specialRecordMapper.insertSelective(record);
 
 				if (!flag) {// 开启自动派发，需要加钱，账变
 					// 钱包加钱 帐变 刷新报表
 					WalletChange walletChange = new WalletChange();
 					walletChange.setUserId(record.getUserId());
 					walletChange.setOperatorMoney(record.getMoney());
-					walletChange.setRemark(ChangeType.TEAM_LEADERSHIP_AWARD_KEY.getName());
-					walletService.addWallet(walletChange, ChangeType.TEAM_LEADERSHIP_AWARD_KEY);
+					walletChange.setRemark(ChangeType.SPECIAL_CONTRIBUTION_AWARD_KEY.getName());
+					walletService.addWallet(walletChange, ChangeType.SPECIAL_CONTRIBUTION_AWARD_KEY);
 
 				}
 
@@ -186,78 +196,16 @@ public class SpecialTask {
 	}
 
 	/**
-	 * 获取团队总人数和团队总业绩
+	 * 获取满足条件的会员
 	 * 
-	 * @param userId
-	 * @param groupUserIds
+	 * @param recommendNum
+	 * @param teamNum
+	 * @param teamMoney
 	 * @return
 	 */
-	private Recommend getTeamNumAndAchievement(Long userId, String groupUserIds) {
-		RecommendExample example = new RecommendExample();
-		RecommendExample.Criteria cr = example.createCriteria();
-		cr.andParentIdNotEqualTo(userId);
-		cr.andGroupUserIdsLike(groupUserIds + "%");
-		List<String> showField = Lists.newArrayList();
-		showField.add(SqlTools.countField(Recommend.FD_RECOMMENDNUMBER));
-		showField.add(SqlTools.sumField(Recommend.FD_TEAMACHIEVEMENT));
-		return recommendMapper.selectOneByExampleShowField(showField, example);
-	}
-
-	/**
-	 * 获取累计的直推人数
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	private Integer getTotalsCumulativeNum(Long userId) {
-		RecommendExample example = new RecommendExample();
-		example.or().andParentIdEqualTo(userId);
-		List<String> showField = Lists.newArrayList();
-		showField.add(SqlTools.sumField(Recommend.FD_RECOMMENDNUMBER));
-		Recommend recommend = recommendMapper.selectOneByExampleShowField(showField, example);
-		return recommend == null ? 0 : recommend.getRecommendNumber();
-	}
-
-	/**
-	 * 获取昨日满足推荐的总人数
-	 * 
-	 * @param ruleWelfare
-	 * @param currentDate
-	 * @return
-	 */
-	private Integer getTotalsPeopleNum(Welfare ruleWelfare, Date currentDate) {
-		RecommendExample example = new RecommendExample();
-		String[] rule = ruleWelfare.getWelfareValue().split(",");
-		RecommendExample.Criteria cr = example.createCriteria();
-		cr.andCreateTimeEqualTo(DateUtils.addDateDays(currentDate, -1));
-		cr.andRecommendNumberGreaterThanOrEqualTo(Integer.parseInt(rule[0]));
-		cr.andTeamAchievementGreaterThanOrEqualTo(new BigDecimal(rule[2]));
-		return recommendMapper.countByExample(example);
-	}
-
-	/**
-	 * 获取匹配规则
-	 * 
-	 * @param ruleList
-	 * @param recommendNum直推总人数
-	 * @param teamNum团队总人数
-	 * @param teamAchievement团队总业绩
-	 * @return
-	 */
-	private Welfare getRuleWelfare(List<Welfare> ruleList, Integer recommendNum, Integer teamNum,
-			BigDecimal teamAchievement) {
-		Welfare ruleWelfare = null;
-		// 根据规则 计算返利
-		for (Welfare welfare : ruleList) {
-			// 解析出规则
-			String[] rule = welfare.getWelfareValue().split(",");
-			if (recommendNum >= Integer.parseInt(rule[0]) && teamNum >= Integer.parseInt(rule[1])
-					&& teamAchievement.compareTo(new BigDecimal(rule[2])) >= 0) {
-				ruleWelfare = welfare;
-			}
-		}
-
-		return ruleWelfare;
+	private CustomeRecommendVo getSatisfyUser(Long userId, String groupUserIds, Integer recommendNum, Integer teamNum,
+			BigDecimal teamMoney) {
+		return customeRecommendMapper.customSelectOneByExample(userId, groupUserIds, recommendNum, teamNum, teamMoney);
 	}
 
 	/**
@@ -283,7 +231,7 @@ public class SpecialTask {
 	private List<Welfare> getRuleList() {
 		WelfareExample example = new WelfareExample();
 		example.or().andStatusEqualTo(Status.ONE.getValue())
-				.andWelfareKeyEqualTo(Constant.WelfareKey.TEAM_LEADERSHIP_AWARD_KEY.getValue());
+				.andWelfareKeyEqualTo(Constant.WelfareKey.SPECIAL_CONTRIBUTION_AWARD_KEY.getValue());
 		example.setOrderByClause(SqlTools.orderByAscField(Welfare.FD_CREATETIME));
 		List<String> showField = Lists.newArrayList();
 		showField.add(Welfare.FD_WELFAREKEY);
@@ -326,22 +274,6 @@ public class SpecialTask {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * 获取昨日推荐表中的信息
-	 * 
-	 * @return
-	 */
-	private List<Recommend> getRecommendList(Date currentDate) {
-		RecommendExample example = new RecommendExample();
-		RecommendExample.Criteria cr = example.createCriteria();
-		cr.andCreateTimeEqualTo(DateUtils.addDateDays(currentDate, -1));
-		List<String> showField = Lists.newArrayList();
-		showField.add(Recommend.FD_USERID);
-		showField.add(Recommend.FD_RECOMMENDNUMBER);
-		showField.add(Recommend.FD_TEAMACHIEVEMENT);
-		return recommendMapper.selectByExampleShowField(showField, example);
 	}
 
 }
