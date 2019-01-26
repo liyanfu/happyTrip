@@ -114,16 +114,11 @@ public class OrderHourTask {
 	}
 
 	private boolean compareDate(Integer runDay, Date currentDate, Date createDate) {
-
-		long betweenDays = (long) ((currentDate.getTime() - createDate.getTime()) / (1000 * 60 * 60));
-		// 判断当前订单购买时间是否已经超过一小时,至少需要超过一小时.
-		if (betweenDays <= 0) {
-			return false;
-		}
 		// ==-1或者空 不限制
 		if (runDay == -1 || runDay == null) {
 			return true;
 		}
+		long betweenDays = (long) ((currentDate.getTime() - createDate.getTime()) / (1000 * 60 * 60));
 		// 购买时间大于等于当前时间，计算返利
 		return betweenDays >= runDay;
 	}
