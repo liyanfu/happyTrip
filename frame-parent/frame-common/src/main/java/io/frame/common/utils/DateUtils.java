@@ -217,7 +217,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 获取今天的23点59分59秒
+	 * 获取明天的0点0分0秒
 	 * 
 	 * @param date
 	 * @return
@@ -225,8 +225,8 @@ public class DateUtils {
 	public static Date getEndTime(Date date) {
 		if (date != null) {
 			Calendar calendar = Calendar.getInstance();
-			calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-					23, 59, 59);
+			calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+					calendar.get(Calendar.DAY_OF_MONTH) + 1, 00, 00, 00);
 			return calendar.getTime();
 
 		}
