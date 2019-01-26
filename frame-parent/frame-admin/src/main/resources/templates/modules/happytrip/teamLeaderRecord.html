@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>全球分红派发记录</title>
+<title>团队领导奖派发记录</title>
 <#include "/header.html">
 </head>
 <body class="ren-body">
@@ -21,21 +21,8 @@
 				</div>
 				<a class="layui-btn search_btn" @click="query">查询</a>
 			</div>
-			<!-- 
-			<#if shiro.hasPermission("ht:globalrecord:save")>
-				<div class="layui-inline">
-					<a class="layui-btn layui-bg-blue" @click="add">新增</a>
-				</div>
-			</#if>
 			
-			<#if shiro.hasPermission("ht:globalrecord:select")>
-				<div class="layui-inline">
-					<a class="layui-btn layui-btn-warm" @click="select">查看</a>
-				</div>
-			</#if>
-			 -->
-			
-			<#if shiro.hasPermission("ht:globalrecord:save")>
+			<#if shiro.hasPermission("ht:teamleaderrecord:save")>
 				<div class="layui-inline">
 					<a class="layui-btn layui-bg-blue" @click="grant">发放</a>
 				</div>
@@ -69,11 +56,11 @@
 	</#if>
 	
 	
-	<#if shiro.hasPermission("ht:globalrecord:delete")>
+	<#if shiro.hasPermission("ht:teamleaderrecord:delete")>
 	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 	</#if>
  	
 </script>
-<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/globalRecord.js?_${.now?long}"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/teamLeaderRecord.js?_${.now?long}"></script>
 </body>
 </html>

@@ -13,6 +13,34 @@
     <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/css/base.css" media="all">
     <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/common/css/animate.css" media="all">
     <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/css/main.css">
+    <script type="text/javascript" src="statics/plugins/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	var contextPath = "${request.contextPath}";
+    	//请求首页需要的数据
+    	 $.get(contextPath+"/ht/index/info", function(r){
+    		 console.info(r);
+    		 $("#todayOrderMoney").html(r.todayOrderMoney);
+    		 $("#historyOrderMoney").html(r.historyOrderMoney);
+    		 $("#todayRegisterCount").html(r.todayRegisterCount);
+    		 $("#historyRegisterCount").html(r.historyRegisterCount);
+    		 
+    		 $("#todayRechargeMoney").html(r.todayRechargeMoney);
+    		 $("#historyRechargeMoney").html(r.historyRechargeMoney);
+    		 $("#rechargeCount").html(r.rechargeCount);
+    		 
+    		 
+    		 $("#todayWithdrawMoney").html(r.todayWithdrawMoney);
+    		 $("#historyWithdrawMoney").html(r.historyWithdrawMoney);
+    		 $("#withdrawCount").html(r.withdrawCount);
+    		 
+    		 $("#todayLoginCount").html(r.todayLoginCount);
+    		 
+         });
+    	
+    })
+    
+    </script>
 </head>
 <body class="larry-bg-gray">
 <div class="layui-fluid">
@@ -28,125 +56,134 @@
 
 		<!-- 面板 -->
 		<div class="layui-row layui-col-space15">
-			<!-- 系统概览 -->
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 layui-col-lg6">
+			
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
 					<div class="larry-panel-header">
-						<h3 class="larry-panel-title">系统概览</h3>
+						<h3 class="larry-panel-title" style="text-align:center">今日订单业绩</h3>
 						<i class="larry-icon larry-unfold1 tools"></i>
 					</div>
-					<div class="larry-panel-body">
-						<table class="layui-table larry-table-info">
-							<colgroup>
-								<col width="150">
-								<col>
-							</colgroup>
-							<tbody>
-							<tr>
-								<td><span class="tit">系统名称:</span></td>
-								<td><span class="info">后台管理</span></td>
-							</tr>
-							<tr>
-								<td><span class="tit">版本信息:</span></td>
-								<td><span class="info iframe">v1.0.0</span></td>
-							</tr>
-							<tr>
-								<td><span class="tit">操作系统:</span></td>
-								<td>${osName}</td>
-							</tr>
-							<tr>
-								<td><span class="tit">系统版本:</span></td>
-								<td>${osVersion}</td>
-							</tr>
-							<tr>
-								<td><span class="tit">系统架构:</span></td>
-								<td>${osArch}</td>
-							</tr>
-							<tr>
-								<td><span class="tit">CPU核数:</span></td>
-								<td>${processors}</td>
-							</tr>
-							<tr>
-								<td><span class="tit">系统内存:</span></td>
-								<td>${totalPhysical}MB</td>
-							</tr>
-							<tr>
-								<td><span class="tit">剩余内存:</span></td>
-								<td>${freePhysical}MB</td>
-							</tr>
-							<tr>
-								<td><span class="tit">内存使用:</span></td>
-								<td>${memoryRate}%</td>
-							</tr>
-							<tr>
-								<td><span class="tit">系统语言:</span></td>
-								<td>${userLanguage}</td>
-							</tr>
-
-							</tbody>
-						</table>
-					</div>
+					<div class="larry-panel-body" id="todayOrderMoney" style="text-align: center;color: red"></div>
 				</section>
 			</div>
-			<!-- JVM概览 -->
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 layui-col-lg6">
+		
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
 					<div class="larry-panel-header">
-						<h3 class="larry-panel-title">JVM概览</h3>
+						<h3 class="larry-panel-title" style="text-align:center">历史订单业绩</h3>
 						<i class="larry-icon larry-unfold1 tools"></i>
 					</div>
-					<div class="larry-panel-body">
-						<table class="layui-table larry-table-info">
-							<colgroup>
-								<col width="150">
-								<col>
-							</colgroup>
-							<tbody>
-							<tr>
-								<td><span class="tit">JVM信息:</span></td>
-								<td><span class="info">${jvmName}</span></td>
-							</tr>
-							<tr>
-								<td><span class="tit">JVM版本:</span></td>
-								<td><span class="info iframe">${javaVersion}</span></td>
-							</tr>
-							<tr>
-								<td><span class="tit">JAVA_HOME:</span></td>
-								<td>${javaHome}</td>
-							</tr>
-							<tr>
-								<td><span class="tit">工作目录:</span></td>
-								<td>${userDir}</td>
-							</tr>
-							<tr>
-								<td><span class="tit">JVM占用内存:</span></td>
-								<td>${javaTotalMemory}MB</td>
-							</tr>
-							<tr>
-								<td><span class="tit">JVM空闲内存:</span></td>
-								<td>${javaFreeMemory}MB</td>
-							</tr>
-							<tr>
-								<td><span class="tit">JVM最大内存:</span></td>
-								<td>${javaMaxMemory}MB</td>
-							</tr>
-							<tr>
-								<td><span class="tit">当前用户:</span></td>
-								<td>${userName}</td>
-							</tr>
-							<tr>
-								<td><span class="tit">CPU负载:</span></td>
-								<td>${systemCpuLoad}%</td>
-							</tr>
-							<tr>
-								<td><span class="tit">系统时区:</span></td>
-								<td>${userTimezone}</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
+					<div class="larry-panel-body" id="historyOrderMoney" style="text-align: center;color: red"></div>
 				</section>
 			</div>
+		
+		
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">今日注册用户数</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="todayRegisterCount" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+		
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">历史注册用户数</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="historyRegisterCount" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+		
+		
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">今日充值金额</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="todayRechargeMoney" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">历史充值金额</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="historyRechargeMoney" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+		
+		
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">待处理充值订单数</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="rechargeCount" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+			
+			
+			
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">今日提现金额</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="todayWithdrawMoney" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+			
+			
+			
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">历史提现金额</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="historyWithdrawMoney" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+			
+			
+			
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">待审核提现订单数</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="withdrawCount" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+		
+		
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">今日登陆用户数</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="todayLoginCount" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+		
+		
 
 		</div>
 
