@@ -99,18 +99,18 @@ public class Constant {
 	}
 
 	/**
-	 * 0:禁用,1:启用
+	 *
 	 */
 	public enum PaymentKey {
 
-		/** 0未支付 */
-		PAYMENT_ALIPAY_KEY("支付宝", 1L),
-		/** 1 */
-		PAYMENT_WALLET_KEY("余额", 2L);
+		/** 支付宝 */
+		PAYMENT_ALIPAY_KEY("支付宝", "PAYMENT_ALIPAY_KEY"),
+		/** 余额 */
+		PAYMENT_WALLET_KEY("余额", "PAYMENT_WALLET_KEY");
 		private String name;
-		private Long value;
+		private String value;
 
-		PaymentKey(String name, Long value) {
+		PaymentKey(String name, String value) {
 			this.name = name;
 			this.value = value;
 		}
@@ -125,7 +125,7 @@ public class Constant {
 			return null;
 		}
 
-		public Long getValue() {
+		public String getValue() {
 			return value;
 		}
 
