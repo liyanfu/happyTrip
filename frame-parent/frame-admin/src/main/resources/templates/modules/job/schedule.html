@@ -39,12 +39,13 @@
 				<a class="layui-btn layui-btn-warm" @click="pause">暂停</a>
 			</div>
 			</#if>
-			
+			<!-- 
 			<#if shiro.hasPermission("sys:schedule:delete")>
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-danger" @click="del">删除</a>
 			</div>
 			</#if>
+			 -->
 			<!-- 
 			<#if shiro.hasPermission("sys:schedule:run")>
 			<div class="layui-inline">
@@ -79,7 +80,7 @@
 		</div>
 		
 		<div class="layui-form-item">
-			<label class="layui-form-label">方法名称</label>
+			<label class="layui-form-label">参数</label>
 			<div class="layui-input-block">
 				<input type="text"  v-model="schedule.params"  readonly="readonly"  class="layui-input layui-bg-gray">
 			</div>
@@ -112,7 +113,9 @@
 <!--操作-->
 <script type="text/html" id="barTpl">
 	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	<!-- 
 	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	-->
 </script>
 
 <script src="${request.contextPath}/statics/js/modules/job/schedule.js?_${.now?long}"></script>
