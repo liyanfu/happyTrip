@@ -41,7 +41,7 @@ public class ApiOrderController {
 
 	@Login
 	@GetMapping("getMyOrderList")
-	@ApiOperation(notes = "{msg:消息提示,code:状态码,orderList:[{productName:商品名称,buyquantity:投资数量}]}", value = "专属车位")
+	@ApiOperation(notes = "{msg:消息提示,code:状态码,orderList:[{productName:商品名称,buyQuantity:投资数量}]}", value = "专属车位")
 	public R getMyOrderList(@ApiIgnore @RequestAttribute("userId") Long userId) {
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("orderList", orderService.getMyOrderList(userId));
