@@ -745,6 +745,66 @@ public class SpecialRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andTotalsNumIsNull() {
+            addCriterion("totalsNum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumIsNotNull() {
+            addCriterion("totalsNum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumEqualTo(Integer value) {
+            addCriterion("totalsNum =", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumNotEqualTo(Integer value) {
+            addCriterion("totalsNum <>", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumGreaterThan(Integer value) {
+            addCriterion("totalsNum >", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("totalsNum >=", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumLessThan(Integer value) {
+            addCriterion("totalsNum <", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumLessThanOrEqualTo(Integer value) {
+            addCriterion("totalsNum <=", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumIn(List<Integer> values) {
+            addCriterion("totalsNum in", values, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumNotIn(List<Integer> values) {
+            addCriterion("totalsNum not in", values, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumBetween(Integer value1, Integer value2) {
+            addCriterion("totalsNum between", value1, value2, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("totalsNum not between", value1, value2, "totalsNum");
+            return (Criteria) this;
+        }
+
         public Criteria andRecommendNumIsNull() {
             addCriterion("recommendNum is null");
             return (Criteria) this;
@@ -1685,6 +1745,46 @@ public class SpecialRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andTotalsNumEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("totalsNum =", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumNotEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("totalsNum <>", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumGreaterThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("totalsNum >", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumGreaterThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("totalsNum >=", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumLessThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("totalsNum <", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumLessThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("totalsNum <=", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("totalsNum in", value, "totalsNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalsNumNotInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("totalsNum not in", value, "totalsNum");
+            return (Criteria) this;
+        }
+
         public Criteria andRecommendNumEqualToIgnoreNull(Integer value) {
             addCriterionIgnoreNull("recommendNum =", value, "recommendNum");
             return (Criteria) this;
@@ -2125,6 +2225,11 @@ public class SpecialRecordExample {
 
         public Criteria andMoneyLikeInsensitive(String value) {
             addCriterion("upper(money) like", value.toUpperCase(), "money");
+            return this;
+        }
+
+        public Criteria andTotalsNumLikeInsensitive(String value) {
+            addCriterion("upper(totalsNum) like", value.toUpperCase(), "totalsNum");
             return this;
         }
 

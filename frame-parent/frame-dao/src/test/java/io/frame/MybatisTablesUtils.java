@@ -33,6 +33,9 @@ public class MybatisTablesUtils {
 		tableNameList.add("b_order");// 订单表
 		tableNameList.add("u_recharge");// 充值表
 		tableNameList.add("u_withdraw");// 提现表
+		tableNameList.add("b_global_record");// 全球分红派发记录表
+		tableNameList.add("b_teamleader_record");// 团队领导奖派发记录表
+		tableNameList.add("b_special_record");// 特别贡献奖派发记录表
 	}
 
 	public static void main(String[] args) {
