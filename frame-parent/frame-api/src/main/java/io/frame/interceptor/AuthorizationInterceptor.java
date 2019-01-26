@@ -15,6 +15,8 @@ import io.frame.common.exception.RRException;
 import io.frame.dao.entity.Token;
 import io.frame.exception.ErrorCode;
 import io.frame.service.TokenService;
+import io.frame.service.UserService;
+import io.frame.utils.SessionUtils;
 
 /**
  * 权限(Token)验证
@@ -27,12 +29,16 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private TokenService tokenService;
 
+	@Autowired
+	private UserService userService;
+
 	public static final String USER_KEY = "userId";
 
 	public static final String TOKEN = "token";
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
 		Login annotation;
 		if (handler instanceof HandlerMethod) {
 			annotation = ((HandlerMethod) handler).getMethodAnnotation(Login.class);
@@ -64,6 +70,10 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
 		// 设置userId到request里，后续根据userId，获取用户信息
 		request.setAttribute(USER_KEY, tokenEntity.getUserId());
+		if (!SessionUtils.getSession()) {// 解决由于系统更新,导致的登录超时
+			request.getSession().setAttribute(SessionUtils.USERINFO_KEY,
+					userService.getUserById(tokenEntity.getUserId()));
+		}
 
 		return true;
 	}

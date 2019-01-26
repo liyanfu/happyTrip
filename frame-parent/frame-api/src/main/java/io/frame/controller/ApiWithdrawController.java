@@ -9,19 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
 
 import io.frame.annotation.Login;
 import io.frame.common.utils.R;
+import io.frame.common.validator.ValidatorUtils;
 import io.frame.exception.ErrorCode;
+import io.frame.form.WithdrawForm;
 import io.frame.service.WithdrawService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
@@ -59,12 +60,13 @@ public class ApiWithdrawController {
 	@Login
 	@PostMapping("withdrawSubmit")
 	@ApiOperation(notes = "{msg:提示消息,code=状态码}", value = "提现申请")
-	public R withdrawSubmit(@ApiIgnore @RequestAttribute("userId") Long userId,
-			@ApiParam(name = "money", value = "提现金额", required = true) @RequestParam("money") BigDecimal money) {
-		if (money == null || money.compareTo(BigDecimal.ZERO) == -1) {
+	public R withdrawSubmit(@ApiIgnore @RequestAttribute("userId") Long userId, @RequestBody WithdrawForm form) {
+		// 表单校验
+		ValidatorUtils.validateEntity(form);
+		if (form.getMoney() == null || form.getMoney().compareTo(BigDecimal.ZERO) == -1) {
 			return R.error(ErrorCode.WITHDRAW_MONEY_IS_ERROR);
 		}
-		withdrawService.withdrawSubmit(userId, money);
+		withdrawService.withdrawSubmit(userId, form.getMoney());
 		return R.ok();
 	}
 

@@ -30,6 +30,14 @@ public interface ProductService {
 	Product getProductById(Long productId);
 
 	/**
+	 * 获取商品信息,下单时候用,不需要图片全称
+	 * 
+	 * @param productId
+	 * @return
+	 */
+	Product getProductByIdNotImage(Long productId);
+
+	/**
 	 * 减库存
 	 * 
 	 * @param productId

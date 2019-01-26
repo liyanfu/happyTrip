@@ -46,4 +46,13 @@ public class SessionUtils {
 		request.getSession().removeAttribute(USERINFO_KEY);
 	}
 
+	public static boolean getSession() {
+		// 获取request
+		HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
+		if (request.getSession().getAttribute(USERINFO_KEY) != null) {
+			return true;
+		}
+		return false;
+	}
+
 }

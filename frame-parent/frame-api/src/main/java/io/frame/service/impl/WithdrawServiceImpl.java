@@ -90,7 +90,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 	@SysLog("提现申请")
 	@Override
 	public void withdrawSubmit(Long userId, BigDecimal money) {
-		// 校验充值配置项
+		// 校验提现配置项
 		String msg = this.validWithdraw(userId, money);
 		if (!StringUtils.isEmpty(msg)) {
 			throw new RRException(msg);
@@ -104,6 +104,8 @@ public class WithdrawServiceImpl implements WithdrawService {
 		User currentUser = SessionUtils.getCurrentUser();
 		Withdraw withdraw = new Withdraw();
 		withdraw.setUserId(userId);
+		withdraw.setUserName(currentUser.getUserName());
+		withdraw.setUserMobile(currentUser.getUserMobile());
 		withdraw.setParentId(currentUser.getParentId());
 		withdraw.setGroupUserIds(currentUser.getGroupUserIds());
 		withdraw.setAlipayMobile(currentUser.getAlipayMobile());
@@ -121,13 +123,14 @@ public class WithdrawServiceImpl implements WithdrawService {
 		try {
 			// 保存
 			withdrawMapper.insertSelective(withdraw);
-
 			// 先扣钱
 			walletService.deduction(userId, money);
-			// 记录账变
-			walletChangeService.createWalletChange(userId, withdraw.getWithdrawRealMoney(), withdraw.getWithdrawId(), ChangeType.WITHDRAW_OUT_KEY);
 			// 记录账变手续费
-			walletChangeService.createWalletChange(userId, feeMoney, withdraw.getWithdrawId(), ChangeType.WITHDRAW_OUT_FEE_KEY);
+			walletChangeService.createWalletChange(userId, feeMoney.negate(), withdraw.getWithdrawId(),
+					ChangeType.WITHDRAW_OUT_FEE_KEY);
+			// 记录账变
+			walletChangeService.createWalletChange(userId, withdraw.getWithdrawRealMoney().negate(),
+					withdraw.getWithdrawId(), ChangeType.WITHDRAW_OUT_KEY);
 		} catch (Exception e) {
 			logger.error(ErrorCode.SUBMIT_FAILED, e);
 			throw new RRException(ErrorCode.SUBMIT_FAILED);

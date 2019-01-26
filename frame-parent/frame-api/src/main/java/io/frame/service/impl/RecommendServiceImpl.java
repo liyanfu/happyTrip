@@ -93,36 +93,6 @@ public class RecommendServiceImpl implements RecommendService {
 		return recomend == null ? BigDecimal.ZERO : recomend.getTeamAchievement();
 	}
 
-	@Transactional(readOnly = true)
-	@Override
-	public int getSatisfyGlobalBonusNum(Integer recommendNum) {
-		RecommendExample example = new RecommendExample();
-		RecommendExample.Criteria cr = example.createCriteria();
-		cr.andRecommendNumberGreaterThan(recommendNum);
-		Date date = new Date();
-		cr.andCreateTimeEqualTo(date);
-		return recommendMapper.countByExample(example);
-	}
-
-	@Transactional(readOnly = true)
-	@Override
-	public int getSatisfyTeamLeadershipAwardNum(Integer recommendNum, BigDecimal achievement) {
-		RecommendExample example = new RecommendExample();
-		RecommendExample.Criteria cr = example.createCriteria();
-		cr.andRecommendNumberGreaterThan(recommendNum);
-		cr.andTeamAchievementGreaterThan(achievement);
-		Date date = new Date();
-		cr.andCreateTimeEqualTo(date);
-		return recommendMapper.countByExample(example);
-	}
-
-	@Transactional(readOnly = true)
-	@Override
-	public int getSatisfySpecialContributionAwardNum(Integer recommendNum, Integer teamsNum,
-			BigDecimal teamsAchievement) {
-		return customeRecommendMapper.customCountByExample(recommendNum, teamsNum, teamsAchievement);
-	}
-
 	@SysLog("更新推荐")
 	@Override
 	public void upsert(Long userId, Integer num, BigDecimal money) {

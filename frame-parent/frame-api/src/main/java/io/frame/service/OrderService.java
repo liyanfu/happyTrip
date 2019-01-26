@@ -53,8 +53,8 @@ public interface OrderService {
 	 * 
 	 * @param userId
 	 * @param productId
-	 * @param paymentId
+	 * @param paymentKey
 	 * @return
 	 */
-	Map<String, Object> payOrder(Long userId, Long productId, Long paymentId);
+	Map<String, Object> payOrder(Long userId, Long productId, String paymentKey);
 }

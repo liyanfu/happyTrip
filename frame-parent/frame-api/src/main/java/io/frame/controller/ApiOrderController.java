@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,9 @@ import com.google.common.collect.Maps;
 import io.frame.annotation.Login;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.R;
+import io.frame.common.validator.ValidatorUtils;
 import io.frame.exception.ErrorCode;
+import io.frame.form.OrderForm;
 import io.frame.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,13 +64,13 @@ public class ApiOrderController {
 	@Login
 	@PostMapping("payOrder")
 	@ApiOperation(notes = "{msg:消息提示,code:状态码,qrCode:余额支付时为空,其余线下支付返回收款二维码,orderId:订单ID,randomCode:随机码（只有不是余额支付时才让用户线下转账填写）}", value = "下单购买")
-	public R payOrder(@ApiIgnore @RequestAttribute("userId") Long userId,
-			@ApiParam(name = "productId", value = "商品Id") @RequestParam("productId") Long productId,
-			@ApiParam(name = "paymentId", value = "支付类型Id") @RequestParam("paymentId") Long paymentId) {
-		if (productId == null || paymentId == null) {
+	public R payOrder(@ApiIgnore @RequestAttribute("userId") Long userId, @RequestBody OrderForm form) {
+		// 表单校验
+		ValidatorUtils.validateEntity(form);
+		if (form.getProductId() == null || form.getPaymentKey() == null) {
 			throw new RRException(ErrorCode.PARAMS_IS_NOT_EMPTY);
 		}
-		return R.ok(orderService.payOrder(userId, productId, paymentId));
+		return R.ok(orderService.payOrder(userId, form.getProductId(), form.getPaymentKey()));
 	}
 
 }

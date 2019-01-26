@@ -105,4 +105,15 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
+	@Transactional(readOnly = true)
+	@Override
+	public Product getProductByIdNotImage(Long productId) {
+		try {
+			return productMapper.selectByPrimaryKey(productId);
+		} catch (Exception e) {
+			logger.error(ErrorCode.GET_INFO_FAILED, e);
+			throw new RRException(ErrorCode.GET_INFO_FAILED);
+		}
+	}
+
 }

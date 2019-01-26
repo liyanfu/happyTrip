@@ -38,33 +38,6 @@ public interface RecommendService {
 	BigDecimal getTeamAchievementByParentId(Long userId);
 
 	/**
-	 * 获取满足全球分红条件的人数
-	 * 
-	 * @param recommendNum 当日直推人数
-	 * @return
-	 */
-	int getSatisfyGlobalBonusNum(Integer recommendNum);
-
-	/**
-	 * 获取满足领导团队奖条件的人数
-	 * 
-	 * @param recommendNum 当日直推人数
-	 * @param achievement  当日有效业绩
-	 * @return
-	 */
-	int getSatisfyTeamLeadershipAwardNum(Integer recommendNum, BigDecimal achievement);
-
-	/**
-	 * 获取满足特别贡献奖条件的人数
-	 * 
-	 * @param recommendNum     直推会员人数
-	 * @param teamsNum         团队人数
-	 * @param teamsAchievement 累计团队业绩
-	 * @return
-	 */
-	int getSatisfySpecialContributionAwardNum(Integer recommendNum, Integer teamsNum, BigDecimal teamsAchievement);
-
-	/**
 	 * 更新用户的推荐人数，和团队业绩
 	 * 
 	 * @param userId

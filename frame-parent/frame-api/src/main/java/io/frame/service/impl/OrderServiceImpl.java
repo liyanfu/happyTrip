@@ -27,6 +27,7 @@ import io.frame.common.exception.RRException;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Order;
 import io.frame.dao.entity.OrderExample;
+import io.frame.dao.entity.PaymentExample;
 import io.frame.dao.entity.Product;
 import io.frame.dao.entity.ProductType;
 import io.frame.dao.entity.Report;
@@ -34,6 +35,7 @@ import io.frame.dao.entity.ReportExample;
 import io.frame.dao.entity.User;
 import io.frame.dao.entity.Wallet;
 import io.frame.dao.mapper.OrderMapper;
+import io.frame.dao.mapper.PaymentMapper;
 import io.frame.dao.mapper.ReportMapper;
 import io.frame.entity.OrderVo;
 import io.frame.exception.ErrorCode;
@@ -81,6 +83,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	ReportMapper reportMapper;
+
+	@Autowired
+	PaymentMapper paymentMapper;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -173,16 +178,21 @@ public class OrderServiceImpl implements OrderService {
 
 	@SysLog("购买下单")
 	@Override
-	public Map<String, Object> payOrder(Long userId, Long productId, Long paymentId) {
+	public Map<String, Object> payOrder(Long userId, Long productId, String paymentKey) {
 		Map<String, Object> map = Maps.newHashMap();
 		User user = SessionUtils.getCurrentUser();
 		// 查询出商品
-		Product product = productService.getProductById(productId);
-		// 校验余额
-		Wallet wallet = walletService.getWallet(userId);
-		if (wallet.getBalance().compareTo(product.getSaleMoney()) == -1) {
-			throw new RRException(ErrorCode.GOLDCOIN_IS_NOT_ENOUGH);
+		Product product = productService.getProductByIdNotImage(productId);
+
+		Wallet wallet = null;
+		if (paymentKey.equals(Constant.PaymentKey.PAYMENT_WALLET_KEY.getValue())) {
+			// 校验余额
+			wallet = walletService.getWallet(userId);
+			if (wallet.getBalance().compareTo(product.getSaleMoney()) == -1) {
+				throw new RRException(ErrorCode.GOLDCOIN_IS_NOT_ENOUGH);
+			}
 		}
+
 		// 校验库存剩余数量 售卖数量-已卖数量
 		if (product.getSaleQuantity() - product.getSaleVolumes() == 0) {
 			throw new RRException(ErrorCode.INSUFFICIENT_STOCK);
@@ -224,8 +234,9 @@ public class OrderServiceImpl implements OrderService {
 		order.setStartRebateTime(product.getStartRebateTime());
 		order.setRebatePeriods(0);
 		order.setCreateTime(date);
+		// 查询支付方式
+		order.setPaymentId(getPaymentId(paymentKey));
 		order.setCreateUser(user.getUserName());
-		order.setPaymentId(paymentId);
 		String randomCode = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 6);
 		order.setRandomCode(randomCode);// 随机码
 		// 余额支付
@@ -233,14 +244,14 @@ public class OrderServiceImpl implements OrderService {
 		Integer status = 0;
 
 		// 余额支付
-		if (paymentId == Constant.PaymentKey.PAYMENT_WALLET_KEY.getValue()) {
+		if (paymentKey.equals(Constant.PaymentKey.PAYMENT_WALLET_KEY.getValue())) {
 			status = Constant.Status.ONE.getValue();
 		}
 		order.setStatus(status);
 		// 保存
 		orderMapper.insertSelective(order);
 
-		if (paymentId == Constant.PaymentKey.PAYMENT_WALLET_KEY.getValue()) {
+		if (paymentKey.equals(Constant.PaymentKey.PAYMENT_WALLET_KEY.getValue())) {
 			// 扣款
 			walletService.deduction(wallet.getWalletId(), order.getBuyMoney());
 			// 记录帐变
@@ -253,10 +264,12 @@ public class OrderServiceImpl implements OrderService {
 			// 写入推荐表信息 ,算入父级的团队业绩中..
 			recommendService.upsert(user.getParentId(), null, order.getBuyMoney());
 		} else {
+
+			String value = configService.getConfigByKey(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
 			// 其他线下支付获取收款二维码
 			qrCode = configService.getConfigByKey(RechargeKey.RECHARGE_QRCODE_KEY.getValue());
 			// 返回收款二维码图片，和随机码
-			map.put("qrCode", qrCode);
+			map.put("qrCode", value + Constant.readImg + qrCode);
 			map.put("randomCode", order.getRandomCode());
 		}
 
@@ -306,6 +319,12 @@ public class OrderServiceImpl implements OrderService {
 			reportMapper.updateByPrimaryKeySelectiveSync(updateReport);
 		}
 
+	}
+
+	public Long getPaymentId(String key) {
+		PaymentExample example = new PaymentExample();
+		example.or().andPaymentKeyEqualTo(key);
+		return paymentMapper.selectOneByExample(example).getPaymentId();
 	}
 
 	public int getOrderCount(Long userId, Long productId) {
