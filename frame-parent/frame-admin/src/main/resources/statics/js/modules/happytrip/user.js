@@ -54,14 +54,14 @@ $(function () {
         return false;
     });
     
-//    layui.form.on('submit(rechargeOrSubtract)', function(data){
-//    	if(data.field.coinType==""){
-//    		alert("请选择货币类型");
-//    		return false;
-//    	}
-//        vm.rechargeOrSubtract();
-//        return false;
-//    });
+    layui.form.on('submit(rechargeOrSubtract)', function(data){
+    	if(data.field.operatorMoney==""){
+    		alert("请输入操作金额");
+    		return false;
+    	}
+        vm.rechargeOrSubtract();
+        return false;
+    });
     
     
     

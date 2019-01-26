@@ -19,7 +19,6 @@
     	var contextPath = "${request.contextPath}";
     	//请求首页需要的数据
     	 $.get(contextPath+"/ht/index/info", function(r){
-    		 console.info(r);
     		 $("#todayOrderMoney").html(r.todayOrderMoney);
     		 $("#historyOrderMoney").html(r.historyOrderMoney);
     		 $("#todayRegisterCount").html(r.todayRegisterCount);
