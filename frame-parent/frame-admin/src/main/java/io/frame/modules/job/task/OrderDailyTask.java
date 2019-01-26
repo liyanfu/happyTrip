@@ -67,6 +67,7 @@ public class OrderDailyTask {
 					walletChange.setUserId(order.getUserId());
 					walletChange.setOperatorMoney(rebateMoney);
 					walletChange.setRemark(ChangeType.CAR_PROFIT_KEY.getName());
+					walletChange.setRelationId(order.getOrderId());
 					walletService.addWallet(walletChange, ChangeType.CAR_PROFIT_KEY);
 					// 更新订单返现期数和已返现金额
 					Order updateOrder = new Order();

@@ -66,6 +66,7 @@ public class OrderHourTask {
 					WalletChange walletChange = new WalletChange();
 					walletChange.setUserId(order.getUserId());
 					walletChange.setOperatorMoney(rebateMoney);
+					walletChange.setRelationId(order.getOrderId());
 					walletChange.setRemark(ChangeType.ALL_PEOPLE_WELFARE_KEY.getName());
 					walletService.addWallet(walletChange, ChangeType.ALL_PEOPLE_WELFARE_KEY);
 					// 更新订单返现期数和已返现金额
@@ -73,6 +74,7 @@ public class OrderHourTask {
 					updateOrder.setOrderId(order.getOrderId());
 					updateOrder.setAlreadyProfitMoney(rebateMoney);
 					updateOrder.setRebatePeriods(1);
+
 					orderMapper.updateByPrimaryKeySelectiveSync(updateOrder);
 					// 更新修改时间
 					Order updateOrder2 = new Order();

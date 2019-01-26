@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>全球分红派发记录</title>
+<#include "/header.html">
+</head>
+<body class="ren-body">
+<div id="rrapp" v-cloak>
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div class="layui-inline">
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input searchVal" v-model="q.userName" placeholder="请输入用户名称" />
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" lay-verify="date" id="beginTime"  class="layui-input" placeholder="开始日期">
+				</div>
+				~
+				<div class="layui-input-inline">
+					<input type="text" lay-verify="date" id="endTime"  class="layui-input" placeholder="结束日期">
+				</div>
+				<a class="layui-btn search_btn" @click="query">查询</a>
+			</div>
+			<!-- 
+			<#if shiro.hasPermission("ht:globalrecord:save")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-bg-blue" @click="add">新增</a>
+				</div>
+			</#if>
+			
+			<#if shiro.hasPermission("ht:globalrecord:select")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-btn-warm" @click="select">查看</a>
+				</div>
+			</#if>
+			 -->
+			
+			<#if shiro.hasPermission("ht:globalrecord:save")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-bg-blue" @click="grant">发放</a>
+				</div>
+			</#if>
+			<div style="margin-top: 8px"></div>
+			
+			<div class="layui-block">
+				<div class="layui-inline">
+				      <select lay-filter="selectStatus"	>
+				        <option value="">状态</option>
+				        <option value="0">未发放</option>
+				        <option value="1">已发放</option>
+				      </select>
+				</div>
+			</div>
+				    
+		</form>
+	</blockquote>
+	
+	<!-- 表格 -->
+	<table class="layui-hide" id="grid" lay-filter="grid"></table>
+	
+</div>
+
+
+<!--操作-->
+<script type="text/html" id="barTpl">
+	<!---->
+	<#if shiro.hasPermission("ht:globalrecord:update")>
+	<a class="layui-btn layui-btn-xs" lay-event="edit">发放</a>
+	</#if>
+	
+	<#if shiro.hasPermission("ht:globalrecord:delete")>
+	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	</#if>
+ 	
+</script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/modules/happytrip/globalrecord.js?_${.now?long}"></script>
+</body>
+</html>

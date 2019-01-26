@@ -10,9 +10,6 @@
 		<form class="layui-form">
 			<div class="layui-inline">
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input searchVal" v-model="q.withdrawId" placeholder="请输入提现ID" />
-				</div>
-				<div class="layui-input-inline">
 					<input type="text" class="layui-input searchVal" v-model="q.userName" placeholder="请输入用户名称" />
 				</div>
 				<div class="layui-input-inline">
@@ -43,7 +40,7 @@
 				<div class="layui-inline">
 				      <select lay-filter="selectStatus"	>
 				        <option value="">状态</option>
-				        <option value="0">待支付</option>
+				        <option value="0">待审核</option>
 				        <option value="1">已完成</option>
 				        <option value="2">异常</option>
 				         <option value="3">已取消</option>
@@ -118,12 +115,7 @@
 			</div>
 		</div>
 		
-		<div class="layui-form-item">
-			<label class="layui-form-label">付款账号</label>
-			<div class="layui-input-block"> 
-				<input type="text"  v-model="withdraw.transferAccounts" readonly="readonly"  class="layui-input layui-bg-gray">
-			</div>
-		</div>
+		
 		
 		
 		<div class="layui-form-item">
@@ -157,6 +149,13 @@
 		</div>
 		
 		<div class="layui-form-item">
+			<label class="layui-form-label">付款账号</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="withdraw.transferAccounts" lay-verify="required"  class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
 			<label class="layui-form-label">备注</label>
 			<div class="layui-input-block"> 
 				<input type="text" lay-verify="required" v-model="withdraw.frontRemark"   class="layui-input">
@@ -168,7 +167,7 @@
 			<div class="layui-input-block">
 				<select lay-filter="selectWithdrawStatus"	v-model="withdraw.status">
 				        <option value="">状态</option>
-				        <option value="0">待支付</option>
+				        <option value="0">待审核</option>
 				        <option value="1">已完成</option>
 				        <option value="2">异常</option>
 				        <option value="3">已取消</option>
