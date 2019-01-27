@@ -122,11 +122,11 @@ public class ReportServiceImpl implements ReportService {
 			break;
 		case "ARTIFICIAL_RECHARGE_KEY":
 			/** 人工充值 */
-			report.setRechargeMoney(money);
+			report.setArtificialRechargeMoney(money);
 			break;
 		case "MANUAL_DEDUCTION_KEY":
 			/** 人工扣款 */
-			report.setWithdrawMoney(money);
+			report.setArtificialWithdrawMoney(money);
 			break;
 		default:
 			break;
@@ -186,6 +186,8 @@ public class ReportServiceImpl implements ReportService {
 		showField.add(SqlTools.sumField(Report.FD_GLOBALBONUSMONEY));
 		showField.add(SqlTools.sumField(Report.FD_TEAMLEADERMONEY));
 		showField.add(SqlTools.sumField(Report.FD_SPECIALCONTRIBUTIONMONEY));
+		showField.add(SqlTools.sumField(Report.FD_ARTIFICIALRECHARGEMONEY));
+		showField.add(SqlTools.sumField(Report.FD_ARTIFICIALWITHDRAWMONEY));
 		Report newRetort = reportMapper.selectOneByExampleShowField(showField, example);
 		if (newRetort != null) {
 			newRetort.setReportId(0L);
@@ -286,6 +288,22 @@ public class ReportServiceImpl implements ReportService {
 			list.add(this.totals(report));
 			page.addAll(list);
 			return new PageUtils<Report>(page);
+		} catch (Exception e) {
+			logger.error(ErrorCode.GET_INFO_FAILED, e);
+			throw new RRException(ErrorCode.GET_INFO_FAILED);
+		}
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Report getMoneyByUserId(Long userId) {
+		ReportExample example = new ReportExample();
+		example.or().andUserIdEqualTo(userId);
+		List<String> showField = Lists.newArrayList();
+		showField.add(SqlTools.sumField(Report.FD_RECHARGEMONEY));
+		showField.add(SqlTools.sumField(Report.FD_WITHDRAWFEE));
+		try {
+			return reportMapper.selectOneByExampleShowField(showField, example);
 		} catch (Exception e) {
 			logger.error(ErrorCode.GET_INFO_FAILED, e);
 			throw new RRException(ErrorCode.GET_INFO_FAILED);

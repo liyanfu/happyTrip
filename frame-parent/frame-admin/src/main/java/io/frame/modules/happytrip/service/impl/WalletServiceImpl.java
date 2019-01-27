@@ -269,7 +269,7 @@ public class WalletServiceImpl implements WalletService {
 		updateWallet.setBalance(changeMoney);
 
 		try {
-			// 账户扣钱
+			// 账户加钱
 			walletMapper.updateByPrimaryKeySelectiveSync(updateWallet);
 			// 更新修改者
 			Wallet updateWallet2 = new Wallet();

@@ -99,6 +99,7 @@ public class OrderServiceImpl implements OrderService {
 			cr.andProductTypeIdEqualToIgnoreNull(order.getProductTypeId());
 		}
 		cr.andStatusEqualToIgnoreNull(order.getStatus());
+		cr.andSubmitStatusEqualToIgnoreNull(order.getSubmitStatus());
 
 		cr.andCreateTimeGreaterThanOrEqualToIgnoreNull(beginDate);
 		cr.andCreateTimeLessThanIgnoreNull(endDate);
@@ -113,6 +114,9 @@ public class OrderServiceImpl implements OrderService {
 				String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
 				for (Order bean : page.getResult()) {
 					bean.setProductImgurl(value + Constant.readImg + bean.getProductImgurl());
+					if (!StringUtils.isEmpty(bean.getSubmitCredentialImg())) {
+						bean.setSubmitCredentialImg(value + Constant.readImg + bean.getSubmitCredentialImg());
+					}
 				}
 			}
 
@@ -132,6 +136,9 @@ public class OrderServiceImpl implements OrderService {
 			// 获取推广域名 链接图片显示
 			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
 			order.setProductImgurl(value + Constant.readImg + order.getProductImgurl());
+			if (!StringUtils.isEmpty(order.getSubmitCredentialImg())) {
+				order.setSubmitCredentialImg(value + Constant.readImg + order.getSubmitCredentialImg());
+			}
 			return order;
 		} catch (Exception e) {
 			logger.error(ErrorCode.GET_INFO_FAILED, e);
@@ -145,6 +152,7 @@ public class OrderServiceImpl implements OrderService {
 		SysUser sysUser = ShiroUtils.getUserEntity();
 		order.setUpdateUser(sysUser.getUserName());
 		order.setUpdateTime(new Date());
+		order.setSubmitCredentialImg(null);
 
 		// 判断订单状态，
 		if (order.getStatus() != OrderStatus.ONE.getValue() && order.getStatus() != OrderStatus.THREE.getValue()) {

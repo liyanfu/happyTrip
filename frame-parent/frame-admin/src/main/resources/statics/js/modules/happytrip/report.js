@@ -2,14 +2,16 @@ $(function () {
 	//表格参数
 	tableOption.cols = [[
 		 {type:'checkbox'},
-        {field:'reportId',      minWidth:120,  title: '报表ID',   align:'center',totalRowText: '合计:'},
+        {field:'reportId',      minWidth:120,  title: '报表ID',   align:'center'},
         {field:'createTime', 	minWidth:160,  title: '创建时间',  align:'center', templet:function(d){
         	return formatterDate(d.createTime);
         }},
         {field:'userName',      minWidth:120,  title: '用户名称',  align:'center'},
         {field:'userMobile',    minWidth:120,   title: '登录账号',   align:'center'},
         {field:'userLevel',   minWidth:120,   title: '用户级别',   align:'center'},
-        {field:'orderMoney',  minWidth:120,   title: '订单金额',   align:'center',totalRow: true},
+        {field:'orderMoney',  minWidth:120,   title: '订单金额',   align:'center'},
+        {field:'artificialRechargeMoney',minWidth:120,   title: '人工充值金额',   align:'center'},
+        {field:'artificialWithdrawMoney',minWidth:120,   title: '人工扣款金额',   align:'center'},
         {field:'rechargeMoney',minWidth:120,   title: '充值金额',   align:'center'},
         {field:'rechargeFee',minWidth:120,   title: '充值手续费',   align:'center'},
         {field:'withdrawMoney',minWidth:120,   title: '提现金额',   align:'center'},
@@ -21,7 +23,6 @@ $(function () {
         {field:'specialContributionMoney',minWidth:120,   title: '特别贡献奖收益金额',   align:'center'}
         
     ]];
-	tableOption.totalRow = true; //开启合计行
 	tableOption.url = baseURL + 'ht/report/list';
 	//初始化表格
     gridTable = layui.table.render(tableOption);

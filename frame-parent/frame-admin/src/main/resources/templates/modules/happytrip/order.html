@@ -217,6 +217,33 @@
 		</div>
 		
 		
+		<div class="layui-form-item">
+			<label class="layui-form-label">上传凭证时间</label>
+			<div class="layui-input-block"> 
+				<input type="text"  v-model="order.submitTime"  readonly="readonly"  class="layui-input layui-bg-gray">
+			</div>
+		</div>
+		
+		
+		<div v-show="order.submitCredentialImg!=null" class="layui-form-item">
+			<label class="layui-form-label">转账凭证</label>
+			<div class="layui-input-block"> 
+				<img class="layui-upload-img" :src="order.submitCredentialImg"  id="looklocalImg" width="400" height="600">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">上传凭证状态</label>
+			<div class="layui-input-block">
+				 <select  v-model="order.submitStatus" disabled="disabled" class="layui-input layui-bg-gray"> 
+				        <option value="">状态</option>
+				        <option value="0">未上传</option>
+				        <option value="1">已上传</option>
+				      </select>
+			</div>
+		</div>
+		
 		
 		<div class="layui-form-item">
 			<label class="layui-form-label">状态</label>
@@ -231,7 +258,7 @@
 			</div>
 		</div>
 		
-		<div class="layui-form-item">
+		<div v-show="order.status!=2" class="layui-form-item">
 			<div class="layui-input-block">
 				<button class="layui-btn" lay-submit lay-filter="saveOrUpdate">确定</button>
 			</div>
@@ -245,7 +272,7 @@
 <!--操作-->
 <script type="text/html" id="barTpl">
 	<#if shiro.hasPermission("ht:order:update")>
-	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	<a style="display:{{d.status == 2 ? 'none' : 'inline-block'}}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 	</#if>
 	
 	<#if shiro.hasPermission("ht:order:delete")>

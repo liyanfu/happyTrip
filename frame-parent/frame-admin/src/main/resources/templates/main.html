@@ -26,14 +26,18 @@
     		 
     		 $("#todayRechargeMoney").html(r.todayRechargeMoney);
     		 $("#historyRechargeMoney").html(r.historyRechargeMoney);
-    		 $("#rechargeCount").html(r.rechargeCount);
-    		 
+    		
     		 
     		 $("#todayWithdrawMoney").html(r.todayWithdrawMoney);
     		 $("#historyWithdrawMoney").html(r.historyWithdrawMoney);
-    		 $("#withdrawCount").html(r.withdrawCount);
+    		
     		 
     		 $("#todayLoginCount").html(r.todayLoginCount);
+    		 
+    		 
+    		 $("#rechargeCount").html(r.rechargeCount);
+    		 $("#withdrawCount").html(r.withdrawCount);
+    		 $("#orderCount").html(r.orderCount);
     		 
          });
     	
@@ -67,17 +71,29 @@
 			</div>
 		
 		
+		
 			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
 					<div class="larry-panel-header">
-						<h3 class="larry-panel-title" style="text-align:center">历史订单业绩</h3>
+						<h3 class="larry-panel-title" style="text-align:center">今日充值金额</h3>
 						<i class="larry-icon larry-unfold1 tools"></i>
 					</div>
-					<div class="larry-panel-body" id="historyOrderMoney" style="text-align: center;color: red"></div>
+					<div class="larry-panel-body" id="todayRechargeMoney" style="text-align: center;color: red"></div>
 				</section>
 			</div>
 		
 		
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">今日提现金额</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="todayWithdrawMoney" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+			
 		
 			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
@@ -90,29 +106,20 @@
 			</div>
 		
 		
+		
+		<!-- --------------------------------------------------------------------------------------------------------- -->
 			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
 					<div class="larry-panel-header">
-						<h3 class="larry-panel-title" style="text-align:center">历史注册用户数</h3>
+						<h3 class="larry-panel-title" style="text-align:center">历史订单业绩</h3>
 						<i class="larry-icon larry-unfold1 tools"></i>
 					</div>
-					<div class="larry-panel-body" id="historyRegisterCount" style="text-align: center;color: red"></div>
+					<div class="larry-panel-body" id="historyOrderMoney" style="text-align: center;color: red"></div>
 				</section>
 			</div>
 		
 		
-		
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
-				<section class="larry-panel">
-					<div class="larry-panel-header">
-						<h3 class="larry-panel-title" style="text-align:center">今日充值金额</h3>
-						<i class="larry-icon larry-unfold1 tools"></i>
-					</div>
-					<div class="larry-panel-body" id="todayRechargeMoney" style="text-align: center;color: red"></div>
-				</section>
-			</div>
-		
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
 					<div class="larry-panel-header">
 						<h3 class="larry-panel-title" style="text-align:center">历史充值金额</h3>
@@ -123,32 +130,7 @@
 			</div>
 		
 		
-		
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
-				<section class="larry-panel">
-					<div class="larry-panel-header">
-						<h3 class="larry-panel-title" style="text-align:center">待处理充值订单数</h3>
-						<i class="larry-icon larry-unfold1 tools"></i>
-					</div>
-					<div class="larry-panel-body" id="rechargeCount" style="text-align: center;color: red"></div>
-				</section>
-			</div>
-			
-			
-			
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
-				<section class="larry-panel">
-					<div class="larry-panel-header">
-						<h3 class="larry-panel-title" style="text-align:center">今日提现金额</h3>
-						<i class="larry-icon larry-unfold1 tools"></i>
-					</div>
-					<div class="larry-panel-body" id="todayWithdrawMoney" style="text-align: center;color: red"></div>
-				</section>
-			</div>
-			
-			
-			
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
 					<div class="larry-panel-header">
 						<h3 class="larry-panel-title" style="text-align:center">历史提现金额</h3>
@@ -157,10 +139,39 @@
 					<div class="larry-panel-body" id="historyWithdrawMoney" style="text-align: center;color: red"></div>
 				</section>
 			</div>
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">历史注册用户数</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="historyRegisterCount" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+		
+		<!-- --------------------------------------------------------------------------------------------------------- -->
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">待处理购买订单数</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="orderCount" style="text-align: center;color: red"></div>
+				</section>
+			</div>
 			
-			
-			
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
+				<section class="larry-panel">
+					<div class="larry-panel-header">
+						<h3 class="larry-panel-title" style="text-align:center">待处理充值订单数</h3>
+						<i class="larry-icon larry-unfold1 tools"></i>
+					</div>
+					<div class="larry-panel-body" id="rechargeCount" style="text-align: center;color: red"></div>
+				</section>
+			</div>
+		
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
 					<div class="larry-panel-header">
 						<h3 class="larry-panel-title" style="text-align:center">待审核提现订单数</h3>
@@ -171,8 +182,9 @@
 			</div>
 		
 		
+			
 		
-			<div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg6">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md3 layui-col-lg6">
 				<section class="larry-panel">
 					<div class="larry-panel-header">
 						<h3 class="larry-panel-title" style="text-align:center">今日登陆用户数</h3>
@@ -181,6 +193,31 @@
 					<div class="larry-panel-body" id="todayLoginCount" style="text-align: center;color: red"></div>
 				</section>
 			</div>
+			
+		
+		
+		
+		
+			
+		
+		
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+		
+		
+			
 		
 		
 

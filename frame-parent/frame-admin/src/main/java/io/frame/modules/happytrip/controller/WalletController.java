@@ -1,6 +1,7 @@
 
 package io.frame.modules.happytrip.controller;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -14,8 +15,10 @@ import com.google.common.collect.Maps;
 
 import io.frame.common.annotation.SysLog;
 import io.frame.common.utils.R;
+import io.frame.dao.entity.Report;
 import io.frame.dao.entity.WalletChange;
 import io.frame.modules.happytrip.service.RechargeService;
+import io.frame.modules.happytrip.service.ReportService;
 import io.frame.modules.happytrip.service.WalletService;
 import io.frame.modules.happytrip.service.WithdrawService;
 import io.frame.modules.sys.controller.AbstractController;
@@ -38,6 +41,9 @@ public class WalletController extends AbstractController {
 	@Autowired
 	private WithdrawService withdrawService;
 
+	@Autowired
+	private ReportService reportService;
+
 	/**
 	 * 钱包信息
 	 */
@@ -46,10 +52,12 @@ public class WalletController extends AbstractController {
 	public R info(@PathVariable("userId") Long userId) {
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("wallet", walletService.getInfoByUserId(userId));
+
+		Report report = reportService.getMoneyByUserId(userId);
 		// 充值总金额
-		map.put("rechargeTotalMoney", rechargeService.getRechargeTotalMoneyById(userId));
+		map.put("rechargeTotalMoney", report == null ? BigDecimal.ZERO : report.getRechargeMoney());
 		// 提现总金额
-		map.put("withdrawTotalMoney", withdrawService.getWithdrawTotalMoneyById(userId));
+		map.put("withdrawTotalMoney", report == null ? BigDecimal.ZERO : report.getWithdrawMoney());
 		return R.ok(map);
 	}
 

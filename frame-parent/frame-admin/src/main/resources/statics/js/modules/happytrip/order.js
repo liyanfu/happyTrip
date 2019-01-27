@@ -13,6 +13,7 @@ $(function () {
         {field:'buyQuantity', 			width:120, 		title: '投资数量',sort: true},
         {field:'rebateMoney', 		minWidth:100,   title: '每日返利', sort: true},
         {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet:formatterOrderStatus},
+        {field: 'submitStatus',  	width:100, 		title: '上传凭证状态',	align:'center',  templet:formatterSubmitStatus},
         {field:'totalRebatePeriods', 		minWidth:100,   title: '总返利天数', sort: true},
         {field:'rebatePeriods', 		minWidth:100,   title: '已返利天数', sort: true},
         {field:'profitMoney', 		minWidth:100,   title: '收益总金额', sort: true},
@@ -65,6 +66,11 @@ $(function () {
 	  		  vm.q.status = data.value;
 	  		   return false;
    	  });
+   	  
+   	 form.on('select(selectSubmitStatus)', function(data){
+ 		  vm.q.submitStatus = data.value;
+ 		   return false;
+	  });
    	  
    	 form.on('select(selectOrderStatus)', function(data){
 		  vm.order.status = data.value;
@@ -121,7 +127,17 @@ var formatterOrderStatus = function(d){
 	
 };
 
-
+//格式化状态
+var formatterSubmitStatus = function(d){
+	var text = '<span class="label label-success">其他</span>';
+	if(d.submitStatus==0){
+		text = '<span class="label label-danger">未上传</span>';
+	}else if(d.submitStatus==1){
+		text = '<span class="label label-disabled">已上传</span>';
+	}
+	return text;
+	
+};
 
 var vm = new Vue({
     el:'#rrapp',
@@ -133,7 +149,8 @@ var vm = new Vue({
         	userName:null,
         	productTypeId:null,
         	productName:null,
-        	status:null
+        	status:null,
+        	submitStatus:null
         },
 		showSelectForm:false,	//查看form表单
         order:{},				//订单对象
@@ -270,6 +287,7 @@ var vm = new Vue({
             //编辑时间格式报错.
            vm.order.createTime = null;
            vm.order.updateTime = null;
+           vm.order.submitTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
@@ -305,6 +323,7 @@ var vm = new Vue({
         	vm.order = order;
         	vm.order.createTime = formatterTime(order.createTime);
         	vm.order.updateTime = formatterTime(order.updateTime);
+        	vm.order.submitTime = formatterTime(order.submitTime);
         },
         reload: function (event) {
             layui.table.reload('gridid', {

@@ -8,6 +8,7 @@ $(function () {
         {field:'rechargeMoney', 	width:120, 		title: '充值金额',sort: true},
         {field:'rechargeFee', 		minWidth:100,   title: '充值手续费', sort: true},
         {field: 'status',  			width:100, 		title: '状态',	align:'center',  templet:formatterRechargeStatus},
+        {field: 'submitStatus',  	width:100, 		title: '上传凭证状态',	align:'center',  templet:formatterSubmitStatus},
         {field:'alipayName', 		minWidth:100,   title: '支付宝名称'},
         {field:'alipayMobile', 		minWidth:100,   title: '支付宝账号'},
         {field:'rechargeCode', 		minWidth:100,   title: '充值凭证吗'},
@@ -61,6 +62,11 @@ $(function () {
 	  		   return false;
    	  });
    	  
+   	 form.on('select(selectSubmitStatus)', function(data){
+ 		  vm.q.submitStatus = data.value;
+ 		   return false;
+	  });
+   	  
    	form.on('select(selectRechargeStatus)', function(data){
 		  vm.recharge.status = data.value;
 		   return false;
@@ -110,6 +116,19 @@ var formatterRechargeStatus = function(d){
 	
 };
 
+
+//格式化状态
+var formatterSubmitStatus = function(d){
+	var text = '<span class="label label-success">其他</span>';
+	if(d.submitStatus==0){
+		text = '<span class="label label-danger">未上传</span>';
+	}else if(d.submitStatus==1){
+		text = '<span class="label label-disabled">已上传</span>';
+	}
+	return text;
+	
+};
+
 var vm = new Vue({
     el:'#rrapp',
     data:{
@@ -121,7 +140,8 @@ var vm = new Vue({
         	userName: null,
         	userMobile: null,
         	alipayMobile:null,
-        	status:null
+        	status:null,
+        	submitStatus:null
         },
 		showSelectForm:false,	//查看form表单
         recharge:{}				//对象
@@ -166,7 +186,7 @@ var vm = new Vue({
         	if(rechargeId == null){
         		return ;
         	}
-        	vm.getrecharge(rechargeId);
+        	vm.getRecharge(rechargeId);
     	
     	  var index = layer.open({
               title: "查看",
@@ -256,6 +276,7 @@ var vm = new Vue({
             //编辑时间格式报错.
             vm.recharge.createTime = null;
         	vm.recharge.updateTime = null;
+        	vm.recharge.submitTime = null;
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
@@ -282,6 +303,7 @@ var vm = new Vue({
         	vm.recharge = recharge;
         	vm.recharge.createTime = formatterTime(recharge.createTime);
         	vm.recharge.updateTime = formatterTime(recharge.updateTime);
+        	vm.recharge.submitTime = formatterTime(recharge.submitTime);
         },
         reload: function (event) {
             layui.table.reload('gridid', {

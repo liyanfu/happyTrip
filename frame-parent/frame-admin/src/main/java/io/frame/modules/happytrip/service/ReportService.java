@@ -70,4 +70,12 @@ public interface ReportService {
 	 */
 	PageUtils<Report> lookUnder(Report report);
 
+	/**
+	 * 获取用户充值总金额和提现总金额
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	Report getMoneyByUserId(Long userId);
+
 }

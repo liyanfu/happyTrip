@@ -30,6 +30,7 @@ import io.frame.dao.entity.WalletChange;
 import io.frame.dao.mapper.RechargeMapper;
 import io.frame.modules.happytrip.service.RechargeService;
 import io.frame.modules.happytrip.service.WalletService;
+import io.frame.modules.sys.service.SysConfigService;
 import io.frame.modules.sys.shiro.ShiroUtils;
 
 /**
@@ -48,6 +49,9 @@ public class RechargeServiceImpl implements RechargeService {
 
 	@Autowired
 	WalletService walletService;
+
+	@Autowired
+	SysConfigService sysConfigService;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -93,6 +97,7 @@ public class RechargeServiceImpl implements RechargeService {
 			}
 
 			cr.andStatusEqualToIgnoreNull(recharge.getStatus());
+			cr.andSubmitStatusEqualToIgnoreNull(recharge.getSubmitStatus());
 
 			cr.andCreateTimeGreaterThanOrEqualToIgnoreNull(beginDate);
 			cr.andCreateTimeLessThanIgnoreNull(endDate);
@@ -128,7 +133,13 @@ public class RechargeServiceImpl implements RechargeService {
 	@Transactional(readOnly = true)
 	@Override
 	public Recharge getInfoById(Long rechargeId) {
-		return rechargeMapper.selectByPrimaryKey(rechargeId);
+		Recharge recharge = rechargeMapper.selectByPrimaryKey(rechargeId);
+		if (recharge != null && !StringUtils.isEmpty(recharge.getSubmitCredentialImg())) {
+			// 获取推广域名 链接图片显示
+			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			recharge.setSubmitCredentialImg(value + Constant.readImg + recharge.getSubmitCredentialImg());
+		}
+		return recharge;
 	}
 
 	@Override
@@ -136,6 +147,7 @@ public class RechargeServiceImpl implements RechargeService {
 		SysUser sysUser = ShiroUtils.getUserEntity();
 		recharge.setUpdateUser(sysUser.getUserName());
 		recharge.setUpdateTime(new Date());
+		recharge.setSubmitCredentialImg(null);// 置空,不需要修改
 
 		Recharge newRecharge = rechargeMapper.selectByPrimaryKey(recharge.getRechargeId());
 		// 判断订单状态，
