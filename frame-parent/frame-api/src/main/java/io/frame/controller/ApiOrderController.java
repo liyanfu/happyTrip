@@ -1,6 +1,8 @@
 package io.frame.controller;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Maps;
 
 import io.frame.annotation.Login;
 import io.frame.common.exception.RRException;
+import io.frame.common.utils.FileUtils;
 import io.frame.common.utils.R;
 import io.frame.common.validator.ValidatorUtils;
 import io.frame.exception.ErrorCode;
@@ -50,7 +54,7 @@ public class ApiOrderController {
 
 	@Login
 	@GetMapping("getMyBuyOrderList")
-	@ApiOperation(notes = "{msg:消息提示,code:状态码,orderList:[{productName:商品名称,buyMoney:投资金额,status:订单状态,createTime:创建时间}]}", value = "购买记录")
+	@ApiOperation(notes = "{msg:消息提示,code:状态码,orderList:[{productName:商品名称,buyMoney:投资金额,status:订单状态[0:待支付,1:收益中,2:已完成,3:已取消],createTime:创建时间,submitStatus上传凭证状态[0:未上传1:已上传]:}]}", value = "购买记录")
 	public R getMyBuyOrderList(@ApiIgnore @RequestAttribute("userId") Long userId,
 			@ApiParam(name = "typeId", value = "商品类型ID", required = true) @RequestParam("typeId") Long typeId) {
 		if (typeId == null) {
@@ -71,6 +75,36 @@ public class ApiOrderController {
 			throw new RRException(ErrorCode.PARAMS_IS_NOT_EMPTY);
 		}
 		return R.ok(orderService.payOrder(userId, form.getProductId(), form.getPaymentKey()));
+	}
+
+	@Login
+	@PostMapping("/submitOrderCredential")
+	@ApiOperation(notes = "{msg:消息提示,code:请求状态", value = "上传凭证")
+	public R submitRechargeCredential(
+			@ApiParam(name = "orderId", value = "订单ID", required = true) @RequestParam("orderId") Long orderId,
+			@RequestParam("file") MultipartFile file) throws Exception {
+		if (file.isEmpty()) {
+			throw new RRException(ErrorCode.UPLOAD_NOT_EMPTY);
+		}
+
+		// 校验文件是否是图片格式
+		String fileName = file.getOriginalFilename();
+		String reg = ".+(.JPEG|.jpeg|.JPG|.jpg|.png|.PNG|.gif|.GIF|.bmp|.BMP)$";
+		Pattern pattern = Pattern.compile(reg);
+		Matcher matcher = pattern.matcher(fileName);
+		if (!matcher.find()) {
+			throw new RRException(ErrorCode.UPLOAD_FORMAT_EEEOR);
+		}
+
+		String path = "/home/credential/order/images/" + orderId + "/";
+		if (file.getSize() != 0) {
+			// 上传文件到本地
+			String url = FileUtils.uploadFileToLocal(file, path);
+
+			orderService.update(orderId, url);
+
+		}
+		return R.ok();
 	}
 
 }

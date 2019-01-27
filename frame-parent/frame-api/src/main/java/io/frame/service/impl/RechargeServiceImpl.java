@@ -14,18 +14,24 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.frame.annotation.SysLog;
 import io.frame.common.enums.Constant;
 import io.frame.common.enums.Constant.ConfigType;
 import io.frame.common.enums.Constant.RechargeKey;
+import io.frame.common.enums.Constant.Status;
+import io.frame.common.exception.RRException;
 import io.frame.common.utils.DateUtils;
 import io.frame.common.utils.R;
+import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Config;
 import io.frame.dao.entity.Recharge;
+import io.frame.dao.entity.RechargeExample;
 import io.frame.dao.entity.User;
 import io.frame.dao.mapper.RechargeMapper;
+import io.frame.exception.ErrorCode;
 import io.frame.service.ConfigService;
 import io.frame.service.RechargeService;
 import io.frame.utils.SessionUtils;
@@ -77,6 +83,7 @@ public class RechargeServiceImpl implements RechargeService {
 		String rechargeCode = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 6);
 		rechage.setRechargeCode(rechargeCode);// 随机码
 		rechage.setStatus(Constant.Status.ZERO.getValue());
+		rechage.setSubmitStatus(Status.ZERO.getValue());
 		// 保存
 		rechargeMapper.insertSelective(rechage);
 
@@ -170,5 +177,44 @@ public class RechargeServiceImpl implements RechargeService {
 		} else {
 			return false;
 		}
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Recharge> getRechargeList(Long userId) {
+		RechargeExample example = new RechargeExample();
+		example.or().andUserIdEqualTo(userId);
+		example.setOrderByClause(SqlTools.orderByDescField(Recharge.FD_CREATETIME));
+		List<String> showField = Lists.newArrayList();
+		showField.add(Recharge.FD_RECHARGEID);
+		showField.add(Recharge.FD_RECHARGECODE);
+		showField.add(Recharge.FD_RECHARGEMONEY);
+		showField.add(Recharge.FD_STATUS);
+		showField.add(Recharge.FD_SUBMITSTATUS);
+		showField.add(Recharge.FD_CREATETIME);
+		return rechargeMapper.selectByExampleShowField(showField, example);
+	}
+
+	@SysLog("上传充值订单凭证")
+	@Override
+	public void update(Long rechargeId, String url) {
+		User currentUser = SessionUtils.getCurrentUser();
+		RechargeExample example = new RechargeExample();
+		example.or().andUserIdEqualTo(currentUser.getUserId()).andRechargeIdEqualTo(rechargeId);
+		Recharge recharge = rechargeMapper.selectOneByExample(example);
+
+		if (recharge == null) {
+			throw new RRException(ErrorCode.ORDER_IS_EXIST);
+		}
+		if (recharge.getStatus() != Status.ZERO.getValue()) {
+			throw new RRException(ErrorCode.RECHARGE_STATUS_ERROR);
+		}
+
+		Recharge updateRecharge = new Recharge();
+		updateRecharge.setRechargeId(rechargeId);
+		updateRecharge.setSubmitStatus(Status.ONE.getValue());
+		updateRecharge.setSubmitCredentialImg(url);
+		updateRecharge.setSubmitTime(new Date());
+		rechargeMapper.updateByPrimaryKeySelective(updateRecharge);
 	}
 }

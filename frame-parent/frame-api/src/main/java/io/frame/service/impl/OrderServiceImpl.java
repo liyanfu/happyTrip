@@ -23,6 +23,7 @@ import io.frame.common.enums.Constant;
 import io.frame.common.enums.Constant.ChangeType;
 import io.frame.common.enums.Constant.OrderStatus;
 import io.frame.common.enums.Constant.RechargeKey;
+import io.frame.common.enums.Constant.Status;
 import io.frame.common.exception.RRException;
 import io.frame.common.utils.SqlTools;
 import io.frame.dao.entity.Order;
@@ -133,6 +134,7 @@ public class OrderServiceImpl implements OrderService {
 		showField.add(Order.FD_PRODUCTNAME);
 		showField.add(Order.FD_CREATETIME);
 		showField.add(Order.FD_STATUS);
+		showField.add(Order.FD_SUBMITSTATUS);
 		showField.add(Order.FD_BUYMONEY);
 		OrderExample example = new OrderExample();
 		example.createCriteria().andUserIdEqualTo(userId).andProductTypeIdEqualTo(typeId);
@@ -335,6 +337,30 @@ public class OrderServiceImpl implements OrderService {
 		Integer[] status = { Constant.Status.ZERO.getValue(), Constant.Status.ONE.getValue() };
 		cr.andStatusIn(Arrays.asList(status));
 		return orderMapper.countByExample(example);
+
+	}
+
+	@SysLog("上传订单转账凭证")
+	@Override
+	public void update(Long orderId, String url) {
+		User currentUser = SessionUtils.getCurrentUser();
+		OrderExample example = new OrderExample();
+		example.or().andUserIdEqualTo(currentUser.getUserId()).andOrderIdEqualTo(orderId);
+		Order order = orderMapper.selectOneByExample(example);
+
+		if (order == null) {
+			throw new RRException(ErrorCode.ORDER_IS_EXIST);
+		}
+		if (order.getStatus() != Status.ZERO.getValue()) {
+			throw new RRException(ErrorCode.RECHARGE_STATUS_ERROR);
+		}
+
+		Order updateOrder = new Order();
+		updateOrder.setOrderId(orderId);
+		updateOrder.setSubmitStatus(Status.ONE.getValue());
+		updateOrder.setSubmitCredentialImg(url);
+		updateOrder.setSubmitTime(new Date());
+		orderMapper.updateByPrimaryKeySelective(updateOrder);
 
 	}
 

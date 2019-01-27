@@ -73,4 +73,16 @@ public class ErrorCode {
 	/** 注册域名不存在 */
 	public static String SYSTEM_REGISTER_DOMAIN_KEY_IS_NOT_EXIST = "注册域名不存在";
 
+	/** 订单状态不是待支付,无法操作 */
+	public static String RECHARGE_STATUS_ERROR = "订单状态不是待支付,无法操作";
+
+	/** 上传凭证格式错误 */
+	public static String UPLOAD_FORMAT_EEEOR = "上传凭证格式错误,";
+
+	/** 上传凭证不能为空 */
+	public static String UPLOAD_NOT_EMPTY = "上传凭证不能为空";
+
+	/** 订单不存在 */
+	public static String ORDER_IS_EXIST = "订单不存在";
+
 }
