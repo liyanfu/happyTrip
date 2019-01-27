@@ -745,6 +745,66 @@ public class ReportExample {
             return (Criteria) this;
         }
 
+        public Criteria andArtificialRechargeMoneyIsNull() {
+            addCriterion("artificialRechargeMoney is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyIsNotNull() {
+            addCriterion("artificialRechargeMoney is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyEqualTo(BigDecimal value) {
+            addCriterion("artificialRechargeMoney =", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyNotEqualTo(BigDecimal value) {
+            addCriterion("artificialRechargeMoney <>", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyGreaterThan(BigDecimal value) {
+            addCriterion("artificialRechargeMoney >", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("artificialRechargeMoney >=", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyLessThan(BigDecimal value) {
+            addCriterion("artificialRechargeMoney <", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("artificialRechargeMoney <=", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyIn(List<BigDecimal> values) {
+            addCriterion("artificialRechargeMoney in", values, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyNotIn(List<BigDecimal> values) {
+            addCriterion("artificialRechargeMoney not in", values, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("artificialRechargeMoney between", value1, value2, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("artificialRechargeMoney not between", value1, value2, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
         public Criteria andRechargeMoneyIsNull() {
             addCriterion("rechargeMoney is null");
             return (Criteria) this;
@@ -862,6 +922,66 @@ public class ReportExample {
 
         public Criteria andRechargeFeeNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("rechargeFee not between", value1, value2, "rechargeFee");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyIsNull() {
+            addCriterion("artificialWithdrawMoney is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyIsNotNull() {
+            addCriterion("artificialWithdrawMoney is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyEqualTo(BigDecimal value) {
+            addCriterion("artificialWithdrawMoney =", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyNotEqualTo(BigDecimal value) {
+            addCriterion("artificialWithdrawMoney <>", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyGreaterThan(BigDecimal value) {
+            addCriterion("artificialWithdrawMoney >", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("artificialWithdrawMoney >=", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyLessThan(BigDecimal value) {
+            addCriterion("artificialWithdrawMoney <", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("artificialWithdrawMoney <=", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyIn(List<BigDecimal> values) {
+            addCriterion("artificialWithdrawMoney in", values, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyNotIn(List<BigDecimal> values) {
+            addCriterion("artificialWithdrawMoney not in", values, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("artificialWithdrawMoney between", value1, value2, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("artificialWithdrawMoney not between", value1, value2, "artificialWithdrawMoney");
             return (Criteria) this;
         }
 
@@ -1940,6 +2060,46 @@ public class ReportExample {
             return (Criteria) this;
         }
 
+        public Criteria andArtificialRechargeMoneyEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialRechargeMoney =", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyNotEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialRechargeMoney <>", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyGreaterThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialRechargeMoney >", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyGreaterThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialRechargeMoney >=", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyLessThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialRechargeMoney <", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyLessThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialRechargeMoney <=", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("artificialRechargeMoney in", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialRechargeMoneyNotInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("artificialRechargeMoney not in", value, "artificialRechargeMoney");
+            return (Criteria) this;
+        }
+
         public Criteria andRechargeMoneyEqualToIgnoreNull(BigDecimal value) {
             addCriterionIgnoreNull("rechargeMoney =", value, "rechargeMoney");
             return (Criteria) this;
@@ -2017,6 +2177,46 @@ public class ReportExample {
 
         public Criteria andRechargeFeeNotInIgnoreNull(List<BigDecimal> value) {
             addCriterionIgnoreNull("rechargeFee not in", value, "rechargeFee");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialWithdrawMoney =", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyNotEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialWithdrawMoney <>", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyGreaterThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialWithdrawMoney >", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyGreaterThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialWithdrawMoney >=", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyLessThanIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialWithdrawMoney <", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyLessThanOrEqualToIgnoreNull(BigDecimal value) {
+            addCriterionIgnoreNull("artificialWithdrawMoney <=", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("artificialWithdrawMoney in", value, "artificialWithdrawMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyNotInIgnoreNull(List<BigDecimal> value) {
+            addCriterionIgnoreNull("artificialWithdrawMoney not in", value, "artificialWithdrawMoney");
             return (Criteria) this;
         }
 
@@ -2558,6 +2758,11 @@ public class ReportExample {
             return this;
         }
 
+        public Criteria andArtificialRechargeMoneyLikeInsensitive(String value) {
+            addCriterion("upper(artificialRechargeMoney) like", value.toUpperCase(), "artificialRechargeMoney");
+            return this;
+        }
+
         public Criteria andRechargeMoneyLikeInsensitive(String value) {
             addCriterion("upper(rechargeMoney) like", value.toUpperCase(), "rechargeMoney");
             return this;
@@ -2565,6 +2770,11 @@ public class ReportExample {
 
         public Criteria andRechargeFeeLikeInsensitive(String value) {
             addCriterion("upper(rechargeFee) like", value.toUpperCase(), "rechargeFee");
+            return this;
+        }
+
+        public Criteria andArtificialWithdrawMoneyLikeInsensitive(String value) {
+            addCriterion("upper(artificialWithdrawMoney) like", value.toUpperCase(), "artificialWithdrawMoney");
             return this;
         }
 

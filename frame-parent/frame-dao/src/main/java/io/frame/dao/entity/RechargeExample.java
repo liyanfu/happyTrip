@@ -988,6 +988,136 @@ public class RechargeExample {
             return (Criteria) this;
         }
 
+        public Criteria andSubmitCredentialImgIsNull() {
+            addCriterion("submitCredentialImg is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgIsNotNull() {
+            addCriterion("submitCredentialImg is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgEqualTo(String value) {
+            addCriterion("submitCredentialImg =", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgNotEqualTo(String value) {
+            addCriterion("submitCredentialImg <>", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgGreaterThan(String value) {
+            addCriterion("submitCredentialImg >", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgGreaterThanOrEqualTo(String value) {
+            addCriterion("submitCredentialImg >=", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgLessThan(String value) {
+            addCriterion("submitCredentialImg <", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgLessThanOrEqualTo(String value) {
+            addCriterion("submitCredentialImg <=", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgLike(String value) {
+            addCriterion("submitCredentialImg like", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgNotLike(String value) {
+            addCriterion("submitCredentialImg not like", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgIn(List<String> values) {
+            addCriterion("submitCredentialImg in", values, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgNotIn(List<String> values) {
+            addCriterion("submitCredentialImg not in", values, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgBetween(String value1, String value2) {
+            addCriterion("submitCredentialImg between", value1, value2, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgNotBetween(String value1, String value2) {
+            addCriterion("submitCredentialImg not between", value1, value2, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusIsNull() {
+            addCriterion("submitStatus is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusIsNotNull() {
+            addCriterion("submitStatus is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusEqualTo(Integer value) {
+            addCriterion("submitStatus =", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusNotEqualTo(Integer value) {
+            addCriterion("submitStatus <>", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusGreaterThan(Integer value) {
+            addCriterion("submitStatus >", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("submitStatus >=", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusLessThan(Integer value) {
+            addCriterion("submitStatus <", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("submitStatus <=", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusIn(List<Integer> values) {
+            addCriterion("submitStatus in", values, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusNotIn(List<Integer> values) {
+            addCriterion("submitStatus not in", values, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusBetween(Integer value1, Integer value2) {
+            addCriterion("submitStatus between", value1, value2, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("submitStatus not between", value1, value2, "submitStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andFrontRemarkIsNull() {
             addCriterion("frontRemark is null");
             return (Criteria) this;
@@ -1388,6 +1518,66 @@ public class RechargeExample {
             return (Criteria) this;
         }
 
+        public Criteria andSubmitTimeIsNull() {
+            addCriterion("submitTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeIsNotNull() {
+            addCriterion("submitTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeEqualTo(Date value) {
+            addCriterion("submitTime =", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeNotEqualTo(Date value) {
+            addCriterion("submitTime <>", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeGreaterThan(Date value) {
+            addCriterion("submitTime >", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("submitTime >=", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeLessThan(Date value) {
+            addCriterion("submitTime <", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeLessThanOrEqualTo(Date value) {
+            addCriterion("submitTime <=", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeIn(List<Date> values) {
+            addCriterion("submitTime in", values, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeNotIn(List<Date> values) {
+            addCriterion("submitTime not in", values, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeBetween(Date value1, Date value2) {
+            addCriterion("submitTime between", value1, value2, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeNotBetween(Date value1, Date value2) {
+            addCriterion("submitTime not between", value1, value2, "submitTime");
+            return (Criteria) this;
+        }
+
         public Criteria andUserMobileLikeInsensitive(String value) {
             addCriterion("upper(userMobile) like", value.toUpperCase(), "userMobile");
             return (Criteria) this;
@@ -1415,6 +1605,11 @@ public class RechargeExample {
 
         public Criteria andRechargeCodeLikeInsensitive(String value) {
             addCriterion("upper(rechargeCode) like", value.toUpperCase(), "rechargeCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgLikeInsensitive(String value) {
+            addCriterion("upper(submitCredentialImg) like", value.toUpperCase(), "submitCredentialImg");
             return (Criteria) this;
         }
 
@@ -1998,6 +2193,96 @@ public class RechargeExample {
             return (Criteria) this;
         }
 
+        public Criteria andSubmitCredentialImgEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("submitCredentialImg =", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgNotEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("submitCredentialImg <>", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgGreaterThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("submitCredentialImg >", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgGreaterThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("submitCredentialImg >=", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgLessThanIgnoreNull(String value) {
+            addCriterionIgnoreNull("submitCredentialImg <", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgLessThanOrEqualToIgnoreNull(String value) {
+            addCriterionIgnoreNull("submitCredentialImg <=", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("submitCredentialImg like", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgNotLikeIgnoreNull(String value) {
+            addCriterionIgnoreNull("submitCredentialImg not like", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("submitCredentialImg in", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgNotInIgnoreNull(List<String> value) {
+            addCriterionIgnoreNull("submitCredentialImg not in", value, "submitCredentialImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("submitStatus =", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusNotEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("submitStatus <>", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusGreaterThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("submitStatus >", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusGreaterThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("submitStatus >=", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusLessThanIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("submitStatus <", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusLessThanOrEqualToIgnoreNull(Integer value) {
+            addCriterionIgnoreNull("submitStatus <=", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("submitStatus in", value, "submitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitStatusNotInIgnoreNull(List<Integer> value) {
+            addCriterionIgnoreNull("submitStatus not in", value, "submitStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andFrontRemarkEqualToIgnoreNull(String value) {
             addCriterionIgnoreNull("frontRemark =", value, "frontRemark");
             return (Criteria) this;
@@ -2278,6 +2563,46 @@ public class RechargeExample {
             return (Criteria) this;
         }
 
+        public Criteria andSubmitTimeEqualToIgnoreNull(Date value) {
+            addCriterionIgnoreNull("submitTime =", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeNotEqualToIgnoreNull(Date value) {
+            addCriterionIgnoreNull("submitTime <>", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeGreaterThanIgnoreNull(Date value) {
+            addCriterionIgnoreNull("submitTime >", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeGreaterThanOrEqualToIgnoreNull(Date value) {
+            addCriterionIgnoreNull("submitTime >=", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeLessThanIgnoreNull(Date value) {
+            addCriterionIgnoreNull("submitTime <", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeLessThanOrEqualToIgnoreNull(Date value) {
+            addCriterionIgnoreNull("submitTime <=", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeInIgnoreNull(List<Date> value) {
+            addCriterionIgnoreNull("submitTime in", value, "submitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitTimeNotInIgnoreNull(List<Date> value) {
+            addCriterionIgnoreNull("submitTime not in", value, "submitTime");
+            return (Criteria) this;
+        }
+
         public Criteria andUserMobileLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(userMobile) like", value.toUpperCase(), "userMobile");
             return (Criteria) this;
@@ -2305,6 +2630,11 @@ public class RechargeExample {
 
         public Criteria andRechargeCodeLikeInsensitiveIgnoreNull(String value) {
             addCriterionIgnoreNull("upper(rechargeCode) like", value.toUpperCase(), "rechargeCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubmitCredentialImgLikeInsensitiveIgnoreNull(String value) {
+            addCriterionIgnoreNull("upper(submitCredentialImg) like", value.toUpperCase(), "submitCredentialImg");
             return (Criteria) this;
         }
 
@@ -2401,6 +2731,16 @@ public class RechargeExample {
             return this;
         }
 
+        public Criteria andSubmitCredentialImgLikeInsensitive(String value) {
+            addCriterion("upper(submitCredentialImg) like", value.toUpperCase(), "submitCredentialImg");
+            return this;
+        }
+
+        public Criteria andSubmitStatusLikeInsensitive(String value) {
+            addCriterion("upper(submitStatus) like", value.toUpperCase(), "submitStatus");
+            return this;
+        }
+
         public Criteria andFrontRemarkLikeInsensitive(String value) {
             addCriterion("upper(frontRemark) like", value.toUpperCase(), "frontRemark");
             return this;
@@ -2428,6 +2768,11 @@ public class RechargeExample {
 
         public Criteria andUpdateUserLikeInsensitive(String value) {
             addCriterion("upper(updateUser) like", value.toUpperCase(), "updateUser");
+            return this;
+        }
+
+        public Criteria andSubmitTimeLikeInsensitive(String value) {
+            addCriterion("upper(submitTime) like", value.toUpperCase(), "submitTime");
             return this;
         }
     }

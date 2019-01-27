@@ -26,12 +26,15 @@
     <result column="alreadyProfitMoney" jdbcType="DECIMAL" property="alreadyProfitMoney" />
     <result column="startRebateTime" jdbcType="INTEGER" property="startRebateTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="submitCredentialImg" jdbcType="VARCHAR" property="submitCredentialImg" />
+    <result column="submitStatus" jdbcType="INTEGER" property="submitStatus" />
     <result column="paymentId" jdbcType="BIGINT" property="paymentId" />
     <result column="randomCode" jdbcType="VARCHAR" property="randomCode" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
     <result column="createUser" jdbcType="VARCHAR" property="createUser" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="updateUser" jdbcType="VARCHAR" property="updateUser" />
+    <result column="submitTime" jdbcType="TIMESTAMP" property="submitTime" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -107,8 +110,9 @@
     -->
     orderId, parentId, userId, userName, groupUserIds, userMobile, productTypeId, productTypeName, 
     productId, productName, productImgurl, buyQuantity, buyMoney, rebateMoney, totalRebatePeriods, 
-    rebatePeriods, profitMoney, alreadyProfitMoney, startRebateTime, status, paymentId, 
-    randomCode, createTime, createUser, updateTime, updateUser, remark
+    rebatePeriods, profitMoney, alreadyProfitMoney, startRebateTime, status, submitCredentialImg, 
+    submitStatus, paymentId, randomCode, createTime, createUser, updateTime, updateUser, 
+    submitTime, remark
   </sql>
   <select id="selectByExample" parameterType="io.frame.dao.entity.OrderExample" resultMap="BaseResultMap">
     <!--
@@ -203,18 +207,20 @@
       productImgurl, buyQuantity, buyMoney, 
       rebateMoney, totalRebatePeriods, rebatePeriods, 
       profitMoney, alreadyProfitMoney, startRebateTime, 
-      status, paymentId, randomCode, 
-      createTime, createUser, updateTime, 
-      updateUser, remark)
+      status, submitCredentialImg, submitStatus, 
+      paymentId, randomCode, createTime, 
+      createUser, updateTime, updateUser, 
+      submitTime, remark)
     values (#{parentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, 
       #{groupUserIds,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, #{productTypeId,jdbcType=BIGINT}, 
       #{productTypeName,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, 
       #{productImgurl,jdbcType=VARCHAR}, #{buyQuantity,jdbcType=INTEGER}, #{buyMoney,jdbcType=DECIMAL}, 
       #{rebateMoney,jdbcType=DECIMAL}, #{totalRebatePeriods,jdbcType=INTEGER}, #{rebatePeriods,jdbcType=INTEGER}, 
       #{profitMoney,jdbcType=DECIMAL}, #{alreadyProfitMoney,jdbcType=DECIMAL}, #{startRebateTime,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{paymentId,jdbcType=BIGINT}, #{randomCode,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+      #{status,jdbcType=INTEGER}, #{submitCredentialImg,jdbcType=VARCHAR}, #{submitStatus,jdbcType=INTEGER}, 
+      #{paymentId,jdbcType=BIGINT}, #{randomCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{submitTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="io.frame.dao.entity.Order">
     <!--
@@ -283,6 +289,12 @@
       <if test="status != null">
         status,
       </if>
+      <if test="submitCredentialImg != null">
+        submitCredentialImg,
+      </if>
+      <if test="submitStatus != null">
+        submitStatus,
+      </if>
       <if test="paymentId != null">
         paymentId,
       </if>
@@ -300,6 +312,9 @@
       </if>
       <if test="updateUser != null">
         updateUser,
+      </if>
+      <if test="submitTime != null">
+        submitTime,
       </if>
       <if test="remark != null">
         remark,
@@ -363,6 +378,12 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="submitCredentialImg != null">
+        #{submitCredentialImg,jdbcType=VARCHAR},
+      </if>
+      <if test="submitStatus != null">
+        #{submitStatus,jdbcType=INTEGER},
+      </if>
       <if test="paymentId != null">
         #{paymentId,jdbcType=BIGINT},
       </if>
@@ -380,6 +401,9 @@
       </if>
       <if test="updateUser != null">
         #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -463,6 +487,12 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.submitCredentialImg != null">
+        submitCredentialImg = #{record.submitCredentialImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitStatus != null">
+        submitStatus = #{record.submitStatus,jdbcType=INTEGER},
+      </if>
       <if test="record.paymentId != null">
         paymentId = #{record.paymentId,jdbcType=BIGINT},
       </if>
@@ -480,6 +510,9 @@
       </if>
       <if test="record.updateUser != null">
         updateUser = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitTime != null">
+        submitTime = #{record.submitTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.remark != null">
         remark = #{record.remark,jdbcType=VARCHAR},
@@ -515,12 +548,15 @@
       alreadyProfitMoney = #{record.alreadyProfitMoney,jdbcType=DECIMAL},
       startRebateTime = #{record.startRebateTime,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
+      submitCredentialImg = #{record.submitCredentialImg,jdbcType=VARCHAR},
+      submitStatus = #{record.submitStatus,jdbcType=INTEGER},
       paymentId = #{record.paymentId,jdbcType=BIGINT},
       randomCode = #{record.randomCode,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       createUser = #{record.createUser,jdbcType=VARCHAR},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
       updateUser = #{record.updateUser,jdbcType=VARCHAR},
+      submitTime = #{record.submitTime,jdbcType=TIMESTAMP},
       remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -559,6 +595,9 @@
     </if>
     <if test="record.status != null">
        status = (case when status is null then #{record.status,jdbcType=INTEGER} else status + #{record.status,jdbcType=INTEGER} end ),
+    </if>
+    <if test="record.submitStatus != null">
+       submitStatus = (case when submitStatus is null then #{record.submitStatus,jdbcType=INTEGER} else submitStatus + #{record.submitStatus,jdbcType=INTEGER} end ),
     </if>
     </set>
     <if test="example != null">
@@ -629,6 +668,12 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="submitCredentialImg != null">
+        submitCredentialImg = #{submitCredentialImg,jdbcType=VARCHAR},
+      </if>
+      <if test="submitStatus != null">
+        submitStatus = #{submitStatus,jdbcType=INTEGER},
+      </if>
       <if test="paymentId != null">
         paymentId = #{paymentId,jdbcType=BIGINT},
       </if>
@@ -646,6 +691,9 @@
       </if>
       <if test="updateUser != null">
         updateUser = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+        submitTime = #{submitTime,jdbcType=TIMESTAMP},
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
@@ -678,12 +726,15 @@
       alreadyProfitMoney = #{alreadyProfitMoney,jdbcType=DECIMAL},
       startRebateTime = #{startRebateTime,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
+      submitCredentialImg = #{submitCredentialImg,jdbcType=VARCHAR},
+      submitStatus = #{submitStatus,jdbcType=INTEGER},
       paymentId = #{paymentId,jdbcType=BIGINT},
       randomCode = #{randomCode,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       createUser = #{createUser,jdbcType=VARCHAR},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR},
+      submitTime = #{submitTime,jdbcType=TIMESTAMP},
       remark = #{remark,jdbcType=VARCHAR}
     where orderId = #{orderId,jdbcType=BIGINT}
   </update>
@@ -721,6 +772,9 @@
     <if test="status != null">
        status = (case when status is null then #{status,jdbcType=INTEGER} else status + #{status,jdbcType=INTEGER} end ),
     </if>
+    <if test="submitStatus != null">
+       submitStatus = (case when submitStatus is null then #{submitStatus,jdbcType=INTEGER} else submitStatus + #{submitStatus,jdbcType=INTEGER} end ),
+    </if>
     </set>
     where orderId = #{orderId,jdbcType=BIGINT}
   </update>
@@ -732,8 +786,9 @@
     insert into b_order
     (parentId, userId, userName, groupUserIds, userMobile, productTypeId, productTypeName, 
       productId, productName, productImgurl, buyQuantity, buyMoney, rebateMoney, totalRebatePeriods, 
-      rebatePeriods, profitMoney, alreadyProfitMoney, startRebateTime, status, paymentId, 
-      randomCode, createTime, createUser, updateTime, updateUser, remark)
+      rebatePeriods, profitMoney, alreadyProfitMoney, startRebateTime, status, submitCredentialImg, 
+      submitStatus, paymentId, randomCode, createTime, createUser, updateTime, updateUser, 
+      submitTime, remark)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.parentId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.userName,jdbcType=VARCHAR}, 
@@ -742,9 +797,10 @@
         #{item.productImgurl,jdbcType=VARCHAR}, #{item.buyQuantity,jdbcType=INTEGER}, #{item.buyMoney,jdbcType=DECIMAL}, 
         #{item.rebateMoney,jdbcType=DECIMAL}, #{item.totalRebatePeriods,jdbcType=INTEGER}, 
         #{item.rebatePeriods,jdbcType=INTEGER}, #{item.profitMoney,jdbcType=DECIMAL}, #{item.alreadyProfitMoney,jdbcType=DECIMAL}, 
-        #{item.startRebateTime,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER}, #{item.paymentId,jdbcType=BIGINT}, 
-        #{item.randomCode,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.createUser,jdbcType=VARCHAR}, 
-        #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}
+        #{item.startRebateTime,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER}, #{item.submitCredentialImg,jdbcType=VARCHAR}, 
+        #{item.submitStatus,jdbcType=INTEGER}, #{item.paymentId,jdbcType=BIGINT}, #{item.randomCode,jdbcType=VARCHAR}, 
+        #{item.createTime,jdbcType=TIMESTAMP}, #{item.createUser,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, 
+        #{item.updateUser,jdbcType=VARCHAR}, #{item.submitTime,jdbcType=TIMESTAMP}, #{item.remark,jdbcType=VARCHAR}
         )
     </foreach>
   </insert>
@@ -819,6 +875,12 @@
         <if test="'status' == column">
           #{item.status,jdbcType=INTEGER}
         </if>
+        <if test="'submitCredentialImg' == column">
+          #{item.submitCredentialImg,jdbcType=VARCHAR}
+        </if>
+        <if test="'submitStatus' == column">
+          #{item.submitStatus,jdbcType=INTEGER}
+        </if>
         <if test="'paymentId' == column">
           #{item.paymentId,jdbcType=BIGINT}
         </if>
@@ -836,6 +898,9 @@
         </if>
         <if test="'updateUser' == column">
           #{item.updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="'submitTime' == column">
+          #{item.submitTime,jdbcType=TIMESTAMP}
         </if>
         <if test="'remark' == column">
           #{item.remark,jdbcType=VARCHAR}
@@ -886,8 +951,9 @@
     insert into b_order
     (orderId, parentId, userId, userName, groupUserIds, userMobile, productTypeId, productTypeName, 
       productId, productName, productImgurl, buyQuantity, buyMoney, rebateMoney, totalRebatePeriods, 
-      rebatePeriods, profitMoney, alreadyProfitMoney, startRebateTime, status, paymentId, 
-      randomCode, createTime, createUser, updateTime, updateUser, remark)
+      rebatePeriods, profitMoney, alreadyProfitMoney, startRebateTime, status, submitCredentialImg, 
+      submitStatus, paymentId, randomCode, createTime, createUser, updateTime, updateUser, 
+      submitTime, remark)
     values
     (#{orderId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
       #{userName,jdbcType=VARCHAR}, #{groupUserIds,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, 
@@ -895,9 +961,10 @@
       #{productName,jdbcType=VARCHAR}, #{productImgurl,jdbcType=VARCHAR}, #{buyQuantity,jdbcType=INTEGER}, 
       #{buyMoney,jdbcType=DECIMAL}, #{rebateMoney,jdbcType=DECIMAL}, #{totalRebatePeriods,jdbcType=INTEGER}, 
       #{rebatePeriods,jdbcType=INTEGER}, #{profitMoney,jdbcType=DECIMAL}, #{alreadyProfitMoney,jdbcType=DECIMAL}, 
-      #{startRebateTime,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{paymentId,jdbcType=BIGINT}, 
-      #{randomCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      #{startRebateTime,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{submitCredentialImg,jdbcType=VARCHAR}, 
+      #{submitStatus,jdbcType=INTEGER}, #{paymentId,jdbcType=BIGINT}, #{randomCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{submitTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
       )
     on duplicate key update 
     orderId =  #{orderId,jdbcType=BIGINT},
@@ -920,12 +987,15 @@
     alreadyProfitMoney = (case when alreadyProfitMoney is null then #{alreadyProfitMoney,jdbcType=DECIMAL} else alreadyProfitMoney + #{alreadyProfitMoney,jdbcType=DECIMAL} end ),
     startRebateTime =  #{startRebateTime,jdbcType=INTEGER},
     status =  #{status,jdbcType=INTEGER},
+    submitCredentialImg =  #{submitCredentialImg,jdbcType=VARCHAR},
+    submitStatus =  #{submitStatus,jdbcType=INTEGER},
     paymentId =  #{paymentId,jdbcType=BIGINT},
     randomCode =  #{randomCode,jdbcType=VARCHAR},
     createTime =  #{createTime,jdbcType=TIMESTAMP},
     createUser =  #{createUser,jdbcType=VARCHAR},
     updateTime =  #{updateTime,jdbcType=TIMESTAMP},
     updateUser =  #{updateUser,jdbcType=VARCHAR},
+    submitTime =  #{submitTime,jdbcType=TIMESTAMP},
     remark =  #{remark,jdbcType=VARCHAR}
   </insert>
   <insert id="upsertSelective" keyColumn="orderId" keyProperty="orderId" parameterType="io.frame.dao.entity.Order" useGeneratedKeys="true">
@@ -995,6 +1065,12 @@
       <if test="status != null">
         status,
       </if>
+      <if test="submitCredentialImg != null">
+        submitCredentialImg,
+      </if>
+      <if test="submitStatus != null">
+        submitStatus,
+      </if>
       <if test="paymentId != null">
         paymentId,
       </if>
@@ -1012,6 +1088,9 @@
       </if>
       <if test="updateUser != null">
         updateUser,
+      </if>
+      <if test="submitTime != null">
+        submitTime,
       </if>
       <if test="remark != null">
         remark,
@@ -1079,6 +1158,12 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="submitCredentialImg != null">
+        #{submitCredentialImg,jdbcType=VARCHAR},
+      </if>
+      <if test="submitStatus != null">
+        #{submitStatus,jdbcType=INTEGER},
+      </if>
       <if test="paymentId != null">
         #{paymentId,jdbcType=BIGINT},
       </if>
@@ -1096,6 +1181,9 @@
       </if>
       <if test="updateUser != null">
         #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -1163,6 +1251,12 @@
       <if test="status != null">
         status =  #{status,jdbcType=INTEGER},
       </if>
+      <if test="submitCredentialImg != null">
+        submitCredentialImg =  #{submitCredentialImg,jdbcType=VARCHAR},
+      </if>
+      <if test="submitStatus != null">
+        submitStatus =  #{submitStatus,jdbcType=INTEGER},
+      </if>
       <if test="paymentId != null">
         paymentId =  #{paymentId,jdbcType=BIGINT},
       </if>
@@ -1180,6 +1274,9 @@
       </if>
       <if test="updateUser != null">
         updateUser =  #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+        submitTime =  #{submitTime,jdbcType=TIMESTAMP},
       </if>
       <if test="remark != null">
         remark =  #{remark,jdbcType=VARCHAR},
