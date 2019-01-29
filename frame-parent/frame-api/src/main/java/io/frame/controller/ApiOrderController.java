@@ -82,7 +82,7 @@ public class ApiOrderController {
 	@ApiOperation(notes = "{msg:消息提示,code:请求状态", value = "上传凭证")
 	public R submitRechargeCredential(
 			@ApiParam(name = "orderId", value = "订单ID", required = true) @RequestParam("orderId") Long orderId,
-			@RequestParam("file") MultipartFile file) throws Exception {
+			@RequestBody MultipartFile file) throws Exception {
 		if (file.isEmpty()) {
 			throw new RRException(ErrorCode.UPLOAD_NOT_EMPTY);
 		}

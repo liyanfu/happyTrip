@@ -131,6 +131,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<OrderVo> getMyBuyOrderList(Long userId, Long typeId) {
 		List<String> showField = Lists.newArrayList();
+		showField.add(Order.FD_ORDERID);
 		showField.add(Order.FD_PRODUCTNAME);
 		showField.add(Order.FD_CREATETIME);
 		showField.add(Order.FD_STATUS);

@@ -22,6 +22,11 @@ public class OrderVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 订单ID
+	 */
+	private Long orderId;
+
+	/**
 	 * 商品名称
 	 */
 	private String productName;
@@ -40,6 +45,11 @@ public class OrderVo implements Serializable {
 	 * 状态
 	 */
 	private String status;
+
+	/**
+	 * 上传凭证状态
+	 */
+	private Integer submitStatus;
 
 	/**
 	 * 创建时间
@@ -84,6 +94,22 @@ public class OrderVo implements Serializable {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
+	public Integer getSubmitStatus() {
+		return submitStatus;
+	}
+
+	public void setSubmitStatus(Integer submitStatus) {
+		this.submitStatus = submitStatus;
 	}
 
 }
