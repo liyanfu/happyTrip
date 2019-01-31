@@ -65,7 +65,8 @@ public class ApiRechargeController {
 	@ApiOperation(notes = "{msg:消息提示,code:请求状态", value = "上传凭证")
 	public R submitRechargeCredential(
 			@ApiParam(name = "rechargeId", value = "充值订单ID", required = true) @RequestParam("rechargeId") Long rechargeId,
-			@RequestBody MultipartFile file) throws Exception {
+			@ApiParam(name = "file", value = "转账凭证图片", required = true) @RequestParam("file") MultipartFile file)
+			throws Exception {
 		if (file.isEmpty()) {
 			throw new RRException(ErrorCode.UPLOAD_NOT_EMPTY);
 		}

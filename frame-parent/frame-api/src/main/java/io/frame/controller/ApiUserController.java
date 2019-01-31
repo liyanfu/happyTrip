@@ -69,7 +69,7 @@ public class ApiUserController {
 		if (StringUtils.isEmpty(value)) {
 			throw new RRException(ErrorCode.SYSTEM_REGISTER_DOMAIN_KEY_IS_NOT_EXIST);
 		}
-		String url = value + "/?mobile=" + user.getUserMobile();
+		String url = value + "?mobile=" + user.getUserMobile();
 		// try {
 		// QRCodeUtils.generateQRCode(url, 200, 200, "png", response);
 		// } catch (Exception e) {

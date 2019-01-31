@@ -181,9 +181,10 @@ public class OrderServiceImpl implements OrderService {
 
 	@SysLog("购买下单")
 	@Override
-	public Map<String, Object> payOrder(Long userId, Long productId, String paymentKey) {
+	public Map<String, Object> payOrder(Long userId, Long orderId, Long productId, String paymentKey) {
 		Map<String, Object> map = Maps.newHashMap();
 		User user = SessionUtils.getCurrentUser();
+
 		// 查询出商品
 		Product product = productService.getProductByIdNotImage(productId);
 
@@ -196,89 +197,102 @@ public class OrderServiceImpl implements OrderService {
 			}
 		}
 
-		// 校验库存剩余数量 售卖数量-已卖数量
-		if (product.getSaleQuantity() - product.getSaleVolumes() == 0) {
-			throw new RRException(ErrorCode.INSUFFICIENT_STOCK);
-		}
+		Order orderT = null;
+		if (orderId == null) {
 
-		// 校验状态
-		if (product.getStatus() == Constant.Status.ZERO.getValue()) {
-			throw new RRException(ErrorCode.CAR_LOWER_SHEIF);
-		}
+			// 校验库存剩余数量 售卖数量-已卖数量
+			if (product.getSaleQuantity() - product.getSaleVolumes() == 0) {
+				throw new RRException(ErrorCode.INSUFFICIENT_STOCK);
+			}
 
-		// 校验是否超过购买数量
-		if (product.getPurchaseRestriction() > 0) {
-			int count = this.getOrderCount(userId, productId);
-			if (count >= product.getPurchaseRestriction()) {
-				throw new RRException(ErrorCode.EXCEEDING_THE_PURCHASE_LIMIT);
+			// 校验状态
+			if (product.getStatus() == Constant.Status.ZERO.getValue()) {
+				throw new RRException(ErrorCode.CAR_LOWER_SHEIF);
+			}
+
+			// 校验是否超过购买数量
+			if (product.getPurchaseRestriction() > 0) {
+				int count = this.getOrderCount(userId, productId);
+				if (count >= product.getPurchaseRestriction()) {
+					throw new RRException(ErrorCode.EXCEEDING_THE_PURCHASE_LIMIT);
+				}
+			}
+
+			Date date = new Date();
+			// 生成订单
+			Order order = new Order();
+			order.setUserId(userId);
+			order.setParentId(user.getParentId());
+			order.setGroupUserIds(user.getGroupUserIds());
+			order.setUserName(user.getUserName());
+			order.setUserMobile(user.getUserMobile());
+			order.setBuyQuantity(1);// 默认1
+			order.setBuyMoney(product.getSaleMoney());
+			order.setProductTypeId(product.getProductTypeId());
+			// 查询商品类型名称
+			ProductType productType = productTypeService.getProductTypeById(product.getProductTypeId());
+			order.setProductTypeName(productType.getProductTypeName());
+			order.setProductName(product.getProductName());
+			order.setProductImgurl(product.getProductImgurl());
+			order.setProductId(productId);
+			order.setRebateMoney(product.getRebateMoney());
+			order.setTotalRebatePeriods(product.getRebatePeriods());
+			order.setProfitMoney(product.getRebateTotals());
+			order.setStartRebateTime(product.getStartRebateTime());
+			order.setRebatePeriods(0);
+			order.setCreateTime(date);
+			// 查询支付方式
+			order.setPaymentId(getPaymentId(paymentKey));
+			order.setCreateUser(user.getUserName());
+			String randomCode = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 6);
+			order.setRandomCode(randomCode);// 随机码
+			order.setStatus(Constant.Status.ZERO.getValue());
+			// 保存
+			orderMapper.insertSelective(order);
+			orderT = order;
+		} else {
+			// 不等于空说明已经创建过订单,
+			orderT = orderMapper.selectByPrimaryKey(orderId);
+			if (orderT.getStatus() != OrderStatus.ZERO.getValue()) {
+				throw new RRException("订单状态已完成");
 			}
 		}
 
-		Date date = new Date();
-		// 生成订单
-		Order order = new Order();
-		order.setUserId(userId);
-		order.setParentId(user.getParentId());
-		order.setGroupUserIds(user.getGroupUserIds());
-		order.setUserName(user.getUserName());
-		order.setUserMobile(user.getUserMobile());
-		order.setBuyQuantity(1);// 默认1
-		order.setBuyMoney(product.getSaleMoney());
-		order.setProductTypeId(product.getProductTypeId());
-		// 查询商品类型名称
-		ProductType productType = productTypeService.getProductTypeById(product.getProductTypeId());
-		order.setProductTypeName(productType.getProductTypeName());
-		order.setProductName(product.getProductName());
-		order.setProductImgurl(product.getProductImgurl());
-		order.setProductId(productId);
-		order.setRebateMoney(product.getRebateMoney());
-		order.setTotalRebatePeriods(product.getRebatePeriods());
-		order.setProfitMoney(product.getRebateTotals());
-		order.setStartRebateTime(product.getStartRebateTime());
-		order.setRebatePeriods(0);
-		order.setCreateTime(date);
-		// 查询支付方式
-		order.setPaymentId(getPaymentId(paymentKey));
-		order.setCreateUser(user.getUserName());
-		String randomCode = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 6);
-		order.setRandomCode(randomCode);// 随机码
-		// 余额支付
-		String qrCode = null;
-		Integer status = 0;
-
 		// 余额支付
 		if (paymentKey.equals(Constant.PaymentKey.PAYMENT_WALLET_KEY.getValue())) {
-			status = Constant.Status.ONE.getValue();
-		}
-		order.setStatus(status);
-		// 保存
-		orderMapper.insertSelective(order);
+			// 修改订单状态
+			Order updateOrder = new Order();
+			updateOrder.setOrderId(orderT.getOrderId());
+			updateOrder.setStatus(Constant.Status.ONE.getValue());
+			orderMapper.updateByPrimaryKeySelective(updateOrder);
 
-		if (paymentKey.equals(Constant.PaymentKey.PAYMENT_WALLET_KEY.getValue())) {
 			// 扣款
-			walletService.deduction(wallet.getWalletId(), order.getBuyMoney());
+			walletService.deduction(wallet.getWalletId(), orderT.getBuyMoney());
 			// 记录帐变
-			walletChangeService.createWalletChange(userId, order.getBuyMoney(), order.getOrderId(),
+			walletChangeService.createWalletChange(userId, orderT.getBuyMoney(), orderT.getOrderId(),
 					ChangeType.PURCHASE_CAR_SPACE_KEY);
 
 			// 记录报表进行汇总统计
-			this.recordReport(userId, order.getBuyMoney());
+			this.recordReport(userId, orderT.getBuyMoney());
 
 			// 写入推荐表信息 ,算入父级的团队业绩中..
-			recommendService.upsert(user.getParentId(), null, order.getBuyMoney());
+			recommendService.upsert(user.getParentId(), null, orderT.getBuyMoney());
 		} else {
 
 			String value = configService.getConfigByKey(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
 			// 其他线下支付获取收款二维码
-			qrCode = configService.getConfigByKey(RechargeKey.RECHARGE_QRCODE_KEY.getValue());
+			String qrCode = configService.getConfigByKey(RechargeKey.RECHARGE_QRCODE_KEY.getValue());
 			// 返回收款二维码图片，和随机码
 			map.put("qrCode", value + Constant.readImg + qrCode);
-			map.put("randomCode", order.getRandomCode());
+			map.put("randomCode", orderT.getRandomCode());
 		}
 
-		// 减库存
-		productService.reduceStock(productId, order.getBuyQuantity());
-		map.put("orderId", order.getOrderId());
+		if (orderId == null) {
+			// 减库存
+			productService.reduceStock(productId, orderT.getBuyQuantity());
+		}
+
+		map.put("orderId", orderT.getOrderId());
 		return map;
 
 	}

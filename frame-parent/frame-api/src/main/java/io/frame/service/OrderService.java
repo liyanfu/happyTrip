@@ -56,7 +56,7 @@ public interface OrderService {
 	 * @param paymentKey
 	 * @return
 	 */
-	Map<String, Object> payOrder(Long userId, Long productId, String paymentKey);
+	Map<String, Object> payOrder(Long userId, Long orderId, Long productId, String paymentKey);
 
 	/**
 	 * 上传订单转账付款凭证

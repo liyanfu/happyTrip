@@ -74,7 +74,7 @@ public class ApiOrderController {
 		if (form.getProductId() == null || form.getPaymentKey() == null) {
 			throw new RRException(ErrorCode.PARAMS_IS_NOT_EMPTY);
 		}
-		return R.ok(orderService.payOrder(userId, form.getProductId(), form.getPaymentKey()));
+		return R.ok(orderService.payOrder(userId, form.getOrderId(), form.getProductId(), form.getPaymentKey()));
 	}
 
 	@Login
@@ -82,7 +82,8 @@ public class ApiOrderController {
 	@ApiOperation(notes = "{msg:消息提示,code:请求状态", value = "上传凭证")
 	public R submitRechargeCredential(
 			@ApiParam(name = "orderId", value = "订单ID", required = true) @RequestParam("orderId") Long orderId,
-			@RequestBody MultipartFile file) throws Exception {
+			@ApiParam(name = "file", value = "转账凭证图片", required = true) @RequestParam("file") MultipartFile file)
+			throws Exception {
 		if (file.isEmpty()) {
 			throw new RRException(ErrorCode.UPLOAD_NOT_EMPTY);
 		}

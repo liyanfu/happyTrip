@@ -16,6 +16,9 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "下单表单")
 public class OrderForm {
 
+	@ApiModelProperty(value = "订单ID,当选择支付宝点击付款之后返回,此时再选择余额支付或者再次点击去支付带上该值")
+	private Long orderId;
+
 	@ApiModelProperty(value = "商品ID", required = true)
 	@NotNull(message = "商品ID不能为空")
 	private Long productId;
@@ -23,6 +26,14 @@ public class OrderForm {
 	@ApiModelProperty(value = "支付类型Key", required = true)
 	@NotBlank(message = "支付类型不能为空")
 	private String paymentKey;
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 
 	public Long getProductId() {
 		return productId;
