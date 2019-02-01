@@ -4,7 +4,7 @@ import layerglobal from '@/js/global'
 axios.defaults.withCredentials = true
 axios.defaults.timeout = 5000 // 响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8' // 配置请求头
-//axios.defaults.baseURL = 'http://120.78.138.125:38888';   //配置接口地址
+axios.defaults.baseURL = 'http://120.78.138.125:38888';   //配置接口地址
 //axios.defaults.contentType = false;
 //axios.defaults.processData = false;
 
