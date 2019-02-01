@@ -95,7 +95,8 @@ export default {
 				this.flag = true
 				this.randomCode = res.randomCode
 				this.orderId = res.orderId
-				var _url = 'http://'+window.location.host+'/api/readImg?path='+res.qrCode
+				//var _url = 'http://'+window.location.host+'/api/readImg?path='+res.qrCode
+				var _url = 'http://120.78.138.125:38888/api/readImg?path='+res.qrCode
 				QRCode.toCanvas(this.$refs.webcode,_url,{"width":"180px","height":"180px"}, function (error) {
 		          if (error) console.error(error)
 		            console.log('生成了web二维码讷!');

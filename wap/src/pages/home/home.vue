@@ -53,7 +53,8 @@ export default {
 	},
 	mounted(){
 		this.getab();
-		this.localhost = 'http://'+window.location.host+'/api/readImg?path='
+		//this.localhost = 'http://'+window.location.host+'/api/readImg?path='
+		this.localhost = 'http://120.78.138.125:38888/api/readImg?path='
 	},
 	methods:{
 		...mapActions([
