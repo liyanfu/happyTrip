@@ -1,0 +1,89 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin 0
+  padding 0
+  border 0
+  font-size 100%
+  font inherit
+  vertical-align baseline
+  font-family arial, 'Microsoft YaHei', 'Microsoft JhengHei'
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display block
+}
+ol, ul {
+  list-style none
+}
+blockquote, q {
+  quotes none
+}
+blockquote:before, blockquote:after, q:before, q:after {
+  content ''
+  content none
+}
+table {
+  border-collapse collapse
+  border-spacing 0
+}
+a {
+  color inherit
+  text-decoration none
+}
+@import 'base'
+html,body{
+  height:100%;
+}
+body {
+  background rgb(2,15,32)
+  /* font-family: "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+  font-family arial, 'Microsoft YaHei', 'Microsoft JhengHei' */
+  font-family 'PingFangSC-Regular', 'Microsoft YaHei', 'Lantinghei SC'
+  font-size 62.5%
+  color rgb(51, 51, 51)
+  line-height 14px
+  overflow-y auto
+  min-width 320px
+}
+.dialog-footer .btncolor {
+  background-image linear-gradient(45deg, #5a79ee 0%, #649df9 100%)
+  &:hover {
+    background-image linear-gradient(45deg, #748ff5 0%, #5a79ee 100%)
+  }
+}
+// 滚动条美化，只适合chrome
+::-webkit-scrollbar-track-piece { // 滚动条凹槽的颜色，还可以设置边框属性
+  background-color #f8f8f8
+}
+::-webkit-scrollbar { // 滚动条的宽度
+  width 0px
+  height 0px
+}
+::-webkit-scrollbar-thumb { // 滚动条的设置
+  background-color #dddddd
+  background-clip padding-box
+  min-height 28px
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color #bbb
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+color: #ccc; 
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+color: #ccc;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+color: #ccc;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+color: #ccc;
+}
+.left{float:left}
+.right{float:right}
+.red{color:red}
