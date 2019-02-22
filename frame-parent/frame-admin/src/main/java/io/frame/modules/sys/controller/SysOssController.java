@@ -119,7 +119,7 @@ public class SysOssController {
 			sysOss.setCreateTime(new Date());
 			sysOssService.insert(sysOss);
 
-			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 			map.put("showPath", value + Constant.readImg + url);// 显示路径
 			map.put("src", url);// 存库如今
 			return R.ok().put("data", map);
@@ -148,7 +148,7 @@ public class SysOssController {
 			sysOss.setCreateTime(new Date());
 			sysOssService.insert(sysOss);
 
-			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 			map.put("src", value + Constant.readImg + url);// 显示路径
 			map.put("alt", url);// 存库如今
 			map.put("showPath", value + Constant.readImg + url);// 存库如今

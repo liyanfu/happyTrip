@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
 			Page<Order> page = (Page<Order>) orderMapper.selectByExample(example);
 			if (page.size() != 0) {
 				// 获取推广域名 链接图片显示
-				String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+				String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 				for (Order bean : page.getResult()) {
 					bean.setProductImgurl(value + Constant.readImg + bean.getProductImgurl());
 					if (!StringUtils.isEmpty(bean.getSubmitCredentialImg())) {
@@ -134,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			Order order = orderMapper.selectByPrimaryKey(orderId);
 			// 获取推广域名 链接图片显示
-			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 			order.setProductImgurl(value + Constant.readImg + order.getProductImgurl());
 			if (!StringUtils.isEmpty(order.getSubmitCredentialImg())) {
 				order.setSubmitCredentialImg(value + Constant.readImg + order.getSubmitCredentialImg());

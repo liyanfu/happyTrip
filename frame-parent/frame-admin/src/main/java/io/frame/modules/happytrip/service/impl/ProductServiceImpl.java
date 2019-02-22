@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
 
 			if (!CollectionUtils.isEmpty(page)) {
 				// 获取推广域名 链接图片显示
-				String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+				String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 				for (Product bean : page.getResult()) {
 					bean.setProductImgurl(value + Constant.readImg + bean.getProductImgurl());
 					Map<String, Object> map = Maps.newHashMap();
@@ -96,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
 		try {
 			Product product = productMapper.selectByPrimaryKey(productId);
 			// 获取推广域名 链接图片显示
-			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 			product.setProductImgurl(value + Constant.readImg + product.getProductImgurl());
 			Map<String, Object> map = Maps.newHashMap();
 			map.put("productTypeName", productTypeService.getProductTypeName(product.getProductTypeId()));

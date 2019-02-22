@@ -136,7 +136,7 @@ public class RechargeServiceImpl implements RechargeService {
 		Recharge recharge = rechargeMapper.selectByPrimaryKey(rechargeId);
 		if (recharge != null && !StringUtils.isEmpty(recharge.getSubmitCredentialImg())) {
 			// 获取推广域名 链接图片显示
-			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			String value = sysConfigService.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 			recharge.setSubmitCredentialImg(value + Constant.readImg + recharge.getSubmitCredentialImg());
 		}
 		return recharge;

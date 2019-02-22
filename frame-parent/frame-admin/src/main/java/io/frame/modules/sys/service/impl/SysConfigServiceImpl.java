@@ -50,7 +50,7 @@ public class SysConfigServiceImpl implements SysConfigService {
 		PageHelper.startPage(config.getPageNumber(), config.getPageSize());
 		Page<Config> page = (Page<Config>) configMapper.selectByExample(example);
 		if (!CollectionUtils.isEmpty(page)) {
-			String value = this.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+			String value = this.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 			for (Config bean : page) {
 				if (bean.getConfigKey().equals("SYSTEM_CUSTOMER_SERVICE_IMG_KEY")
 						|| bean.getConfigKey().equals("RECHARGE_QRCODE_KEY")) {
@@ -185,7 +185,7 @@ public class SysConfigServiceImpl implements SysConfigService {
 		example.or().andConfigIdEqualTo(id);
 		Config config = configMapper.selectOneByExample(example);
 
-		String value = this.getValue(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
+		String value = this.getValue(Constant.SystemKey.SYSTEM_MANAGE_DOMAIN_KEY.getValue());
 		if (config.getConfigKey().equals("SYSTEM_CUSTOMER_SERVICE_IMG_KEY")
 				|| config.getConfigKey().equals("RECHARGE_QRCODE_KEY")) {
 			if (!StringUtils.isEmpty(config.getConfigVal())) {
