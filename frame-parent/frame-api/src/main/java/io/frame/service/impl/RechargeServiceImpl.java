@@ -92,9 +92,7 @@ public class RechargeServiceImpl implements RechargeService {
 		map.put("rechargeCode", rechargeCode);
 		// 返回支付宝收款二维码图片URL
 		String qrCode = configService.getConfigByKey(Constant.RechargeKey.RECHARGE_QRCODE_KEY.getValue());
-		// 拿取推广域名 拼接 二维码 显示
-		String value = configService.getConfigByKey(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
-		map.put("qrCode", value + Constant.readImg + qrCode);
+		map.put("qrCode", qrCode);
 		return R.ok(map);
 	}
 

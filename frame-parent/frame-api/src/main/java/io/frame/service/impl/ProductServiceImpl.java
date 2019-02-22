@@ -2,13 +2,11 @@ package io.frame.service.impl;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 
@@ -61,15 +59,6 @@ public class ProductServiceImpl implements ProductService {
 		example.setOrderByClause(SqlTools.orderByAscField(Product.FD_SORT));
 		try {
 			List<Product> list = productMapper.selectByExampleShowField(showField, example);
-			if (!CollectionUtils.isEmpty(list)) {
-				// 获取推广域名参数,给前端显示完整的图片路径
-				String value = configService.getConfigByKey(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
-				for (Product product : list) {
-					if (StringUtils.isNotEmpty(product.getProductImgurl())) {
-						product.setProductImgurl(value + Constant.readImg + product.getProductImgurl());
-					}
-				}
-			}
 			return list;
 		} catch (Exception e) {
 			logger.error(ErrorCode.GET_INFO_FAILED, e);
@@ -83,11 +72,6 @@ public class ProductServiceImpl implements ProductService {
 	public Product getProductById(Long productId) {
 		try {
 			Product product = productMapper.selectByPrimaryKey(productId);
-			// 获取推广域名参数,给前端显示完整的图片路径
-			String value = configService.getConfigByKey(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
-			if (product != null && StringUtils.isNotEmpty(product.getProductImgurl())) {
-				product.setProductImgurl(value + Constant.readImg + product.getProductImgurl());
-			}
 			return product;
 		} catch (Exception e) {
 			logger.error(ErrorCode.GET_INFO_FAILED, e);

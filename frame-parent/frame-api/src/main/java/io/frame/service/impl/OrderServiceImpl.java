@@ -279,11 +279,10 @@ public class OrderServiceImpl implements OrderService {
 			recommendService.upsert(user.getParentId(), null, orderT.getBuyMoney());
 		} else {
 
-			String value = configService.getConfigByKey(Constant.SystemKey.SYSTEM_SPREAD_DOMAIN_KEY.getValue());
 			// 其他线下支付获取收款二维码
 			String qrCode = configService.getConfigByKey(RechargeKey.RECHARGE_QRCODE_KEY.getValue());
 			// 返回收款二维码图片，和随机码
-			map.put("qrCode", value + Constant.readImg + qrCode);
+			map.put("qrCode", qrCode);
 			map.put("randomCode", orderT.getRandomCode());
 		}
 
