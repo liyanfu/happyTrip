@@ -12,7 +12,7 @@ public class Constant {
 	/**
 	 * 读图片方法名
 	 */
-	public static final String readImg = "/readImg?path=";
+	public static final String readImg = "readImg?path=";
 
 	/**
 	 * 云配置类型
@@ -427,7 +427,9 @@ public class Constant {
 		/** 推广域名 */
 		SYSTEM_SPREAD_DOMAIN_KEY("推广域名", "SYSTEM_SPREAD_DOMAIN_KEY"),
 		/** 公司介绍 */
-		SYSTEM_COMPANY_INTRODUCE_KEY("公司介绍", "SYSTEM_COMPANY_INTRODUCE_KEY");
+		SYSTEM_COMPANY_INTRODUCE_KEY("公司介绍", "SYSTEM_COMPANY_INTRODUCE_KEY"),
+		/** 后台管理系统域名 */
+		SYSTEM_MANAGE_DOMAIN_KEY("后台管理系统域名", "SYSTEM_MANAGE_DOMAIN_KEY"),;
 		private String name;
 		private String value;
 
